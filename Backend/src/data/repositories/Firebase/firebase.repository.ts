@@ -1,28 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { FirebaseAdmin, InjectFirebaseAdmin } from "nestjs-firebase";
+import * as admin from "firebase-admin";
 import { firestore } from "firebase-admin";
-import Firestore = firestore.Firestore;
+import CollectionReference = firestore.CollectionReference;
 
 @Injectable()
 export class FirebaseRepository {
-  db: Firestore;
-  table: string;
-  exists: boolean;
+	collection: CollectionReference;
 
-  constructor(@InjectFirebaseAdmin() private fb: FirebaseAdmin, table: string) {
-    this.db = fb.db;
-    this.table = table;
-
-    this.db
-      .collection(table)
-      .get()
-      .then((snapshot) => {
-        if (snapshot.empty) {
-          console.log("No matching document " + table + " found.");
-          this.exists = false;
-        } else {
-          this.exists = true;
-        }
-      });
-  }
+	constructor(name: string) {
+		const fb = admin.initializeApp({
+			credential: admin.credential.applicationDefault()
+		});
+		this.collection = fb.firestore().collection(name);
+	}
 }
