@@ -1,0 +1,5 @@
+# Backend
+Backend/node_modules/
+Backend/.idea
+firebase-creds.json
+*.env
