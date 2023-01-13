@@ -1,6 +1,7 @@
 # Backend
 Backend/node_modules/
 Backend/.idea
+Backend/dist
 firebase-creds.json
 *.env
 .DS_Store

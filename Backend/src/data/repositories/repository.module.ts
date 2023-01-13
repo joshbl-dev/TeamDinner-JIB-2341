@@ -1,8 +1,9 @@
 import { Module } from "@nestjs/common";
-import { MariaDBRepositoryModule } from "./MariaDB/mariaDBRepository.module";
+import { FirebaseRepositoryModule } from "./Firebase/firebaseRepository.module";
 
 @Module({
-	imports: [MariaDBRepositoryModule],
-	exports: [MariaDBRepositoryModule]
+  imports: [FirebaseRepositoryModule],
+  exports: [FirebaseRepositoryModule],
 })
 export class RepositoryModule {}
+
