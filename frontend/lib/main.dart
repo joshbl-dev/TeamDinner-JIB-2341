@@ -10,11 +10,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: HomePage(),
     );
   }
 }
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -25,7 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: LoginScreen(),
     );
   }
@@ -47,7 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("TeamDinner",
+          const Text(
+            "TeamDinner",
             style: TextStyle(
               color: Colors.black,
               fontSize: 20.0,
@@ -59,8 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 44.0,
-                fontWeight: FontWeight.bold
-            ),
+                fontWeight: FontWeight.bold),
           ),
           const SizedBox(
             height: 44.0,
@@ -76,33 +77,33 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 25.0,
           ),
           const TextField(
-            obscureText:true,
+            obscureText: true,
             decoration: InputDecoration(
               hintText: "User Password",
               prefixIcon: Icon(Icons.lock, color: Colors.black),
             ),
           ),
           const Text(
-              "Don't remember your Password?",
-              style: TextStyle(color: Colors.blue),
+            "Don't remember your Password?",
+            style: TextStyle(color: Colors.blue),
           ),
           const SizedBox(
             height: 80.0,
           ),
-          Container(
+          SizedBox(
             width: double.infinity,
             child: RawMaterialButton(
-                fillColor: Color(0xFF0069FE),
-                elevation: 0.0,
-                padding: EdgeInsets.symmetric(vertical: 20.0),
-                shape: RoundedRectangleBorder(
+              fillColor: const Color(0xFF0069FE),
+              elevation: 0.0,
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0)),
-                onPressed: () {},
-                child: Text("Login",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                    )),
+              onPressed: () {},
+              child: const Text("Login",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                  )),
             ),
           ),
         ],
