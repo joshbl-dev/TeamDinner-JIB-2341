@@ -4,13 +4,14 @@ import {
 	ApiQuery,
 	ApiTags
 } from "@nestjs/swagger";
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
 import { UsersService } from "../../domain/users/users.service";
 import { User } from "../../data/entities/User";
 import { SignupDto } from "./models/requests/signup.dto";
 import { AuthService } from "../../domain/auth/auth.service";
 import { LoginDto } from "./models/requests/login.dto";
 import { JwtDto } from "./models/responses/jwt.dto";
+import { JwtAuthGuard } from "../../domain/auth/guards/jwt.guard";
 
 @ApiBearerAuth("access-token")
 @ApiTags("users")
@@ -21,20 +22,22 @@ export class UsersController {
 		private readonly authService: AuthService
 	) {}
 
+	@UseGuards(JwtAuthGuard)
 	@Get("all")
 	async getAll(): Promise<User[]> {
 		return await this.usersService.getAll();
 	}
 
-	@Post("signup")
-	async signup(@Body() signupDto: SignupDto): Promise<User> {
-		return await this.usersService.signup(signupDto);
-	}
-
+	@UseGuards(JwtAuthGuard)
 	@ApiQuery({ name: "id", required: true })
 	@Get()
 	async get(@Query("id") id: string): Promise<User> {
 		return await this.usersService.get(id);
+	}
+
+	@Post("signup")
+	async signup(@Body() signupDto: SignupDto): Promise<User> {
+		return await this.usersService.signup(signupDto);
 	}
 
 	@Post("login")
