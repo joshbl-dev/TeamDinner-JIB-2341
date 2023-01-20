@@ -1,4 +1,9 @@
-import { Inject, Injectable, Scope } from "@nestjs/common";
+import {
+	Inject,
+	Injectable,
+	Scope,
+	UnauthorizedException
+} from "@nestjs/common";
 import { REQUEST } from "@nestjs/core";
 import { LoginDto } from "../../api/users/models/requests/login.dto";
 import { AccountsRepository } from "../../data/repositories/Firebase/accounts.repository";
@@ -31,6 +36,9 @@ export class AuthService {
 			loginDto.email,
 			loginDto.password
 		);
+		if (!account) {
+			throw new UnauthorizedException();
+		}
 		const payload = { email: account.email, sub: account.id };
 		return {
 			token: this.jwtService.sign(payload)

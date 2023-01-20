@@ -7,7 +7,7 @@ import {
 import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { UsersService } from "../../domain/users/users.service";
 import { User } from "../../data/entities/User";
-import { UserCreateDto } from "./models/requests/userCreate.dto";
+import { SignupDto } from "./models/requests/signup.dto";
 import { AuthService } from "../../domain/auth/auth.service";
 import { LoginDto } from "./models/requests/login.dto";
 import { JwtDto } from "./models/responses/jwt.dto";
@@ -26,9 +26,9 @@ export class UsersController {
 		return await this.usersService.getAll();
 	}
 
-	@Post("create")
-	async create(@Body() userQueryDto: UserCreateDto): Promise<User> {
-		return await this.usersService.create(userQueryDto);
+	@Post("signup")
+	async signup(@Body() signupDto: SignupDto): Promise<User> {
+		return await this.usersService.signup(signupDto);
 	}
 
 	@ApiQuery({ name: "id", required: true })
