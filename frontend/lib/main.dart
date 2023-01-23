@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/users_repository.dart';
 import 'package:frontend/signup.dart';
+
+import 'Types/token.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,6 +44,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  Future<Token>? accessToken;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -67,9 +80,10 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(
             height: 44.0,
           ),
-          const TextField(
+          TextField(
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
+            controller: emailController,
+            decoration: const InputDecoration(
               hintText: "User Email",
               prefixIcon: Icon(Icons.mail, color: Colors.black),
             ),
@@ -77,9 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(
             height: 25.0,
           ),
-          const TextField(
+          TextField(
             obscureText: true,
-            decoration: InputDecoration(
+            controller: passwordController,
+            decoration: const InputDecoration(
               hintText: "User Password",
               prefixIcon: Icon(Icons.lock, color: Colors.black),
             ),
@@ -98,9 +113,11 @@ class _LoginScreenState extends State<LoginScreen> {
               elevation: 0.0,
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0)
-              ),
-              onPressed: () {},
+                  borderRadius: BorderRadius.circular(12.0)),
+              onPressed: () {
+                UsersRepository.login(emailController.value.text,
+                passwordController.value.text);
+              },
               child: const Text("Login",
                   style: TextStyle(
                     color: Colors.white,
@@ -111,11 +128,18 @@ class _LoginScreenState extends State<LoginScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text (
-                  "Don't have an account?"
-              ),
-              TextButton (
-                onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context){return const SignUpPage();},),);},
+              const Text("Don't have an account?"),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const SignUpPage();
+                      },
+                    ),
+                  );
+                },
                 child: const Text(
                   "Sign up",
                   style: TextStyle(
