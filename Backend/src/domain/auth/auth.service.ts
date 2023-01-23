@@ -1,10 +1,4 @@
-import {
-	Inject,
-	Injectable,
-	Scope,
-	UnauthorizedException
-} from "@nestjs/common";
-import { REQUEST } from "@nestjs/core";
+import { Injectable, Scope, UnauthorizedException } from "@nestjs/common";
 import { LoginDto } from "../../api/users/models/requests/login.dto";
 import { AccountsRepository } from "../../data/repositories/Firebase/accounts.repository";
 import { compareHash } from "../../utils/util";
@@ -15,7 +9,7 @@ import { JwtDto } from "../../api/users/models/responses/jwt.dto";
 @Injectable({ scope: Scope.REQUEST })
 export class AuthService {
 	constructor(
-		@Inject(REQUEST) private request: Request,
+		// @Inject(REQUEST) private request: Request,
 		private accountsRepository: AccountsRepository,
 		private jwtService: JwtService
 	) {}
