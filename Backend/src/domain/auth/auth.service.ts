@@ -16,9 +16,11 @@ export class AuthService {
 
 	async validateAuth(email: string, password: string): Promise<Auth> {
 		const auth: Auth = await this.authsRepository.getWithEmail(email);
-		const isPasswordValid = await compareHash(password, auth.password);
-		if (auth && isPasswordValid) {
-			return auth;
+		if (auth) {
+			const isPasswordValid = await compareHash(password, auth.password);
+			if (isPasswordValid) {
+				return auth;
+			}
 		}
 		return null;
 	}
