@@ -10,21 +10,21 @@ import { JwtDto } from "../../api/users/models/responses/jwt.dto";
 export class AuthService {
 	constructor(
 		// @Inject(REQUEST) private request: Request,
-		private accountsRepository: AuthsRepository,
+		private authsRepository: AuthsRepository,
 		private jwtService: JwtService
 	) {}
 
-	async validateAccount(email: string, password: string): Promise<Auth> {
-		const account: Auth = await this.accountsRepository.getWithEmail(email);
-		const isPasswordValid = await compareHash(password, account.password);
-		if (account && isPasswordValid) {
-			return account;
+	async validateAuth(email: string, password: string): Promise<Auth> {
+		const auth: Auth = await this.authsRepository.getWithEmail(email);
+		const isPasswordValid = await compareHash(password, auth.password);
+		if (auth && isPasswordValid) {
+			return auth;
 		}
 		return null;
 	}
 
 	async login(loginDto: LoginDto): Promise<JwtDto> {
-		const account: Auth = await this.validateAccount(
+		const account: Auth = await this.validateAuth(
 			loginDto.email,
 			loginDto.password
 		);
