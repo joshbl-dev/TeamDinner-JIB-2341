@@ -1,26 +1,26 @@
 import { Injectable } from "@nestjs/common";
 import { FirebaseRepository } from "./firebase.repository";
-import { Account } from "../../entities/Account";
+import { Auth } from "../../entities/Auth";
 import { Firebase } from "../../../utils/firebase";
 
 @Injectable()
-export class AccountsRepository extends FirebaseRepository {
+export class AuthsRepository extends FirebaseRepository {
 	constructor(firebase: Firebase) {
-		super(firebase, "accounts");
+		super(firebase, "auths");
 	}
 
-	async createAccount(account: Account): Promise<boolean> {
+	async createAccount(account: Auth): Promise<boolean> {
 		await this.collection.doc(account.id).set(account);
 		return true;
 	}
 
-	async getWithEmail(email: string): Promise<Account> {
+	async getWithEmail(email: string): Promise<Auth> {
 		const snapshot = await this.collection
 			.where("email", "==", email)
 			.get();
 		if (snapshot.empty) {
 			return null;
 		}
-		return snapshot.docs[0].data() as Account;
+		return snapshot.docs[0].data() as Auth;
 	}
 }

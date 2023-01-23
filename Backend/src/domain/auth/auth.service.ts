@@ -1,8 +1,8 @@
 import { Injectable, Scope, UnauthorizedException } from "@nestjs/common";
 import { LoginDto } from "../../api/users/models/requests/login.dto";
-import { AccountsRepository } from "../../data/repositories/Firebase/accounts.repository";
+import { AuthsRepository } from "../../data/repositories/Firebase/auths.repository";
 import { compareHash } from "../../utils/util";
-import { Account } from "../../data/entities/Account";
+import { Auth } from "../../data/entities/Auth";
 import { JwtService } from "@nestjs/jwt";
 import { JwtDto } from "../../api/users/models/responses/jwt.dto";
 
@@ -10,14 +10,12 @@ import { JwtDto } from "../../api/users/models/responses/jwt.dto";
 export class AuthService {
 	constructor(
 		// @Inject(REQUEST) private request: Request,
-		private accountsRepository: AccountsRepository,
+		private accountsRepository: AuthsRepository,
 		private jwtService: JwtService
 	) {}
 
-	async validateAccount(email: string, password: string): Promise<Account> {
-		const account: Account = await this.accountsRepository.getWithEmail(
-			email
-		);
+	async validateAccount(email: string, password: string): Promise<Auth> {
+		const account: Auth = await this.accountsRepository.getWithEmail(email);
 		const isPasswordValid = await compareHash(password, account.password);
 		if (account && isPasswordValid) {
 			return account;
@@ -26,7 +24,7 @@ export class AuthService {
 	}
 
 	async login(loginDto: LoginDto): Promise<JwtDto> {
-		const account: Account = await this.validateAccount(
+		const account: Auth = await this.validateAccount(
 			loginDto.email,
 			loginDto.password
 		);
