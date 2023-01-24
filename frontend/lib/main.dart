@@ -114,9 +114,20 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0)),
-              onPressed: () {
-                UsersRepository.login(emailController.value.text,
-                passwordController.value.text);
+              onPressed: () async {
+                try {
+                  var result = await UsersRepository.login(
+                      emailController.value.text,
+                      passwordController.value.text);
+                  // Todo: Replace with proper error message on fail or screen change on success
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Login success.')));
+                  }
+                } on Exception catch (exception) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Login failed.')));
+                }
               },
               child: const Text("Login",
                   style: TextStyle(

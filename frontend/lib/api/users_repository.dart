@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../Types/token.dart';
 
 class UsersRepository {
-  static const String baseUrl = "https://team-dinner-jib-2341.vercel.app/";
+  static const String baseUrl = "https://team-dinner-jib-2341.vercel.app";
   static final Map<String, String> headers = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
@@ -19,7 +19,7 @@ class UsersRepository {
       },
       body: jsonEncode(<String, String>{'email': email, 'password': password}),
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return Token.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to login.');
