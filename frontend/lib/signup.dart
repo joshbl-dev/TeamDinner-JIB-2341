@@ -1,73 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/main.dart';
+import 'package:frontend/widgets/signup_form.dart';
+
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          AppBar(
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context, MaterialPageRoute(builder: (context){return const LoginScreen();},),);},
-              icon: const Icon(Icons.arrow_back_ios),
-            ),
-          ),
-          const SizedBox(
-            height: 44.0,
-          ),
-          const TextField(
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              hintText: "Email",
-              prefixIcon: Icon(Icons.mail, color: Colors.black),
-            ),
-          ),
-          const SizedBox(
-            height: 25.0,
-          ),
-          const TextField(
-            obscureText: true,
-            decoration: InputDecoration(
-              hintText: "Password",
-              prefixIcon: Icon(Icons.lock, color: Colors.black),
-            ),
-          ),
-          const SizedBox(
-            height: 25.0,
-          ),
-          const TextField(
-            obscureText: true,
-            decoration: InputDecoration(
-              hintText: "Confirm Password",
-              prefixIcon: Icon(Icons.lock, color: Colors.black),
-            ),
-          ),
-          SizedBox(
-            width:double.infinity,
-            child: RawMaterialButton(
-              fillColor: const Color(0xFF0069FE),
-              elevation: 0.0,
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(3.0)
-              ),
-              onPressed: () {},
-              child: const Text("Signup",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                width: double.infinity,
+                child: IconButton(
+                  color: const Color(0xFF0069FE),
+                  onPressed: () {
+                    Navigator.pop(
+                      context,
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
                 ),
               ),
             ),
-          ),
-        ],
+            const Padding(
+              padding: EdgeInsets.only(bottom: 32.0),
+              child: Text(
+                "Register for TeamDinner",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SignupForm(),
+          ],
+        ),
       ),
     );
   }
 }
-
