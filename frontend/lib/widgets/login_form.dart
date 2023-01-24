@@ -85,6 +85,8 @@ class LoginFormState extends State<LoginForm> {
                       var result = await UsersRepository.login(
                           emailController.value.text,
                           passwordController.value.text);
+                      emailController.clear();
+                      passwordController.clear();
                       // Todo: Replace with proper error message on fail or screen change on success
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(

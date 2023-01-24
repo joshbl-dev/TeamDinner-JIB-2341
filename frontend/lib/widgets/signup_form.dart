@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../Types/user.dart';
+import '../api/users_repository.dart';
+
 class SignupForm extends StatefulWidget {
   const SignupForm({super.key});
 
@@ -128,9 +131,29 @@ class SignupFormState extends State<SignupForm> {
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0)),
-              onPressed: () {
+              onPressed: () async {
                 if (formKey.currentState!.validate()) {
                   // Todo: Signup
+                  try {
+                    var result = await UsersRepository.signup(
+                        User(firstNameController.value.text,
+                            lastNameController.value.text),
+                        emailController.value.text,
+                        passwordController.value.text);
+                    firstNameController.clear();
+                    lastNameController.clear();
+                    emailController.clear();
+                    passwordController.clear();
+                    confirmPasswordController.clear();
+                    // Todo: Replace with proper error message on fail or screen change on success
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Register success.')));
+                    }
+                  } on Exception {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Register failed.')));
+                  }
                 }
               },
               child: const Text(
