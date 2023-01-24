@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/api/users_repository.dart';
 import 'package:frontend/signup.dart';
-
-import 'Types/token.dart';
+import 'package:frontend/widgets/login_form.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,16 +42,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  Future<Token>? accessToken;
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -70,72 +58,17 @@ class _LoginScreenState extends State<LoginScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Text(
-            "Login to Your App",
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 44.0,
-                fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 44.0,
-          ),
-          TextField(
-            keyboardType: TextInputType.emailAddress,
-            controller: emailController,
-            decoration: const InputDecoration(
-              hintText: "User Email",
-              prefixIcon: Icon(Icons.mail, color: Colors.black),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 50.0),
+            child: Text(
+              "Login to TeamDinner",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 44.0,
+                  fontWeight: FontWeight.bold),
             ),
           ),
-          const SizedBox(
-            height: 25.0,
-          ),
-          TextField(
-            obscureText: true,
-            controller: passwordController,
-            decoration: const InputDecoration(
-              hintText: "User Password",
-              prefixIcon: Icon(Icons.lock, color: Colors.black),
-            ),
-          ),
-          const Text(
-            "Don't remember your Password?",
-            style: TextStyle(color: Colors.blue),
-          ),
-          const SizedBox(
-            height: 80.0,
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: RawMaterialButton(
-              fillColor: const Color(0xFF0069FE),
-              elevation: 0.0,
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0)),
-              onPressed: () async {
-                try {
-                  var result = await UsersRepository.login(
-                      emailController.value.text,
-                      passwordController.value.text);
-                  // Todo: Replace with proper error message on fail or screen change on success
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Login success.')));
-                  }
-                } on Exception catch (exception) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Login failed.')));
-                }
-              },
-              child: const Text("Login",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                  )),
-            ),
-          ),
+          const LoginForm(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
