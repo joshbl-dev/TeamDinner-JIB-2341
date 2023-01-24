@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../Types/token.dart';
+import '../Types/user.dart';
 
 class UsersRepository {
   static const String baseUrl = "https://team-dinner-jib-2341.vercel.app";
@@ -11,7 +12,7 @@ class UsersRepository {
   };
   static const String repositoryName = "users";
 
-  static Future<Token> login(String email, password) async {
+  static Future<Token> login(String email, String password) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/login"),
       headers: <String, String>{
@@ -21,6 +22,26 @@ class UsersRepository {
     );
     if (response.statusCode == 201) {
       return Token.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to login.');
+    }
+  }
+
+  static Future<User> signup(User user, String email, String password) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/$repositoryName/signup"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'firstName': user.firstName,
+        'lastName': user.lastName,
+        'email': email,
+        'password': password
+      }),
+    );
+    if (response.statusCode == 201) {
+      return User.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to login.');
     }
