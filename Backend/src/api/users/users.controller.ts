@@ -12,6 +12,7 @@ import { AuthService } from "../../domain/auth/auth.service";
 import { LoginDto } from "./models/requests/login.dto";
 import { JwtDto } from "./models/responses/jwt.dto";
 import { JwtAuthGuard } from "../../domain/auth/guards/jwt.guard";
+import { FriendDto } from "./models/requests/friend.dto";
 
 @ApiBearerAuth("access-token")
 @ApiTags("users")
@@ -47,5 +48,17 @@ export class UsersController {
 	})
 	async login(@Body() loginDto: LoginDto): Promise<JwtDto> {
 		return await this.authService.login(loginDto);
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Post("friends/add")
+	async addFriend(@Body() friendDto: FriendDto): Promise<User> {
+		return await this.usersService.addFriend(friendDto);
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Post("friends/remove")
+	async removeFriend(@Body() friendDto: FriendDto): Promise<User> {
+		return await this.usersService.removeFriend(friendDto);
 	}
 }

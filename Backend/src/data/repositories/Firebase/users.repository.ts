@@ -46,6 +46,20 @@ export class UsersRepository extends FirebaseRepository {
 		return this.getUser(user.id);
 	}
 
+	async addFriend(userId: string, friendId: string): Promise<User> {
+		await this.collection.doc(userId).update({
+			friends: firestore.FieldValue.arrayUnion(friendId)
+		});
+		return this.getUser(userId);
+	}
+
+	async removeFriend(userId: string, friendId: string): Promise<User> {
+		await this.collection.doc(userId).update({
+			friends: firestore.FieldValue.arrayRemove(friendId)
+		});
+		return this.getUser(userId);
+	}
+
 	// async addUserToTeam(teamID: string, userID: string) {
 	// 	await this.queryBuilder
 	// 		.where({ id: userID })

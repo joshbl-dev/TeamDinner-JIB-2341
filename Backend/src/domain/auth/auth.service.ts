@@ -1,4 +1,9 @@
-import { Injectable, Scope, UnauthorizedException } from "@nestjs/common";
+import {
+	Injectable,
+	Request,
+	Scope,
+	UnauthorizedException
+} from "@nestjs/common";
 import { LoginDto } from "../../api/users/models/requests/login.dto";
 import { AuthsRepository } from "../../data/repositories/Firebase/auths.repository";
 import { compareHash } from "../../utils/util";
@@ -9,7 +14,6 @@ import { JwtDto } from "../../api/users/models/responses/jwt.dto";
 @Injectable({ scope: Scope.REQUEST })
 export class AuthService {
 	constructor(
-		// @Inject(REQUEST) private request: Request,
 		private authsRepository: AuthsRepository,
 		private jwtService: JwtService
 	) {}
@@ -37,5 +41,10 @@ export class AuthService {
 		return {
 			token: this.jwtService.sign(payload)
 		};
+	}
+
+	async confirmUser(@Request() request): Promise<boolean> {
+		console.log(request.user);
+		return true;
 	}
 }
