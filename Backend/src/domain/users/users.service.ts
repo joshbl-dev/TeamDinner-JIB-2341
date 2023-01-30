@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { User } from "../../data/entities/User";
 import { UsersRepository } from "../../data/repositories/Firebase/users.repository";
-import { uuid } from "../../utils/util";
-import { UserQueryDTO } from "../../api/users/models/requests/userQuery.dto";
+import { hash, uuid } from "../../utils/util";
+import { SignupDto } from "../../api/users/models/requests/signup.dto";
 
 @Injectable()
 export class UsersService {
@@ -16,10 +16,12 @@ export class UsersService {
 		return await this.usersRepository.getUsers();
 	}
 
-	async create(userQueryDTO: UserQueryDTO): Promise<User> {
+	async signup(userQueryDTO: SignupDto): Promise<User> {
+		const hashedPassword = await hash(userQueryDTO.password);
 		return await this.usersRepository.createUser({
 			id: uuid(),
-			...userQueryDTO
+			...userQueryDTO,
+			password: hashedPassword
 		});
 	}
 }
