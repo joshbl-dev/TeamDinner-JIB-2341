@@ -12,7 +12,6 @@ import { JwtService } from "@nestjs/jwt";
 import { JwtDto } from "../../api/users/models/responses/jwt.dto";
 import { REQUEST } from "@nestjs/core";
 import { Request } from "express";
-import { User } from "../../data/entities/User";
 
 @Injectable({ scope: Scope.REQUEST })
 export class AuthService {
@@ -48,13 +47,21 @@ export class AuthService {
 	}
 
 	async userIsInJWT(userId: string): Promise<boolean> {
-		const user: User = this.request.user as User;
-		return userId === user.id;
+		const auth: Auth = this.request.user as Auth;
+		return userId === auth.id;
 	}
 
 	async userIsAdmin(): Promise<boolean> {
-		const user: User = this.request.user as User;
-		const auth: Auth = await this.authsRepository.get(user.id);
+		const auth: Auth = this.request.user as Auth;
 		return auth.isAdmin;
+	}
+
+	async get(id: string): Promise<Auth> {
+		const auth: Auth = await this.authsRepository.get(id);
+		return {
+			id: auth.id,
+			email: auth.email,
+			isAdmin: auth.isAdmin
+		};
 	}
 }

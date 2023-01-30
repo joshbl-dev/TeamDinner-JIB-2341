@@ -4,7 +4,6 @@ import { JwtModule } from "@nestjs/jwt";
 import { Module } from "@nestjs/common";
 import { JwtStrategy } from "./strategies/JwtStrategy";
 import { AuthService } from "./auth.service";
-import { UsersModule } from "../users/users.module";
 import { UtilsModule } from "../../utils/utils.module";
 import { Config } from "../../utils/Config";
 import { APP_GUARD } from "@nestjs/core";
@@ -12,7 +11,6 @@ import { JwtAuthGuard } from "./guards/jwt.guard";
 
 @Module({
 	imports: [
-		UsersModule,
 		RepositoryModule,
 		PassportModule,
 		JwtModule.registerAsync({
