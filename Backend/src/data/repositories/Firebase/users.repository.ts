@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { User } from "../../entities/User";
 import { FirebaseRepository } from "./firebase.repository";
 import { firestore } from "firebase-admin";
-import { AccountsRepository } from "./accounts.repository";
-import { Account } from "../../entities/Account";
+import { AuthsRepository } from "./auths.repository";
+import { Auth } from "../../entities/Auth";
 import { Firebase } from "../../../utils/firebase";
 import QuerySnapshot = firestore.QuerySnapshot;
 import DocumentReference = firestore.DocumentReference;
@@ -13,7 +13,7 @@ import DocumentData = firestore.DocumentData;
 export class UsersRepository extends FirebaseRepository {
 	constructor(
 		firebase: Firebase,
-		private accountsRepository: AccountsRepository
+		private accountsRepository: AuthsRepository
 	) {
 		super(firebase, "users");
 	}
@@ -31,7 +31,7 @@ export class UsersRepository extends FirebaseRepository {
 		return snapshot.docs.map((doc) => doc.data()) as User[];
 	}
 
-	async createUser(user: User & Account): Promise<User> {
+	async createUser(user: User & Auth): Promise<User> {
 		const userDoc: DocumentReference = await this.collection.doc(user.id);
 		await userDoc.set({
 			id: user.id,
