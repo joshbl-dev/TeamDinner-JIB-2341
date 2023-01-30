@@ -47,8 +47,14 @@ export class AuthService {
 		};
 	}
 
-	async userHasPermission(userId: string): Promise<boolean> {
+	async userIsInJWT(userId: string): Promise<boolean> {
 		const user: User = this.request.user as User;
 		return userId === user.id;
+	}
+
+	async userIsAdmin(): Promise<boolean> {
+		const user: User = this.request.user as User;
+		const auth: Auth = await this.authsRepository.get(user.id);
+		return auth.isAdmin;
 	}
 }
