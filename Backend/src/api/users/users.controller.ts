@@ -2,7 +2,7 @@ import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { UsersService } from "../../domain/users/users.service";
 import { User } from "../../data/entities/User";
-import { UserQueryDTO } from "./models/requests/userQuery.dto";
+import { UserCreateDto } from "./models/requests/userCreate.dto";
 
 @ApiBearerAuth("access-token")
 @ApiTags("users")
@@ -16,7 +16,7 @@ export class UsersController {
 	}
 
 	@Post("create")
-	async create(@Body() userQueryDTO: UserQueryDTO): Promise<User> {
+	async create(@Body() userQueryDTO: UserCreateDto): Promise<User> {
 		return await this.usersService.create(userQueryDTO);
 	}
 

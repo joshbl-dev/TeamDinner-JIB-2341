@@ -1,4 +1,7 @@
 export class Team {
-  id: string;
-  teamName: string;
+	id: string;
+	name?: string;
+	description?: string;
+	owner?: string;
+	members?: string[];
 }

@@ -1,5 +1,6 @@
 export class User {
-  id: string;
-  username?: string;
-  teamID?: string;
+	id: string;
+	firstName?: string;
+	lastName?: string;
+	teams?: string[];
 }

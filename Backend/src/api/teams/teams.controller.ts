@@ -6,10 +6,10 @@ import { TeamsService } from "../../domain/teams/teams.service";
 @ApiTags("teams")
 @Controller("teams")
 export class TeamsController {
-  constructor(private readonly teamsService: TeamsService) {}
+	constructor(private readonly teamsService: TeamsService) {}
 
-  // @Post('/create')
-  // async create(@Body() teamDTO: TeamQueryDTO): Promise<Team> {
-  //   return this.teamsService.create(teamDTO);
-  // }
+	// @Post('/create')
+	// async create(@Body() teamDTO: TeamCreateDto): Promise<Team> {
+	//   return this.teamsService.create(teamDTO);
+	// }
 }
