@@ -1,6 +1,9 @@
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { Controller } from "@nestjs/common";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { TeamsService } from "../../domain/teams/teams.service";
+import { Team } from "../../data/entities/Team";
+import { TeamCreateDto } from "./models/requests/teamCreate.dto";
+import { TeamModifyDto } from "./models/requests/TeamModify.dto";
 
 @ApiBearerAuth("access-token")
 @ApiTags("teams")
@@ -8,8 +11,29 @@ import { TeamsService } from "../../domain/teams/teams.service";
 export class TeamsController {
 	constructor(private readonly teamsService: TeamsService) {}
 
-	// @Post('/create')
-	// async create(@Body() teamDTO: TeamCreateDto): Promise<Team> {
-	//   return this.teamsService.create(teamDTO);
-	// }
+	@Post("create")
+	async create(@Body() teamDTO: TeamCreateDto): Promise<Team> {
+		return this.teamsService.create(teamDTO);
+	}
+
+	@Get("all")
+	async getAll(): Promise<Team[]> {
+		return this.teamsService.getAll();
+	}
+
+	@ApiQuery({ name: "id", required: true })
+	@Get()
+	async get(@Query("id") id: string): Promise<Team> {
+		return this.teamsService.get(id);
+	}
+
+	@Post("members/add")
+	async addMember(@Body() teamModifyDto: TeamModifyDto): Promise<Team> {
+		return this.teamsService.addMember(teamModifyDto);
+	}
+
+	@Post("members/remove")
+	async removeMember(@Body() teamModifyDto: TeamModifyDto): Promise<Team> {
+		return this.teamsService.removeMember(teamModifyDto);
+	}
 }
