@@ -48,7 +48,7 @@ export class AuthService {
 
 	async userIsInJWT(userId: string): Promise<boolean> {
 		const auth: Auth = this.request.user as Auth;
-		return userId === auth.id;
+		return userId === auth.id || auth.isAdmin;
 	}
 
 	async userIsAdmin(): Promise<boolean> {
