@@ -98,6 +98,17 @@ export class TeamsService {
 		}
 	}
 
+	async delete(id: string): Promise<boolean> {
+		const team: Team = await this.get(id);
+		if (await this.authService.userIsInJWT(team.owner)) {
+			await this.teamsRepository.deleteTeam(id);
+			return true;
+		}
+		throw new UnauthorizedException(
+			"User is not authorized to delete this team"
+		);
+	}
+
 	private async checkOwner(id: string): Promise<boolean> {
 		return await this.teamsRepository.checkOwner(id);
 	}

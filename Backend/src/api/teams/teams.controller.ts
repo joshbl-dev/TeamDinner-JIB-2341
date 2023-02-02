@@ -1,5 +1,5 @@
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Query } from "@nestjs/common";
 import { TeamsService } from "../../domain/teams/teams.service";
 import { Team } from "../../data/entities/Team";
 import { TeamCreateDto } from "./models/requests/teamCreate.dto";
@@ -35,5 +35,10 @@ export class TeamsController {
 	@Post("members/remove")
 	async removeMember(@Body() teamModifyDto: TeamModifyDto): Promise<Team> {
 		return this.teamsService.removeMember(teamModifyDto);
+	}
+
+	@Delete()
+	async delete(@Query("id") id: string): Promise<boolean> {
+		return this.teamsService.delete(id);
 	}
 }
