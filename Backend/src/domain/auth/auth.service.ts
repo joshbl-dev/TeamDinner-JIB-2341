@@ -1,22 +1,15 @@
-import {
-	Inject,
-	Injectable,
-	Scope,
-	UnauthorizedException
-} from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { LoginDto } from "../../api/users/models/requests/login.dto";
 import { AuthsRepository } from "../../data/repositories/Firebase/auths.repository";
 import { compareHash } from "../../utils/util";
 import { Auth } from "../../data/entities/Auth";
 import { JwtService } from "@nestjs/jwt";
 import { JwtDto } from "../../api/users/models/responses/jwt.dto";
-import { REQUEST } from "@nestjs/core";
-import { Request } from "express";
+import { RequestModel } from "../../requests/request.model";
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class AuthService {
 	constructor(
-		@Inject(REQUEST) private request: Request,
 		private authsRepository: AuthsRepository,
 		private jwtService: JwtService
 	) {}
@@ -47,12 +40,12 @@ export class AuthService {
 	}
 
 	async userIsInJWT(userId: string): Promise<boolean> {
-		const auth: Auth = this.request.user as Auth;
+		const auth: Auth = RequestModel.currentUser.user as Auth;
 		return userId === auth.id || auth.isAdmin;
 	}
 
 	async userIsAdmin(): Promise<boolean> {
-		const auth: Auth = this.request.user as Auth;
+		const auth: Auth = RequestModel.currentUser.user as Auth;
 		return auth.isAdmin;
 	}
 
