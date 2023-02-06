@@ -50,18 +50,29 @@ class _LoginScreenState extends State<LoginScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "TeamDinner",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
+          Container(
+            height: 70,
+            width: 70,
+            padding: const EdgeInsets.only(top: 30),
+            alignment: Alignment.topRight,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/TDlogo.png"),
+                )
             ),
           ),
+          // const Text(
+          //   "TeamDinner",
+          //   style: TextStyle(
+          //     color: Colors.black,
+          //     fontSize: 20.0,
+          //     fontWeight: FontWeight.bold,
+          //   ),
+          // ),
           const Padding(
             padding: EdgeInsets.only(bottom: 50.0),
             child: Text(
-              "Login to TeamDinner",
+              "Login",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 44.0,
