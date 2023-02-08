@@ -1,103 +1,82 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-//TODO connect this page with the login page
-class Nav extends StatefulWidget {
-  const Nav({Key? key}) : super(key: key);
+import 'package:frontend/pages/group.dart';
+import 'package:frontend/pages/messages.dart';
+import 'package:frontend/pages/payment.dart';
+import 'package:frontend/pages/profile.dart';
+import 'package:frontend/pages/search.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<Nav> createState() => _NavState();
+  State<HomePage> createState() => _HomePageState();
 }
-
-class _NavState extends State<Nav> {
-  int _selectedIndex = 0;
-
-  final _pages = [
-    SeacrhPage(),
-    PayScreen(),
-    TeamScreen(),
-    MessageScreen(),
-    PeopleScreen(),
-  ];
-
-  void _changePageTo(int index) {
-    setState(() => _selectedIndex = index);
-  }
-
+int _selectedIndex = 0;
+const List<Widget> _widgetOptions = <Widget>[
+  SearchPage(),
+  PaymentPage(),
+  GroupPage(),
+  MessagesPage(),
+  ProfilePage(),
+];
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex)
       ),
-      floatingActionButton: _selectedIndex == 1
-          ? null
-          : CustomButton(
-        child: SvgPicture.asset('assets/icons/plus.svg'),
-        onTap: () {},
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //go to the create/join team page
+        },
+        child: const Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _selectedIndex == 1
-          ? null
-          : Container(
-        height: 80.0,
-        width: double.infinity,
-        alignment: Alignment.topCenter,
-        padding: const EdgeInsets.only(top: 19.0),
-        decoration: BoxDecoration(
-          color: kWhite,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20.0),
-            topRight: Radius.circular(20.0),
+      bottomNavigationBar: Container(
+        color: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 15.0,
+            vertical: 20,
           ),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 15.0,
-              offset: const Offset(0, 4),
-              color: kBlack.withOpacity(0.15),
-            ),
-          ],
-        ),
-        //TODO Find icons for the search pay teams messages and people screen I just have placeholders
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            GestureDetector(
-              onTap: () => _changePageTo(0),
-              child: SvgPicture.asset(
-                'assets/icons/home.svg',
-                color: _selectedIndex == 0 ? kSelectedTabColor : null,
+          child: GNav(
+            backgroundColor: Colors.black,
+            color: Colors.white,
+            activeColor: Colors.white,
+            tabBackgroundColor: Colors.grey,
+            padding: const EdgeInsets.all(16),
+            gap: 8,
+            tabs: const [
+              GButton(
+                  icon: Icons.search,
+                  text: 'Search',
               ),
-            ),
-            GestureDetector(
-              onTap: () => _changePageTo(1),
-              child: SvgPicture.asset(
-                'assets/icons/message.svg',
-                color: _selectedIndex == 1 ? kSelectedTabColor : null,
+              GButton(
+                  icon: Icons.payment,
+                  text: 'Payment',
               ),
-            ),
-            GestureDetector(
-              onTap: () => _changePageTo(0),
-              child: SvgPicture.asset(
-                'assets/icons/home.svg',
-                color: _selectedIndex == 0 ? kSelectedTabColor : null,
+              GButton(
+                  icon: Icons.group,
+                  text: 'Group',
               ),
-            ),
-            GestureDetector(
-              onTap: () => _changePageTo(2),
-              child: SvgPicture.asset(
-                'assets/icons/favorite_border.svg',
-                color: _selectedIndex == 2 ? kSelectedTabColor : null,
+              GButton(
+                  icon: Icons.message,
+                  text: 'Messages',
               ),
-            ),
-            GestureDetector(
-              onTap: () => _changePageTo(3),
-              child: SvgPicture.asset(
-                'assets/icons/profile.svg',
-                color: _selectedIndex == 3 ? kSelectedTabColor : null,
+              GButton(
+                icon: Icons.person,
+                text: 'Profile',
               ),
-            ),
-          ],
+              //GButton(icon: Icons.people),
+            ],
+            selectedIndex: _selectedIndex,
+            onTabChange: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+          ),
         ),
       ),
     );
