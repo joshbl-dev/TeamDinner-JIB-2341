@@ -14,9 +14,6 @@ import { TeamModifyDto } from "./models/requests/TeamModify.dto";
 @ApiTags("teams")
 @Controller("teams")
 export class TeamsController {
-	as;
-	async;
-
 	constructor(private readonly teamsService: TeamsService) {}
 
 	@ApiOperation({ summary: "Create a new team" })
@@ -33,14 +30,14 @@ export class TeamsController {
 
 	@ApiOperation({ summary: "Get a team by id" })
 	@ApiQuery({ name: "id", required: true })
-	@Get(":id")
+	@Get("")
 	async get(@Query("id") id: string): Promise<Team> {
 		return this.teamsService.get(id);
 	}
 
 	@ApiOperation({ summary: "Get a team by user id" })
 	@ApiQuery({ name: "id", required: true })
-	@Get("/members/:id")
+	@Get("/members/")
 	async getWithUserId(@Query("id") id: string): Promise<Team> {
 		return this.teamsService.getWithUserId(id);
 	}
@@ -88,7 +85,7 @@ export class TeamsController {
 
 	@ApiOperation({ summary: "Get all teams a user is invited to" })
 	@ApiQuery({ name: "id", required: true })
-	@Get("invites/member/:id")
+	@Get("invites/member/")
 	async getInvitesForUser(@Query("id") id: string): Promise<Team[]> {
 		return this.teamsService.getInvitesForUser(id);
 	}

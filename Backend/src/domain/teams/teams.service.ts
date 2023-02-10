@@ -120,6 +120,7 @@ export class TeamsService {
 
 	async inviteMember(teamModifyDto: TeamModifyDto): Promise<Team> {
 		const team: Team = await this.get(teamModifyDto.teamId);
+		console.log(team);
 		if (await this.authService.userIsInJWT(team.owner)) {
 			if (await this.usersService.exists(teamModifyDto.userId)) {
 				if (await this.userOnTeam(teamModifyDto.userId)) {
@@ -163,9 +164,7 @@ export class TeamsService {
 	}
 
 	async getInvitesForUser(id: string): Promise<Team[]> {
-		if (await this.authService.userIsInJWT(id)) {
-			return await this.teamsRepository.getInvitesForUser(id);
-		}
+		return await this.teamsRepository.getInvitesForUser(id);
 	}
 
 	private async checkOwner(id: string): Promise<boolean> {
