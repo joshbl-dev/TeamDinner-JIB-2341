@@ -53,23 +53,27 @@ export class TeamsController {
 	}
 
 	@Post("invites")
-	async inviteMember(teamModifyDto: TeamModifyDto): Promise<Team> {
+	async inviteMember(@Body() teamModifyDto: TeamModifyDto): Promise<Team> {
 		return this.teamsService.inviteMember(teamModifyDto);
 	}
 
 	@Post("invites/accept")
-	async acceptInvitation(teamModifyDto: TeamModifyDto): Promise<Team> {
+	async acceptInvitation(
+		@Body() teamModifyDto: TeamModifyDto
+	): Promise<Team> {
 		return this.teamsService.acceptInvite(teamModifyDto);
 	}
 
 	@Post("invites/reject")
-	async rejectInvitation(teamModifyDto: TeamModifyDto): Promise<Team> {
+	async rejectInvitation(
+		@Body() teamModifyDto: TeamModifyDto
+	): Promise<Team> {
 		return this.teamsService.rejectInvite(teamModifyDto);
 	}
 
 	@ApiQuery({ name: "id", required: true })
 	@Get("invites/member/:id")
-	async getInvitesForUser(id: string): Promise<Team[]> {
+	async getInvitesForUser(@Query("id") id: string): Promise<Team[]> {
 		return this.teamsService.getInvitesForUser(id);
 	}
 }
