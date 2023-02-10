@@ -120,7 +120,6 @@ export class TeamsService {
 
 	async inviteMember(teamModifyDto: TeamModifyDto): Promise<Team> {
 		const team: Team = await this.get(teamModifyDto.teamId);
-		console.log(team);
 		if (await this.authService.userIsInJWT(team.owner)) {
 			if (await this.usersService.exists(teamModifyDto.userId)) {
 				if (await this.userOnTeam(teamModifyDto.userId)) {
@@ -138,24 +137,28 @@ export class TeamsService {
 	}
 
 	async acceptInvite(teamModifyDto: TeamModifyDto): Promise<Team> {
-		const team: Team = await this.get(teamModifyDto.teamId);
-		if (await this.authService.userIsInJWT(teamModifyDto.userId)) {
-			if (await this.userOnTeam(teamModifyDto.userId)) {
-				throw new HttpException(
-					"User is already on a team",
-					HttpStatus.BAD_REQUEST
+		if (await this.exists(teamModifyDto.teamId)) {
+			if (await this.authService.userIsInJWT(teamModifyDto.userId)) {
+				if (await this.userOnTeam(teamModifyDto.userId)) {
+					throw new HttpException(
+						"User is already on a team",
+						HttpStatus.BAD_REQUEST
+					);
+				}
+				return await this.teamsRepository.acceptInvite(
+					teamModifyDto.teamId,
+					teamModifyDto.userId
 				);
 			}
-			return await this.teamsRepository.acceptInvite(
-				teamModifyDto.teamId,
-				teamModifyDto.userId
-			);
 		}
 	}
 
 	async rejectInvite(teamModifyDto: TeamModifyDto): Promise<Team> {
 		const team: Team = await this.get(teamModifyDto.teamId);
-		if (await this.authService.userIsInJWT(teamModifyDto.userId)) {
+		if (
+			(await this.authService.userIsInJWT(teamModifyDto.userId)) ||
+			(await this.authService.userIsInJWT(team.owner))
+		) {
 			return await this.teamsRepository.rejectInvite(
 				teamModifyDto.teamId,
 				teamModifyDto.userId

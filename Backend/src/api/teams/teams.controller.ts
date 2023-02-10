@@ -75,7 +75,9 @@ export class TeamsController {
 		return this.teamsService.acceptInvite(teamModifyDto);
 	}
 
-	@ApiOperation({ summary: "Reject an invitation to a team" })
+	@ApiOperation({
+		summary: "Reject an invitation to a team as owner or invitee"
+	})
 	@Post("invites/reject")
 	async rejectInvitation(
 		@Body() teamModifyDto: TeamModifyDto
