@@ -81,12 +81,35 @@ export class TeamsRepository extends FirebaseRepository {
 		return snapshot.docs.length > 0;
 	}
 
-	//
-	// async deleteTeam(teamID: string): Promise<void> {
-	//   await this.queryBuilder
-	//     .where({
-	//       id: teamID,
-	//     })
-	//     .del();
-	// }
+	async inviteMember(teamId: string, userId: string): Promise<Team> {
+		const docRef: DocumentReference = await this.collection.doc(teamId);
+		await docRef.update({
+			invitations: firestore.FieldValue.arrayUnion(userId)
+		});
+		return await this.getTeam(teamId);
+	}
+
+	async rejectInvite(teamId: string, userId: string): Promise<Team> {
+		const docRef: DocumentReference = await this.collection.doc(teamId);
+		await docRef.update({
+			invitations: firestore.FieldValue.arrayRemove(userId)
+		});
+		return await this.getTeam(teamId);
+	}
+
+	async acceptInvite(teamId: string, userId: string): Promise<Team> {
+		const docRef: DocumentReference = await this.collection.doc(teamId);
+		await docRef.update({
+			invitations: firestore.FieldValue.arrayRemove(userId),
+			members: firestore.FieldValue.arrayUnion(userId)
+		});
+		return await this.getTeam(teamId);
+	}
+
+	async getInvitesForUser(userId: string): Promise<Team[]> {
+		const snapshot: firestore.QuerySnapshot = await this.collection
+			.where("invitations", "array-contains", userId)
+			.get();
+		return snapshot.docs.map((doc) => doc.data()) as Team[];
+	}
 }

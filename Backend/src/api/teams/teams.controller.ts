@@ -9,6 +9,9 @@ import { TeamModifyDto } from "./models/requests/TeamModify.dto";
 @ApiTags("teams")
 @Controller("teams")
 export class TeamsController {
+	as;
+	async;
+
 	constructor(private readonly teamsService: TeamsService) {}
 
 	@Post("create")
@@ -27,9 +30,9 @@ export class TeamsController {
 		return this.teamsService.get(id);
 	}
 
-	@ApiQuery({ name: "userId", required: true })
-	@Get("/members/:userId")
-	async getWithUserId(@Query("userId") id: string): Promise<Team> {
+	@ApiQuery({ name: "id", required: true })
+	@Get("/members/:id")
+	async getWithUserId(@Query("id") id: string): Promise<Team> {
 		return this.teamsService.getWithUserId(id);
 	}
 
@@ -47,5 +50,26 @@ export class TeamsController {
 	@Delete()
 	async delete(@Query("id") id: string): Promise<boolean> {
 		return this.teamsService.delete(id);
+	}
+
+	@Post("invites")
+	async inviteMember(teamModifyDto: TeamModifyDto): Promise<Team> {
+		return this.teamsService.inviteMember(teamModifyDto);
+	}
+
+	@Post("invites/accept")
+	async acceptInvitation(teamModifyDto: TeamModifyDto): Promise<Team> {
+		return this.teamsService.acceptInvite(teamModifyDto);
+	}
+
+	@Post("invites/reject")
+	async rejectInvitation(teamModifyDto: TeamModifyDto): Promise<Team> {
+		return this.teamsService.rejectInvite(teamModifyDto);
+	}
+
+	@ApiQuery({ name: "id", required: true })
+	@Get("invites/member/:id")
+	async getInvitesForUser(id: string): Promise<Team[]> {
+		return this.teamsService.getInvitesForUser(id);
 	}
 }
