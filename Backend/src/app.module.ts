@@ -14,7 +14,7 @@ import { join } from "path";
 		}),
 		ServeStaticModule.forRoot({
 			rootPath: join(__dirname, "..", "swagger-static"),
-			serveRoot: process.env.NODE_ENV === "dev" ? "/" : "/swagger"
+			serveRoot: process.env.NODE_ENV === "dev" ? "/" : "/api"
 		}),
 		UtilsModule,
 		ApiModule,
