@@ -54,6 +54,15 @@ export class TeamsService {
 		}
 	}
 
+	async getWithUserId(id: string): Promise<Team> {
+		const team = await this.teamsRepository.getTeamWithUserId(id);
+		if (team) {
+			return team;
+		} else {
+			throw new HttpException("Team not found", HttpStatus.NOT_FOUND);
+		}
+	}
+
 	async addMember(teamModifyDto: TeamModifyDto): Promise<Team> {
 		const team: Team = await this.get(teamModifyDto.teamId);
 		if (await this.authService.userIsInJWT(team.owner)) {

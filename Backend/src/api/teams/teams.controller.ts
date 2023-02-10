@@ -22,9 +22,15 @@ export class TeamsController {
 	}
 
 	@ApiQuery({ name: "id", required: true })
-	@Get()
+	@Get(":id")
 	async get(@Query("id") id: string): Promise<Team> {
 		return this.teamsService.get(id);
+	}
+
+	@ApiQuery({ name: "userId", required: true })
+	@Get("/members/:userId")
+	async getWithUserId(@Query("userId") id: string): Promise<Team> {
+		return this.teamsService.getWithUserId(id);
 	}
 
 	@Post("members/add")

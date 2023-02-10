@@ -6,6 +6,7 @@ import { firestore } from "firebase-admin";
 import { User } from "../../entities/User";
 import DocumentReference = firestore.DocumentReference;
 import DocumentData = firestore.DocumentData;
+import QuerySnapshot = firestore.QuerySnapshot;
 
 @Injectable()
 export class TeamsRepository extends FirebaseRepository {
@@ -19,6 +20,18 @@ export class TeamsRepository extends FirebaseRepository {
 			.get()
 			.then((doc) => doc.data());
 		return data as User;
+	}
+
+	async getTeamWithUserId(id: string): Promise<Team> {
+		const snapshot: QuerySnapshot = await this.collection
+			.where("members", "array-contains", id)
+			.get();
+
+		if (snapshot.docs.length > 0) {
+			return snapshot.docs[0].data() as Team;
+		} else {
+			return null;
+		}
 	}
 
 	async getTeams(): Promise<Team[]> {
