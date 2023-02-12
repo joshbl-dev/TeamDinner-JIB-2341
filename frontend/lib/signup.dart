@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/creat_team_form.dart';
 import 'package:frontend/widgets/signup_form.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -32,14 +33,14 @@ class SignUpPage extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.only(bottom: 32.0),
               child: Text(
-                "Register for TeamDinner",
+                "New Team",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 32.0,
                     fontWeight: FontWeight.bold),
               ),
             ),
-            const SignupForm(),
+            const CreateTeamForm(),
           ],
         ),
       ),
