@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/createteam.dart';
 import 'package:frontend/pages/group.dart';
 import 'package:frontend/pages/messages.dart';
 import 'package:frontend/pages/payment.dart';
@@ -29,7 +30,14 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //go to the create/join team page
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) {
+                    return const CreateTeamPage();
+                  },
+              ),
+          );
         },
         child: const Icon(Icons.add),
       ),
