@@ -13,7 +13,7 @@ import { join } from "path";
 			isGlobal: true
 		}),
 		ServeStaticModule.forRoot({
-			rootPath: join(__dirname, "..", "swagger-static"),
+			rootPath: join(__dirname, "..", "public"),
 			serveRoot: process.env.NODE_ENV === "dev" ? "/" : "/api"
 		}),
 		UtilsModule,
