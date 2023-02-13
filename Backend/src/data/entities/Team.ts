@@ -4,4 +4,5 @@ export class Team {
 	description?: string;
 	owner?: string;
 	members?: string[];
+	invitations?: string[];
 }
