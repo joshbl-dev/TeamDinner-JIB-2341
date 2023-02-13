@@ -23,4 +23,12 @@ export class AuthsRepository extends FirebaseRepository {
 		}
 		return snapshot.docs[0].data() as Auth;
 	}
+
+	async get(id: string): Promise<Auth> {
+		const snapshot = await this.collection.doc(id).get();
+		if (!snapshot.exists) {
+			return null;
+		}
+		return snapshot.data() as Auth;
+	}
 }
