@@ -10,5 +10,5 @@ class TeamsRepository {
   static final Map<String, String> headers = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
-  static const String repositoryName = "users";
+  static const String repositoryName = "teams";
 }
