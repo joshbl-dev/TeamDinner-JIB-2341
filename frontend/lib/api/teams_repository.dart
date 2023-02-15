@@ -45,4 +45,23 @@ class TeamsRepository {
       throw Exception('Members not found.');
     }
   }
+
+  //members add
+  static Future<User> addMembers(String teamId, String userId) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/$repositoryName/members/add"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'teamId': teamId,
+        'userId': userId
+      }),
+    );
+    if (response.statusCode == 201) {
+      return User.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to login.');
+    }
+  }
 }
