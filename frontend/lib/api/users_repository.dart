@@ -47,6 +47,26 @@ class UsersRepository {
     }
   }
 
+  //teams/create
+  static Future<User> create(User user, String email, String password) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/$repositoryName/teams/create"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        "teamName": "string",
+        "description": "string",
+        "owner": "string"
+      }),
+    );
+    if (response.statusCode == 201) {
+      return User.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to login.');
+    }
+  }
+
   static Future<User> get(Token accessToken, String id) async {
     final response = await http.get(
       Uri.parse("$baseUrl/$repositoryName?id=$id"),
