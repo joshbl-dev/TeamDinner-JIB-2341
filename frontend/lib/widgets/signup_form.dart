@@ -137,7 +137,7 @@ class SignupFormState extends State<SignupForm> {
                   try {
                     var result = await UsersRepository.signup(
                         User(firstNameController.value.text,
-                            lastNameController.value.text),
+                            lastNameController.value.text, null),
                         emailController.value.text,
                         passwordController.value.text);
                     firstNameController.clear();
