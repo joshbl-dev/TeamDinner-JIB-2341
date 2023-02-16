@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.deepPurple[300],
         elevation: 0,
+        centerTitle: true,
         title: const Text('T E A M D I N N E R'),
         actions: [
           IconButton(
