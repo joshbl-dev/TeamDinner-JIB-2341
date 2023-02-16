@@ -25,21 +25,28 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple[300],
+        elevation: 0,
+        title: const Text('T E A M D I N N E R'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const CreateTeamPage();
+                    },
+                  )
+              );
+          },
+              icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex)
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) {
-                    return const CreateTeamPage();
-                  },
-              ),
-          );
-        },
-        child: const Icon(Icons.add),
       ),
       bottomNavigationBar: Container(
         color: Colors.black,
