@@ -14,7 +14,7 @@ class TeamsRepository {
 
   static Future<User> rejectInvites(String teamId, String userId) async {
     final response = await http.post(
-      Uri.parse("$baseUrl/$repositoryName/invites/accept"),
+      Uri.parse("$baseUrl/$repositoryName/invites/reject"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
