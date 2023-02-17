@@ -27,23 +27,19 @@ class UsersRepository {
     }
   }
 
-  static Future<User> signup(User user, String email, String password) async {
-    final response = await http.post(
-      Uri.parse("$baseUrl/$repositoryName/signup"),
+  static Future<User> all(Token accessToken, String id) async {
+    final response = await http.get(
+      Uri.parse("$baseUrl/$repositoryName?id=$id"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${accessToken.token}"
       },
-      body: jsonEncode(<String, String>{
-        'firstName': user.firstName,
-        'lastName': user.lastName,
-        'email': email,
-        'password': password
-      }),
+
     );
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return User.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to login.');
+      throw Exception('Users not found.');
     }
   }
 }
