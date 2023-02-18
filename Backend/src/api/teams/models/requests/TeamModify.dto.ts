@@ -1,11 +1,13 @@
-import { IsString } from "class-validator";
+import { IsOptional, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class TeamModifyDto {
 	@ApiProperty()
 	@IsString()
-	teamId: string;
+	@IsOptional()
+	name?: string;
 	@ApiProperty()
 	@IsString()
-	userId: string;
+	@IsOptional()
+	description?: string;
 }
