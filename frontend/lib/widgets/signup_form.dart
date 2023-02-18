@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../Types/token.dart';
 import '../Types/user.dart';
 import '../api/users_repository.dart';
+import '../homepage.dart';
+import '../util.dart';
 
 class SignupForm extends StatefulWidget {
   const SignupForm({super.key});
@@ -135,20 +139,22 @@ class SignupFormState extends State<SignupForm> {
                 if (formKey.currentState!.validate()) {
                   // Todo: Signup
                   try {
-                    var result = await UsersRepository.signup(
+                    var email = emailController.value.text;
+                    var password = passwordController.value.text;
+                    await UsersRepository.signup(
                         User(firstNameController.value.text,
                             lastNameController.value.text, null),
-                        emailController.value.text,
-                        passwordController.value.text);
-                    firstNameController.clear();
-                    lastNameController.clear();
-                    emailController.clear();
-                    passwordController.clear();
-                    confirmPasswordController.clear();
-                    // Todo: Replace with proper error message on fail or screen change on success
-                    if (mounted) {
+                        email,
+                        password);
+                    clear();
+                    if (await Util.login(email, password) && mounted) {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder:(context) => const HomePage()),
+                              (r) => false);
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Register success.')));
+                          const SnackBar(content: Text('Login failed.')));
                     }
                   } on Exception {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -168,5 +174,13 @@ class SignupFormState extends State<SignupForm> {
         ],
       ),
     );
+  }
+
+  clear() {
+    firstNameController.clear();
+    lastNameController.clear();
+    emailController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
   }
 }

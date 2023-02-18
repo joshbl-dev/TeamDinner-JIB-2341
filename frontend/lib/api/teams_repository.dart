@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import '../Types/token.dart';
 import '../Types/user.dart';
+import '../util.dart';
 
 class TeamsRepository {
   static const String baseUrl = "https://team-dinner-jib-2341.vercel.app";
@@ -12,12 +13,12 @@ class TeamsRepository {
   };
   static const String repositoryName = "teams";
 
-  static Future<User> get(Token accessToken, String id) async {
+  static Future<User> get(String id) async {
     final response = await http.get(
       Uri.parse("$baseUrl/$repositoryName?id=$id"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        "Authorization": "Bearer ${accessToken.token}"
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
 
     );

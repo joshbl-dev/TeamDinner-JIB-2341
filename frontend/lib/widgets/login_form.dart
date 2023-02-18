@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../Types/token.dart';
 import '../api/users_repository.dart';
 import '../homepage.dart';
+import '../util.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -82,25 +83,17 @@ class LoginFormState extends State<LoginForm> {
                     borderRadius: BorderRadius.circular(12.0)),
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    try {
-                      var result = await UsersRepository.login(
-                          emailController.value.text,
-                          passwordController.value.text);
-                      emailController.clear();
-                      passwordController.clear();
-                      // Todo: Replace with proper error message on fail or screen change on success
-                      if (mounted) {
+                      if (await Util.login(emailController.value.text, passwordController.value.text)) {
+                        emailController.clear();
+                        passwordController.clear();
                         Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder:(context) => const HomePage())
+                            MaterialPageRoute(
+                                builder:(context) => const HomePage())
                         );
+                      } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Login success.')));
+                            const SnackBar(content: Text('Login failed.')));
                       }
-                    } on Exception {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Login failed.')));
-                    }
                   }
                 },
                 child: const Text("Login",
