@@ -44,6 +44,12 @@ export class TeamsRepository extends FirebaseRepository {
 		return this.getTeam(team.id);
 	}
 
+	async updateTeam(teamId: string, updates: any): Promise<Team> {
+		const teamDoc: DocumentReference = await this.collection.doc(teamId);
+		await teamDoc.update(updates);
+		return this.getTeam(teamId);
+	}
+
 	async checkOwner(id: string): Promise<boolean> {
 		const snapshot: firestore.QuerySnapshot = await this.collection
 			.where("owner", "==", id)

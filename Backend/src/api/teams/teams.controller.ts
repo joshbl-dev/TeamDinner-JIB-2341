@@ -8,8 +8,9 @@ import { Body, Controller, Delete, Get, Post, Query } from "@nestjs/common";
 import { TeamsService } from "../../domain/teams/teams.service";
 import { Team } from "../../data/entities/Team";
 import { TeamCreateDto } from "./models/requests/TeamCreate.dto";
-import { TeamModifyDto } from "./models/requests/TeamModify.dto";
+import { TeamMemberModifyDto } from "./models/requests/TeamMemberModify.dto";
 import { TeamInviteDto } from "./models/requests/TeamInvite.dto";
+import { TeamModifyDto } from "./models/requests/TeamModify.dto";
 
 @ApiBearerAuth("access-token")
 @ApiTags("teams")
@@ -21,6 +22,12 @@ export class TeamsController {
 	@Post("create")
 	async create(@Body() teamDTO: TeamCreateDto): Promise<Team> {
 		return this.teamsService.create(teamDTO);
+	}
+
+	@ApiOperation({ summary: "Update a team" })
+	@Post("update")
+	async update(@Body() teamDTO: TeamModifyDto): Promise<Team> {
+		return this.teamsService.update(teamDTO);
 	}
 
 	@ApiOperation({ summary: "Get all teams" })
@@ -45,13 +52,15 @@ export class TeamsController {
 
 	@ApiOperation({ summary: "Add a member to a team" })
 	@Post("members/add")
-	async addMember(@Body() teamModifyDto: TeamModifyDto): Promise<Team> {
+	async addMember(@Body() teamModifyDto: TeamMemberModifyDto): Promise<Team> {
 		return this.teamsService.addMember(teamModifyDto);
 	}
 
 	@ApiOperation({ summary: "Remove a member from a team" })
 	@Post("members/remove")
-	async removeMember(@Body() teamModifyDto: TeamModifyDto): Promise<Team> {
+	async removeMember(
+		@Body() teamModifyDto: TeamMemberModifyDto
+	): Promise<Team> {
 		return this.teamsService.removeMember(teamModifyDto);
 	}
 
@@ -71,7 +80,7 @@ export class TeamsController {
 	@ApiOperation({ summary: "Accept an invitation to a team" })
 	@Post("invites/accept")
 	async acceptInvitation(
-		@Body() teamModifyDto: TeamModifyDto
+		@Body() teamModifyDto: TeamMemberModifyDto
 	): Promise<Team> {
 		return this.teamsService.acceptInvite(teamModifyDto);
 	}
@@ -81,7 +90,7 @@ export class TeamsController {
 	})
 	@Post("invites/reject")
 	async rejectInvitation(
-		@Body() teamModifyDto: TeamModifyDto
+		@Body() teamModifyDto: TeamMemberModifyDto
 	): Promise<Team> {
 		return this.teamsService.rejectInvite(teamModifyDto);
 	}

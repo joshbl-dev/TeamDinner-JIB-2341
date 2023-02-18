@@ -8,11 +8,12 @@ import { TeamsRepository } from "../../data/repositories/Firebase/teams.reposito
 import { Team } from "../../data/entities/Team";
 import { TeamCreateDto } from "../../api/teams/models/requests/TeamCreate.dto";
 import { uuid } from "../../utils/util";
-import { TeamModifyDto } from "../../api/teams/models/requests/TeamModify.dto";
+import { TeamMemberModifyDto } from "../../api/teams/models/requests/TeamMemberModify.dto";
 import { UsersService } from "../users/users.service";
 import { AuthService } from "../auth/auth.service";
 import { TeamInviteDto } from "../../api/teams/models/requests/TeamInvite.dto";
 import { User } from "../../data/entities/User";
+import { TeamModifyDto } from "../../api/teams/models/requests/TeamModify.dto";
 
 @Injectable()
 export class TeamsService {
@@ -30,13 +31,30 @@ export class TeamsService {
 				id: uuid(),
 				members: [owner.id],
 				owner: owner.id,
-				name: teamDTO.teamName,
+				name: teamDTO.name,
 				description: teamDTO.description,
 				invitations: []
 			});
 		}
 		throw new HttpException(
 			"User is already owner of a team",
+			HttpStatus.BAD_REQUEST
+		);
+	}
+
+	async update(teamDTO: TeamModifyDto): Promise<Team> {
+		const owner: User = await this.usersService.getWithToken();
+		const team: Team = await this.getWithUserId(owner.id);
+		if (team.owner === owner.id) {
+			for (let teamDTOKey in teamDTO) {
+				if (!teamDTO[teamDTOKey]) {
+					delete teamDTO[teamDTOKey];
+				}
+			}
+			return await this.teamsRepository.updateTeam(team.id, teamDTO);
+		}
+		throw new HttpException(
+			"User is not owner of the team",
 			HttpStatus.BAD_REQUEST
 		);
 	}
@@ -63,7 +81,7 @@ export class TeamsService {
 		}
 	}
 
-	async addMember(teamModifyDto: TeamModifyDto): Promise<Team> {
+	async addMember(teamModifyDto: TeamMemberModifyDto): Promise<Team> {
 		const team: Team = await this.get(teamModifyDto.teamId);
 		if (await this.authService.userIsInJWT(team.owner)) {
 			if (await this.usersService.exists(teamModifyDto.userId)) {
@@ -81,7 +99,7 @@ export class TeamsService {
 		}
 	}
 
-	async removeMember(teamModifyDto: TeamModifyDto): Promise<Team> {
+	async removeMember(teamModifyDto: TeamMemberModifyDto): Promise<Team> {
 		const team: Team = await this.get(teamModifyDto.teamId);
 		if (
 			(await this.authService.userIsInJWT(team.owner)) ||
@@ -138,7 +156,7 @@ export class TeamsService {
 		}
 	}
 
-	async acceptInvite(teamModifyDto: TeamModifyDto): Promise<Team> {
+	async acceptInvite(teamModifyDto: TeamMemberModifyDto): Promise<Team> {
 		if (await this.exists(teamModifyDto.teamId)) {
 			if (await this.authService.userIsInJWT(teamModifyDto.userId)) {
 				if (await this.userOnTeam(teamModifyDto.userId)) {
@@ -155,7 +173,7 @@ export class TeamsService {
 		}
 	}
 
-	async rejectInvite(teamModifyDto: TeamModifyDto): Promise<Team> {
+	async rejectInvite(teamModifyDto: TeamMemberModifyDto): Promise<Team> {
 		const team: Team = await this.get(teamModifyDto.teamId);
 		if (
 			(await this.authService.userIsInJWT(teamModifyDto.userId)) ||

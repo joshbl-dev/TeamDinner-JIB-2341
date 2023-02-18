@@ -4,7 +4,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class TeamCreateDto {
 	@ApiProperty()
 	@IsString()
-	teamName: string;
+	name: string;
 	@ApiProperty()
 	@IsString()
 	description: string;
