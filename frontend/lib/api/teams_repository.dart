@@ -103,4 +103,22 @@ class TeamsRepository {
       throw Exception('Failed to invite user.');
     }
   }
+
+  static Future<User> rejectInvites(String teamId, String userId) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/$repositoryName/invites/reject"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'teamId': teamId,
+        'userId': userId
+      }),
+    );
+    if (response.statusCode == 201) {
+      return User.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to reject invite.');
+    }
+  }
 }
