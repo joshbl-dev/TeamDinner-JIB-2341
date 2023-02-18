@@ -8,7 +8,4 @@ export class TeamCreateDto {
 	@ApiProperty()
 	@IsString()
 	description: string;
-	@ApiProperty()
-	@IsString()
-	owner: string;
 }
