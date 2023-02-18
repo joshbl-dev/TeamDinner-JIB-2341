@@ -48,9 +48,9 @@ class UsersRepository {
     }
   }
 
-  static Future<User> get(String id) async {
+  static Future<User> get(String? id) async {
     final response = await http.get(
-      Uri.parse("$baseUrl/$repositoryName?id=$id"),
+      Uri.parse("$baseUrl/$repositoryName${id != null ? "?id=$id" : ""}"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"

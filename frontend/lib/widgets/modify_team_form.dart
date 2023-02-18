@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/teams_repository.dart';
 
-class NewTeamForm extends StatefulWidget {
-  const NewTeamForm({Key? key}) : super(key: key);
+class ModifyTeamForm extends StatefulWidget {
+  const ModifyTeamForm({Key? key}) : super(key: key);
 
   @override
-  State<NewTeamForm> createState() => _NewTeamFormState();
+  State<ModifyTeamForm> createState() => _ModifyTeamFormState();
 }
 
-class _NewTeamFormState extends State<NewTeamForm> {
+class _ModifyTeamFormState extends State<ModifyTeamForm> {
   final formKey = GlobalKey<FormState>();
   final teamNameController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -41,7 +41,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                "Create a Team",
+                "Modify you team",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 32.0,
@@ -57,12 +57,6 @@ class _NewTeamFormState extends State<NewTeamForm> {
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: TextFormField(
                       controller: teamNameController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter a team name";
-                        }
-                        return null;
-                      },
                       decoration: const InputDecoration(
                         hintText: "Team Name",
                         prefixIcon: Icon(Icons.abc, color: Colors.black),
@@ -73,12 +67,6 @@ class _NewTeamFormState extends State<NewTeamForm> {
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: TextFormField(
                       controller: descriptionController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter a description";
-                        }
-                        return null;
-                      },
                       decoration: const InputDecoration(
                         hintText: "Description",
                         prefixIcon: Icon(Icons.abc, color: Colors.black),
@@ -97,26 +85,65 @@ class _NewTeamFormState extends State<NewTeamForm> {
                           var teamName = teamNameController.value.text;
                           var description = descriptionController.value.text;
                           try {
-                            await TeamsRepository.create(teamName, description);
+                            await TeamsRepository.update(teamName, description);
                             teamNameController.clear();
                             descriptionController.clear();
                             if (mounted) {
-                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Team updated"),
+                                ),
+                              );
                             }
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text("Failed to create team"),
+                                content: Text("Failed to update team"),
                               ),
                             );
                           }
                         }
                       },
                       child: const Text(
-                        "Create",
+                        "Update",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: RawMaterialButton(
+                        fillColor: Colors.red,
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0)),
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            try {
+                              await TeamsRepository.delete(null);
+                              if (mounted) {
+                                Navigator.pop(context);
+                              }
+                            } on Exception {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Failed to delete team"),
+                                ),
+                              );
+                            }
+                          }
+                        },
+                        child: const Text(
+                          "Delete",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),

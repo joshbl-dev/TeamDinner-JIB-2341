@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../Types/token.dart';
+import '../Types/team.dart';
 import '../Types/user.dart';
 import '../util.dart';
 
@@ -20,51 +20,79 @@ class TeamsRepository {
         'Content-Type': 'application/json; charset=UTF-8',
         "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
-
     );
     if (response.statusCode == 200) {
       return User.fromJson(json.decode(response.body));
     } else {
       throw Exception('Team not found.');
-
     }
   }
 
-   
   //create
-  static Future<User> create(String name, String description, String owner) async {
+  static Future<Team> create(String name, String description) async {
     final response = await http.post(
-      Uri.parse("$baseUrl/$repositoryName/signup"),
+      Uri.parse("$baseUrl/$repositoryName/create"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
-      body: jsonEncode(<String, String>{
-        'teamName': name,
-        "description": description,
-        "owner": owner
-      }),
+      body: jsonEncode(
+          <String, String>{'name': name, "description": description}),
     );
     if (response.statusCode == 201) {
-      return User.fromJson(json.decode(response.body));
+      return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to create team.');
     }
   }
 
-  //members
-  static Future<User> members(Token accessToken, String id) async {
-    final response = await http.get(
-      Uri.parse("$baseUrl/$repositoryName?id=$id"),
+  //update
+  static Future<Team> update(String? name, String? description) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/$repositoryName/update"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        "Authorization": "Bearer ${accessToken.token}"
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
+      body: jsonEncode(
+          <String, String?>{'name': name, "description": description}),
+    );
+    if (response.statusCode == 201) {
+      return Team.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to create team.');
+    }
+  }
 
+  //delete
+  static Future<bool> delete(String? id) async {
+    final response = await http.delete(
+        Uri.parse("$baseUrl/$repositoryName${id != null ? "?id=$id" : ""}"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
+        });
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to delete team.');
+    }
+  }
+
+  //members
+  static Future<Team> getMembersTeam(String? id) async {
+    final response = await http.get(
+      Uri.parse(
+          "$baseUrl/$repositoryName/members${id != null ? "?id=$id" : ""}"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
+      },
     );
     if (response.statusCode == 200) {
-      return User.fromJson(json.decode(response.body));
+      return Team.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Members not found.');
+      throw Exception("Member's Team not found.");
     }
   }
 
@@ -75,10 +103,7 @@ class TeamsRepository {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'teamId': teamId,
-        'userId': userId
-      }),
+      body: jsonEncode(<String, String>{'teamId': teamId, 'userId': userId}),
     );
     if (response.statusCode == 201) {
       return User.fromJson(json.decode(response.body));
@@ -93,10 +118,7 @@ class TeamsRepository {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'teamID': teamID,
-        'userID': userID
-      }),
+      body: jsonEncode(<String, String>{'teamID': teamID, 'userID': userID}),
     );
     if (response.statusCode == 201) {
       return User.fromJson(json.decode(response.body));
@@ -112,10 +134,7 @@ class TeamsRepository {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'teamId': teamId,
-        'userId': userId
-      }),
+      body: jsonEncode(<String, String>{'teamId': teamId, 'userId': userId}),
     );
     if (response.statusCode == 201) {
       return User.fromJson(json.decode(response.body));
@@ -130,10 +149,7 @@ class TeamsRepository {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'teamId': teamId,
-        'userId': userId
-      }),
+      body: jsonEncode(<String, String>{'teamId': teamId, 'userId': userId}),
     );
     if (response.statusCode == 201) {
       return User.fromJson(json.decode(response.body));

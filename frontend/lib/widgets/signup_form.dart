@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../Types/token.dart';
 import '../Types/user.dart';
 import '../api/users_repository.dart';
 import '../homepage.dart';
@@ -137,7 +135,6 @@ class SignupFormState extends State<SignupForm> {
                   borderRadius: BorderRadius.circular(12.0)),
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
-                  // Todo: Signup
                   try {
                     var email = emailController.value.text;
                     var password = passwordController.value.text;
@@ -150,8 +147,8 @@ class SignupFormState extends State<SignupForm> {
                     if (await Util.login(email, password) && mounted) {
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                              builder:(context) => const HomePage()),
-                              (r) => false);
+                              builder: (context) => const HomePage()),
+                          (r) => false);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Login failed.')));
