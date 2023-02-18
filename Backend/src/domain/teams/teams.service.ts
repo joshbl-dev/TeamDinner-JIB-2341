@@ -125,8 +125,14 @@ export class TeamsService {
 		}
 	}
 
-	async delete(id: string): Promise<boolean> {
-		const team: Team = await this.get(id);
+	async delete(id?: string): Promise<boolean> {
+		let team: Team;
+		if (!id) {
+			const owner: User = await this.usersService.getWithToken();
+			team = await this.getWithUserId(owner.id);
+		} else {
+			team = await this.get(id);
+		}
 		if (await this.authService.userIsInJWT(team.owner)) {
 			await this.teamsRepository.deleteTeam(id);
 			return true;
