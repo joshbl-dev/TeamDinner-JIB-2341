@@ -11,10 +11,7 @@ import DocumentData = firestore.DocumentData;
 
 @Injectable()
 export class UsersRepository extends FirebaseRepository {
-	constructor(
-		firebase: Firebase,
-		private accountsRepository: AuthsRepository
-	) {
+	constructor(firebase: Firebase, private authsRepository: AuthsRepository) {
 		super(firebase, "users");
 	}
 
@@ -38,17 +35,11 @@ export class UsersRepository extends FirebaseRepository {
 			firstName: user.firstName,
 			lastName: user.lastName
 		});
-		await this.accountsRepository.createAccount({
+		await this.authsRepository.createAccount({
 			id: user.id,
 			email: user.email,
 			password: user.password
 		});
 		return this.getUser(user.id);
 	}
-
-	// async addUserToTeam(teamID: string, userID: string) {
-	// 	await this.queryBuilder
-	// 		.where({ id: userID })
-	// 		.update({ team_id: teamID });
-	// }
 }
