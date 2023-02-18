@@ -65,9 +65,9 @@ export class TeamsController {
 	}
 
 	@ApiOperation({ summary: "Delete a team" })
-	@ApiQuery({ name: "id", required: true })
+	@ApiQuery({ name: "id", required: false })
 	@Delete()
-	async delete(@Query("id") id: string): Promise<boolean> {
+	async delete(@Query("id") id?: string): Promise<boolean> {
 		return this.teamsService.delete(id);
 	}
 
