@@ -3,7 +3,6 @@ import { FirebaseRepository } from "./firebase.repository";
 import { Firebase } from "../../../utils/firebase";
 import { Team } from "../../entities/Team";
 import { firestore } from "firebase-admin";
-import { User } from "../../entities/User";
 import DocumentReference = firestore.DocumentReference;
 import DocumentData = firestore.DocumentData;
 import QuerySnapshot = firestore.QuerySnapshot;
@@ -19,7 +18,7 @@ export class TeamsRepository extends FirebaseRepository {
 			.doc(teamID)
 			.get()
 			.then((doc) => doc.data());
-		return data as User;
+		return data as Team;
 	}
 
 	async getTeamWithUserId(id: string): Promise<Team> {
