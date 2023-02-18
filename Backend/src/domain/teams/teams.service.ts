@@ -29,7 +29,10 @@ export class TeamsService {
 			return await this.teamsRepository.createTeam({
 				id: uuid(),
 				members: [owner.id],
-				...teamDTO
+				owner: owner.id,
+				name: teamDTO.teamName,
+				description: teamDTO.description,
+				invitations: []
 			});
 		}
 		throw new HttpException(
