@@ -12,8 +12,7 @@ class TeamsRepository {
   };
   static const String repositoryName = "teams";
 
-  //all
-  static Future<User> all(Token accessToken, String id) async {
+  static Future<User> get(Token accessToken, String id) async {
     final response = await http.get(
       Uri.parse("$baseUrl/$repositoryName?id=$id"),
       headers: <String, String>{
@@ -26,7 +25,10 @@ class TeamsRepository {
       return User.fromJson(json.decode(response.body));
     } else {
       throw Exception('Team not found.');
-   }
+
+    }
+  }
+
    
   //create
   static Future<User> create(String name, String description, String owner) async {
