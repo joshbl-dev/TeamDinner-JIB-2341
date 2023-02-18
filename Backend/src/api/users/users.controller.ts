@@ -27,9 +27,12 @@ export class UsersController {
 		return await this.usersService.getAll();
 	}
 
-	@ApiQuery({ name: "id", required: true })
+	@ApiQuery({ name: "id", required: false })
 	@Get()
 	async get(@Query("id") id: string): Promise<User> {
+		if (!id) {
+			return await this.usersService.getWithToken();
+		}
 		return await this.usersService.get(id);
 	}
 

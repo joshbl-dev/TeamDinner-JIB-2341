@@ -3,14 +3,14 @@ import { User } from "../../data/entities/User";
 import { UsersRepository } from "../../data/repositories/Firebase/users.repository";
 import { hash, uuid } from "../../utils/util";
 import { SignupDto } from "../../api/users/models/requests/signup.dto";
-import { AuthsRepository } from "../../data/repositories/Firebase/auths.repository";
 import { Auth } from "../../data/entities/Auth";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable()
 export class UsersService {
 	constructor(
 		private usersRepository: UsersRepository,
-		private authRepository: AuthsRepository
+		private authService: AuthService
 	) {}
 
 	async get(id: string): Promise<User> {
@@ -20,6 +20,11 @@ export class UsersService {
 		} else {
 			throw new HttpException("User not found", 404);
 		}
+	}
+
+	async getWithToken(): Promise<User> {
+		const auth: Auth = await this.authService.getAuthFromJWT();
+		return await this.get(auth.id);
 	}
 
 	async getAll(): Promise<User[]> {
@@ -40,7 +45,7 @@ export class UsersService {
 	}
 
 	async getWithEmail(email: string): Promise<User> {
-		const auth: Auth = await this.authRepository.getWithEmail(email);
+		const auth: Auth = await this.authService.getWithEmail(email);
 		if (!auth) {
 			throw new HttpException("User not found", 404);
 		}

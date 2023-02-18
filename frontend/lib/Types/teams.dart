@@ -1,6 +1,6 @@
 import 'package:frontend/Types/user.dart';
 
-class Teams {
+class Team {
   String id;
   String teamName;
   String description;
@@ -8,10 +8,10 @@ class Teams {
   List<User> members;
   List<User> invitations;
 
-  Teams(this.id, this.teamName, this.description, this.owner, this.members, this.invitations);
+  Team(this.id, this.teamName, this.description, this.owner, this.members, this.invitations);
 
-  factory Teams.fromJson(Map<String, dynamic> json) {
-    return Teams(
+  factory Team.fromJson(Map<String, dynamic> json) {
+    return Team(
         json['id'],
         json['teamName'],
         json['description'],

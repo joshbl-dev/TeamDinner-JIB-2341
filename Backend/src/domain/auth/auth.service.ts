@@ -45,6 +45,10 @@ export class AuthService {
 		return userId === auth.id || auth.isAdmin;
 	}
 
+	async getAuthFromJWT(): Promise<Auth> {
+		return RequestModel.currentUser as Auth;
+	}
+
 	async userIsAdmin(): Promise<boolean> {
 		const auth: Auth = RequestModel.currentUser as Auth;
 		return auth.isAdmin;
@@ -52,6 +56,15 @@ export class AuthService {
 
 	async get(id: string): Promise<Auth> {
 		const auth: Auth = await this.authsRepository.get(id);
+		return {
+			id: auth.id,
+			email: auth.email,
+			isAdmin: auth.isAdmin
+		};
+	}
+
+	async getWithEmail(email: string): Promise<Auth> {
+		const auth: Auth = await this.authsRepository.getWithEmail(email);
 		return {
 			id: auth.id,
 			email: auth.email,

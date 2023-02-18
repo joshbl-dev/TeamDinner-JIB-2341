@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/new_team.dart';
+import 'package:frontend/Types/user.dart';
+import 'package:frontend/api/teams_repository.dart';
+
+import '../Types/teams.dart';
+import '../widgets/new_team_form.dart';
 
 class GroupPage extends StatelessWidget {
   const GroupPage({Key? key}) : super(key: key);
@@ -7,27 +11,34 @@ class GroupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple[300],
-        elevation: 0,
-        centerTitle: true,
-        title: const Text('T E A M D I N N E R'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const CreateNewTeamPage();
-                    },
-                  )
+      body: FutureBuilder(
+         future: _getTeam(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var team = snapshot.data as Team;
+              return Center(
+                child: Text(team.teamName)
               );
-            },
-            icon: const Icon(Icons.exit_to_app),
-          ),
-        ],
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+      ),
+      // plus button on bottom right corner of page
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const NewTeamForm()),
+          // );
+        },
+        backgroundColor: Colors.deepPurple[300],
+        child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future<User> _getTeam() async {
+    return await TeamsRepository.get("60f9b0f1e4b0b8b2b8d0b0d1");
   }
 }

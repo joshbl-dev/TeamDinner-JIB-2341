@@ -30,21 +30,6 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         centerTitle: true,
         title: const Text('T E A M D I N N E R'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const CreateTeamPage();
-                    },
-                  )
-              );
-          },
-              icon: const Icon(Icons.add),
-          ),
-        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex)
