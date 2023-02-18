@@ -23,24 +23,19 @@ export class TeamsService {
 	) {}
 
 	async create(teamDTO: TeamCreateDto): Promise<Team> {
-		if (await this.authService.userIsInJWT(teamDTO.owner)) {
-			const isOwner = await this.checkOwner(teamDTO.owner);
-			if (!isOwner) {
-				return await this.teamsRepository.createTeam({
-					id: uuid(),
-					members: [teamDTO.owner],
-					...teamDTO
-				});
-			}
-			throw new HttpException(
-				"User is already owner of a team",
-				HttpStatus.BAD_REQUEST
-			);
-		} else {
-			throw new UnauthorizedException(
-				"User is not authorized to create a team for this user"
-			);
+		const owner: User = await this.usersService.getWithToken();
+		const isOwner = await this.checkOwner(owner.id);
+		if (!isOwner) {
+			return await this.teamsRepository.createTeam({
+				id: uuid(),
+				members: [owner.id],
+				...teamDTO
+			});
 		}
+		throw new HttpException(
+			"User is already owner of a team",
+			HttpStatus.BAD_REQUEST
+		);
 	}
 
 	async getAll(): Promise<Team[]> {
