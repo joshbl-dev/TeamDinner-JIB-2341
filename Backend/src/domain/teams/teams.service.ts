@@ -134,7 +134,7 @@ export class TeamsService {
 			team = await this.get(id);
 		}
 		if (await this.authService.userIsInJWT(team.owner)) {
-			await this.teamsRepository.deleteTeam(id);
+			await this.teamsRepository.deleteTeam(team.id);
 			return true;
 		}
 		throw new UnauthorizedException(
