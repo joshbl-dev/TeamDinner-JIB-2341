@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../Types/token.dart';
 import '../api/users_repository.dart';
+import '../homepage.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -89,6 +90,10 @@ class LoginFormState extends State<LoginForm> {
                       passwordController.clear();
                       // Todo: Replace with proper error message on fail or screen change on success
                       if (mounted) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder:(context) => const HomePage())
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Login success.')));
                       }

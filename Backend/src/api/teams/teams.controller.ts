@@ -7,8 +7,9 @@ import {
 import { Body, Controller, Delete, Get, Post, Query } from "@nestjs/common";
 import { TeamsService } from "../../domain/teams/teams.service";
 import { Team } from "../../data/entities/Team";
-import { TeamCreateDto } from "./models/requests/teamCreate.dto";
+import { TeamCreateDto } from "./models/requests/TeamCreate.dto";
 import { TeamModifyDto } from "./models/requests/TeamModify.dto";
+import { TeamInviteDto } from "./models/requests/TeamInvite.dto";
 
 @ApiBearerAuth("access-token")
 @ApiTags("teams")
@@ -63,8 +64,8 @@ export class TeamsController {
 
 	@ApiOperation({ summary: "Invite a member to a team" })
 	@Post("invites")
-	async inviteMember(@Body() teamModifyDto: TeamModifyDto): Promise<Team> {
-		return this.teamsService.inviteMember(teamModifyDto);
+	async inviteMember(@Body() teamInviteDto: TeamInviteDto): Promise<Team> {
+		return this.teamsService.inviteMember(teamInviteDto);
 	}
 
 	@ApiOperation({ summary: "Accept an invitation to a team" })
