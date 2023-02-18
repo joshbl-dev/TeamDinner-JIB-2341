@@ -96,32 +96,34 @@ class TeamsRepository {
     }
   }
 
-  //members add
-  static Future<User> addMembers(String teamId, String userId) async {
+  //members remove
+  static Future<Team> removeMembers(String teamId, String userId) async {
     final response = await http.post(
-      Uri.parse("$baseUrl/$repositoryName/members/add"),
+      Uri.parse("$baseUrl/$repositoryName/members/remove"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
       body: jsonEncode(<String, String>{'teamId': teamId, 'userId': userId}),
     );
     if (response.statusCode == 201) {
-      return User.fromJson(json.decode(response.body));
+      return Team.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to login.');
+      throw Exception('Failed to remove member.');
     }
   }
 
-  static Future<User> invites(String teamID, String userID) async {
+  static Future<Team> invites(String teamID, String email) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/invites"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
-      body: jsonEncode(<String, String>{'teamID': teamID, 'userID': userID}),
+      body: jsonEncode(<String, String>{'teamId': teamID, 'email': email}),
     );
     if (response.statusCode == 201) {
-      return User.fromJson(json.decode(response.body));
+      return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to invite user.');
     }
@@ -143,16 +145,17 @@ class TeamsRepository {
     }
   }
 
-  static Future<User> rejectInvites(String teamId, String userId) async {
+  static Future<Team> rejectInvites(String teamId, String userId) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/invites/reject"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
       body: jsonEncode(<String, String>{'teamId': teamId, 'userId': userId}),
     );
     if (response.statusCode == 201) {
-      return User.fromJson(json.decode(response.body));
+      return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to reject invite.');
     }

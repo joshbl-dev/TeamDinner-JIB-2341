@@ -2,13 +2,13 @@ import 'package:frontend/Types/user.dart';
 
 class Team {
   String id;
-  String teamName;
+  String name;
   String description;
   dynamic owner;
   List<dynamic> members;
   List<dynamic> invitations;
 
-  Team(this.id, this.teamName, this.description, this.owner, this.members,
+  Team(this.id, this.name, this.description, this.owner, this.members,
       this.invitations);
 
   factory Team.fromJson(Map<String, dynamic> json) {
@@ -32,5 +32,10 @@ class Team {
 
   setInvitations(List<User> invitations) {
     this.invitations = invitations;
+  }
+
+  @override
+  String toString() {
+    return name;
   }
 }

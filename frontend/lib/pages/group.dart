@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/teams_repository.dart';
 import 'package:frontend/api/users_repository.dart';
+import 'package:frontend/widgets/invite_form.dart';
 
 import '../Types/team.dart';
 import '../Types/user.dart';
@@ -34,14 +35,10 @@ class _GroupPageState extends State<GroupPage> {
                   return Center(
                     child: Column(
                       children: [
-                        Text("Team ${team.teamName}"),
+                        Text("Team ${team.name}"),
                         Text("Description: ${team.description}"),
                         Text("Owner: ${team.owner.toString()}"),
                         Text("Members: ${team.members.toString()}"),
-                        Visibility(
-                            visible: isOwner,
-                            child: Text(
-                                "Invitations: ${team.invitations.toString()}")),
                         Visibility(
                             visible: isOwner,
                             child: Ink(
@@ -70,11 +67,17 @@ class _GroupPageState extends State<GroupPage> {
           ],
         ),
         floatingActionButton: Visibility(
-          visible: team.id == "",
+          visible: true,
           child: FloatingActionButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const NewTeamForm();
+                if (isOwner) {
+                  return InviteForm(
+                    team: team,
+                  );
+                } else {
+                  return const NewTeamForm();
+                }
               })).then((value) => resetPage());
             },
             backgroundColor: Colors.deepPurple[300],
@@ -84,10 +87,9 @@ class _GroupPageState extends State<GroupPage> {
   }
 
   Future<Team> _getTeam() async {
-    if (team.id != "" && !reset) {
+    if (!reset) {
       return team;
     }
-    print("here");
     var user = await UsersRepository.get(null);
     var memberTeam = await TeamsRepository.getMembersTeam(user.id);
     memberTeam.setOwner(await UsersRepository.get(memberTeam.owner));
@@ -115,7 +117,6 @@ class _GroupPageState extends State<GroupPage> {
     setState(() {
       reset = true;
     });
-    team.id = "";
     _getTeam();
   }
 }
