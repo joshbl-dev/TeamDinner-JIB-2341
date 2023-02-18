@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
               ),
               GButton(
                   icon: Icons.group,
-                  text: 'Group',
+                  text: 'Team',
               ),
               GButton(
                   icon: Icons.message,
