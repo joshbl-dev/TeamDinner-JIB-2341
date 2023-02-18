@@ -6,11 +6,13 @@ import {
 } from "@nestjs/common";
 import { TeamsRepository } from "../../data/repositories/Firebase/teams.repository";
 import { Team } from "../../data/entities/Team";
-import { TeamCreateDto } from "../../api/teams/models/requests/teamCreate.dto";
+import { TeamCreateDto } from "../../api/teams/models/requests/TeamCreate.dto";
 import { uuid } from "../../utils/util";
 import { TeamModifyDto } from "../../api/teams/models/requests/TeamModify.dto";
 import { UsersService } from "../users/users.service";
 import { AuthService } from "../auth/auth.service";
+import { TeamInviteDto } from "../../api/teams/models/requests/TeamInvite.dto";
+import { User } from "../../data/entities/User";
 
 @Injectable()
 export class TeamsService {
@@ -118,21 +120,23 @@ export class TeamsService {
 		);
 	}
 
-	async inviteMember(teamModifyDto: TeamModifyDto): Promise<Team> {
-		const team: Team = await this.get(teamModifyDto.teamId);
+	async inviteMember(teamInviteDto: TeamInviteDto): Promise<Team> {
+		const team: Team = await this.get(teamInviteDto.teamId);
 		if (await this.authService.userIsInJWT(team.owner)) {
-			if (await this.usersService.exists(teamModifyDto.userId)) {
-				if (await this.userOnTeam(teamModifyDto.userId)) {
-					throw new HttpException(
-						"User is already on a team",
-						HttpStatus.BAD_REQUEST
-					);
-				}
-				return await this.teamsRepository.inviteMember(
-					teamModifyDto.teamId,
-					teamModifyDto.userId
+			const user: User = await this.usersService.getWithEmail(
+				teamInviteDto.email
+			);
+
+			if (await this.userOnTeam(user.id)) {
+				throw new HttpException(
+					"User is already on a team",
+					HttpStatus.BAD_REQUEST
 				);
 			}
+			return await this.teamsRepository.inviteMember(
+				teamInviteDto.teamId,
+				user.id
+			);
 		}
 	}
 
