@@ -192,7 +192,11 @@ export class TeamsService {
 		}
 	}
 
-	async getInvitesForUser(id: string): Promise<Team[]> {
+	async getInvitesForUser(id?: string): Promise<Team[]> {
+		if (!id) {
+			const user: User = await this.usersService.getWithToken();
+			id = user.id;
+		}
 		return await this.teamsRepository.getInvitesForUser(id);
 	}
 

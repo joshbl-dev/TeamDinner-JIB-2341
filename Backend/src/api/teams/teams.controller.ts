@@ -96,9 +96,9 @@ export class TeamsController {
 	}
 
 	@ApiOperation({ summary: "Get all teams a user is invited to" })
-	@ApiQuery({ name: "id", required: true })
+	@ApiQuery({ name: "id", required: false })
 	@Get("invites/member/")
-	async getInvitesForUser(@Query("id") id: string): Promise<Team[]> {
+	async getInvitesForUser(@Query("id") id?: string): Promise<Team[]> {
 		return this.teamsService.getInvitesForUser(id);
 	}
 }
