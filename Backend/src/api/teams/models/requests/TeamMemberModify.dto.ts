@@ -7,5 +7,5 @@ export class TeamMemberModifyDto {
 	teamId: string;
 	@ApiProperty()
 	@IsString()
-	userId: string;
+	userId?: string;
 }

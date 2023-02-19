@@ -101,6 +101,9 @@ export class TeamsService {
 
 	async removeMember(teamModifyDto: TeamMemberModifyDto): Promise<Team> {
 		const team: Team = await this.get(teamModifyDto.teamId);
+		if (!teamModifyDto.userId) {
+			teamModifyDto.userId = (await this.usersService.getWithToken()).id;
+		}
 		if (
 			(await this.authService.userIsInJWT(team.owner)) ||
 			(await this.authService.userIsInJWT(teamModifyDto.userId))
