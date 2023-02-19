@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../Types/token.dart';
+import '../Types/team.dart';
 import '../Types/user.dart';
 import '../util.dart';
 
@@ -20,141 +20,165 @@ class TeamsRepository {
         'Content-Type': 'application/json; charset=UTF-8',
         "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
-
     );
     if (response.statusCode == 200) {
       return User.fromJson(json.decode(response.body));
     } else {
       throw Exception('Team not found.');
-
     }
   }
 
-   
   //create
-  static Future<User> create(String name, String description, String owner) async {
+  static Future<Team> create(String name, String description) async {
     final response = await http.post(
-      Uri.parse("$baseUrl/$repositoryName/signup"),
+      Uri.parse("$baseUrl/$repositoryName/create"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
-      body: jsonEncode(<String, String>{
-        'teamName': name,
-        "description": description,
-        "owner": owner
-      }),
+      body: jsonEncode(
+          <String, String>{'name': name, "description": description}),
     );
     if (response.statusCode == 201) {
-      return User.fromJson(json.decode(response.body));
+      return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to create team.');
     }
   }
 
-  //members
-  static Future<User> members(Token accessToken, String id) async {
-    final response = await http.get(
-      Uri.parse("$baseUrl/$repositoryName?id=$id"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        "Authorization": "Bearer ${accessToken.token}"
-      },
-
-    );
-    if (response.statusCode == 200) {
-      return User.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Members not found.');
-    }
-  }
-
-  //members add
-  static Future<User> addMembers(String teamId, String userId) async {
+  //update
+  static Future<Team> update(String? name, String? description) async {
     final response = await http.post(
-      Uri.parse("$baseUrl/$repositoryName/members/add"),
+      Uri.parse("$baseUrl/$repositoryName/update"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
-      body: jsonEncode(<String, String>{
-        'teamId': teamId,
-        'userId': userId
-      }),
+      body: jsonEncode(
+          <String, String?>{'name': name, "description": description}),
     );
     if (response.statusCode == 201) {
-      return User.fromJson(json.decode(response.body));
+      return Team.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to login.');
+      throw Exception('Failed to create team.');
     }
   }
 
-  static Future<User> invites(String teamID, String userID) async {
+  //delete
+  static Future<bool> delete(String? id) async {
+    final response = await http.delete(
+        Uri.parse("$baseUrl/$repositoryName${id != null ? "?id=$id" : ""}"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
+        });
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to delete team.');
+    }
+  }
+
+  //members
+  static Future<Team> getMembersTeam(String? id) async {
+    final response = await http.get(
+      Uri.parse(
+          "$baseUrl/$repositoryName/members${id != null ? "?id=$id" : ""}"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
+      },
+    );
+    if (response.statusCode == 200) {
+      return Team.fromJson(json.decode(response.body));
+    } else {
+      throw Exception("Member's Team not found.");
+    }
+  }
+
+  //members remove
+  static Future<Team> removeMember(String teamId, String? userId) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/$repositoryName/members/remove"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
+      },
+      body: jsonEncode(<String, String?>{'teamId': teamId, 'userId': userId}),
+    );
+    if (response.statusCode == 201) {
+      return Team.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to remove member.');
+    }
+  }
+
+  static Future<Team> invites(String teamID, String email) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/invites"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
-      body: jsonEncode(<String, String>{
-        'teamID': teamID,
-        'userID': userID
-      }),
+      body: jsonEncode(<String, String>{'teamId': teamID, 'email': email}),
     );
     if (response.statusCode == 201) {
-      return User.fromJson(json.decode(response.body));
+      return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to invite user.');
     }
   }
 
   //invites accept
-  static Future<User> acceptInvites(String teamId, String userId) async {
+  static Future<Team> acceptInvites(String teamId, String userId) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/invites/accept"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
-      body: jsonEncode(<String, String>{
-        'teamId': teamId,
-        'userId': userId
-      }),
+      body: jsonEncode(<String, String>{'teamId': teamId, 'userId': userId}),
     );
     if (response.statusCode == 201) {
-      return User.fromJson(json.decode(response.body));
+      return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to accept invite.');
     }
   }
 
-  static Future<User> rejectInvites(String teamId, String userId) async {
+  static Future<Team> rejectInvites(String teamId, String userId) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/invites/reject"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
-      body: jsonEncode(<String, String>{
-        'teamId': teamId,
-        'userId': userId
-      }),
+      body: jsonEncode(<String, String>{'teamId': teamId, 'userId': userId}),
     );
     if (response.statusCode == 201) {
-      return User.fromJson(json.decode(response.body));
+      return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to reject invite.');
     }
   }
 
-  static Future<User> delete(Token accessToken, String id) async {
-    final response = await http.delete(
-      Uri.parse("$baseUrl/$repositoryName?id=$id"),
+  static Future<List<Team>> getInvitesForUser(String? userId) async {
+    final response = await http.get(
+      Uri.parse("$baseUrl/$repositoryName/invites/member"
+          "${userId != null ? "?id=$userId" : ""}"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        "Authorization": "Bearer ${accessToken.token}"
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
-
     );
     if (response.statusCode == 200) {
-      return User.fromJson(json.decode(response.body));
+      List<Team> teams = [];
+      for (var element in json.decode(response.body)) {
+        teams.add(Team.fromJson(element));
+      }
+      return teams;
     } else {
-      throw Exception('Team not found.');
+      throw Exception('Failed to get invites for User.');
     }
   }
 }

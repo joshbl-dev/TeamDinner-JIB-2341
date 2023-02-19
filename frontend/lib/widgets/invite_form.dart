@@ -5,32 +5,24 @@ import 'package:frontend/api/users_repository.dart';
 import '../Types/team.dart';
 import '../Types/user.dart';
 
-class NewTeamForm extends StatefulWidget {
-  const NewTeamForm({Key? key}) : super(key: key);
+class InviteForm extends StatefulWidget {
+  final Team team;
+
+  const InviteForm({Key? key, required this.team}) : super(key: key);
 
   @override
-  State<NewTeamForm> createState() => _NewTeamFormState();
+  State<InviteForm> createState() => _InviteFormState();
 }
 
-class _NewTeamFormState extends State<NewTeamForm> {
+class _InviteFormState extends State<InviteForm> {
   final formKey = GlobalKey<FormState>();
-  final teamNameController = TextEditingController();
-  final descriptionController = TextEditingController();
-  late List<Team> teams = [];
+  final emailController = TextEditingController();
+  late Team team;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      asyncInit();
-    });
-  }
-
-  asyncInit() async {
-    List<Team> teams = await TeamsRepository.getInvitesForUser(null);
-    setState(() {
-      this.teams = teams;
-    });
+    team = widget.team;
   }
 
   @override
@@ -52,20 +44,18 @@ class _NewTeamFormState extends State<NewTeamForm> {
             ),
             SingleChildScrollView(
               child: Column(
-                children: List.generate(teams.length, (index) {
+                children: List.generate(team.invitations.length, (index) {
                   return Row(
                     children: [
-                      Text(teams[index].toString()),
+                      Text(team.invitations[index].toString()),
                       IconButton(
                         onPressed: () async {
-                          Team team = teams[index];
+                          var user = team.invitations[index];
                           try {
-                            User user = await UsersRepository.get(null);
                             await TeamsRepository.rejectInvites(
                                 team.id, user.id);
                             setState(() {
-                              teams.removeWhere(
-                                  (element) => element.id == team.id);
+                              team.invitations.remove(user);
                             });
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -74,24 +64,6 @@ class _NewTeamFormState extends State<NewTeamForm> {
                           }
                         },
                         icon: const Icon(Icons.delete),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          Team team = teams[index];
-                          try {
-                            User user = await UsersRepository.get(null);
-                            await TeamsRepository.acceptInvites(
-                                team.id, user.id);
-                            if (mounted) {
-                              Navigator.pop(context);
-                            }
-                          } on Exception {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Failed to accept invite.")));
-                          }
-                        },
-                        icon: const Icon(Icons.check),
                       ),
                     ],
                   );
@@ -117,7 +89,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                "Create a Team",
+                "Invite team members",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 32.0,
@@ -132,32 +104,17 @@ class _NewTeamFormState extends State<NewTeamForm> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: TextFormField(
-                      controller: teamNameController,
+                      keyboardType: TextInputType.emailAddress,
+                      controller: emailController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please enter a team name";
+                          return "Please enter an email";
                         }
                         return null;
                       },
                       decoration: const InputDecoration(
-                        hintText: "Team Name",
-                        prefixIcon: Icon(Icons.abc, color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: TextFormField(
-                      controller: descriptionController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter a description";
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        hintText: "Description",
-                        prefixIcon: Icon(Icons.abc, color: Colors.black),
+                        hintText: "Email",
+                        prefixIcon: Icon(Icons.email, color: Colors.black),
                       ),
                     ),
                   ),
@@ -170,26 +127,41 @@ class _NewTeamFormState extends State<NewTeamForm> {
                           borderRadius: BorderRadius.circular(12.0)),
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          var teamName = teamNameController.value.text;
-                          var description = descriptionController.value.text;
+                          var email = emailController.value.text;
                           try {
-                            await TeamsRepository.create(teamName, description);
-                            teamNameController.clear();
-                            descriptionController.clear();
+                            Team team = await TeamsRepository.invites(
+                                this.team.id, email);
+                            emailController.clear();
+
+                            for (var element in this.team.invitations) {
+                              team.invitations.remove(element.id);
+                            }
+                            if (team.invitations.isNotEmpty) {
+                              User newMember = await UsersRepository.get(
+                                  team.invitations[0]);
+                              setState(() {
+                                this.team.invitations.add(newMember);
+                              });
+                            }
                             if (mounted) {
-                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Invite sent"),
+                              ));
                             }
                           } on Exception {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Failed to create team"),
-                              ),
-                            );
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Failed to invite member"),
+                                ),
+                              );
+                            }
                           }
                         }
                       },
                       child: const Text(
-                        "Create",
+                        "Invite",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,

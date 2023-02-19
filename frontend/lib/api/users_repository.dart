@@ -28,15 +28,16 @@ class UsersRepository {
     }
   }
 
-  static Future<User> signup(User user, String email, String password) async {
+  static Future<User> signup(
+      String firstName, String lastName, String email, String password) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/signup"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'firstName': user.firstName,
-        'lastName': user.lastName,
+        'firstName': firstName,
+        'lastName': lastName,
         'email': email,
         'password': password
       }),
@@ -48,9 +49,9 @@ class UsersRepository {
     }
   }
 
-  static Future<User> get(String id) async {
+  static Future<User> get(String? id) async {
     final response = await http.get(
-      Uri.parse("$baseUrl/$repositoryName?id=$id"),
+      Uri.parse("$baseUrl/$repositoryName${id != null ? "?id=$id" : ""}"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
