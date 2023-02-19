@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/teams_repository.dart';
+import 'package:frontend/api/users_repository.dart';
+
+import '../Types/team.dart';
+import '../Types/user.dart';
 
 class NewTeamForm extends StatefulWidget {
   const NewTeamForm({Key? key}) : super(key: key);
@@ -12,6 +16,22 @@ class _NewTeamFormState extends State<NewTeamForm> {
   final formKey = GlobalKey<FormState>();
   final teamNameController = TextEditingController();
   final descriptionController = TextEditingController();
+  late List<Team> teams = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      asyncInit();
+    });
+  }
+
+  asyncInit() async {
+    List<Team> teams = await TeamsRepository.getInvitesForUser(null);
+    setState(() {
+      this.teams = teams;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +42,62 @@ class _NewTeamFormState extends State<NewTeamForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              "Invitations:",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 32.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                children: List.generate(teams.length, (index) {
+                  return Row(
+                    children: [
+                      Text(teams[index].toString()),
+                      IconButton(
+                        onPressed: () async {
+                          Team team = teams[index];
+                          try {
+                            User user = await UsersRepository.get(null);
+                            await TeamsRepository.rejectInvites(
+                                team.id, user.id);
+                            setState(() {
+                              teams.removeWhere(
+                                  (element) => element.id == team.id);
+                            });
+                          } on Exception {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Failed to remove invite.")));
+                          }
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          Team team = teams[index];
+                          try {
+                            User user = await UsersRepository.get(null);
+                            await TeamsRepository.acceptInvites(
+                                team.id, user.id);
+                            if (mounted) {
+                              Navigator.pop(context);
+                            }
+                          } on Exception {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Failed to accept invite.")));
+                          }
+                        },
+                        icon: const Icon(Icons.check),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Container(

@@ -97,14 +97,14 @@ class TeamsRepository {
   }
 
   //members remove
-  static Future<Team> removeMembers(String teamId, String userId) async {
+  static Future<Team> removeMember(String teamId, String? userId) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/members/remove"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
-      body: jsonEncode(<String, String>{'teamId': teamId, 'userId': userId}),
+      body: jsonEncode(<String, String?>{'teamId': teamId, 'userId': userId}),
     );
     if (response.statusCode == 201) {
       return Team.fromJson(json.decode(response.body));
@@ -130,16 +130,17 @@ class TeamsRepository {
   }
 
   //invites accept
-  static Future<User> acceptInvites(String teamId, String userId) async {
+  static Future<Team> acceptInvites(String teamId, String userId) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/invites/accept"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
       body: jsonEncode(<String, String>{'teamId': teamId, 'userId': userId}),
     );
     if (response.statusCode == 201) {
-      return User.fromJson(json.decode(response.body));
+      return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to accept invite.');
     }
@@ -158,6 +159,26 @@ class TeamsRepository {
       return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to reject invite.');
+    }
+  }
+
+  static Future<List<Team>> getInvitesForUser(String? userId) async {
+    final response = await http.get(
+      Uri.parse("$baseUrl/$repositoryName/invites/member"
+          "${userId != null ? "?id=$userId" : ""}"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
+      },
+    );
+    if (response.statusCode == 200) {
+      List<Team> teams = [];
+      for (var element in json.decode(response.body)) {
+        teams.add(Team.fromJson(element));
+      }
+      return teams;
+    } else {
+      throw Exception('Failed to get invites for User.');
     }
   }
 }

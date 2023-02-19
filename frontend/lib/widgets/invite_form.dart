@@ -4,7 +4,6 @@ import 'package:frontend/api/users_repository.dart';
 
 import '../Types/team.dart';
 import '../Types/user.dart';
-import '../util.dart';
 
 class InviteForm extends StatefulWidget {
   final Team team;
@@ -35,9 +34,9 @@ class _InviteFormState extends State<InviteForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Team: ${widget.team.toString()}",
-              style: const TextStyle(
+            const Text(
+              "Invitations:",
+              style: TextStyle(
                 color: Colors.black,
                 fontSize: 32.0,
                 fontWeight: FontWeight.bold,
@@ -45,19 +44,24 @@ class _InviteFormState extends State<InviteForm> {
             ),
             SingleChildScrollView(
               child: Column(
-                children:
-                    List.generate(widget.team.invitations.length, (index) {
+                children: List.generate(team.invitations.length, (index) {
                   return Row(
                     children: [
-                      Text(widget.team.invitations[index].toString()),
+                      Text(team.invitations[index].toString()),
                       IconButton(
                         onPressed: () async {
-                          var user = widget.team.invitations[index];
-                          await TeamsRepository.rejectInvites(
-                              widget.team.id, user.id);
-                          setState(() {
-                            team.invitations.remove(user);
-                          });
+                          var user = team.invitations[index];
+                          try {
+                            await TeamsRepository.rejectInvites(
+                                team.id, user.id);
+                            setState(() {
+                              team.invitations.remove(user);
+                            });
+                          } on Exception {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Failed to remove invite.")));
+                          }
                         },
                         icon: const Icon(Icons.delete),
                       ),
@@ -122,35 +126,37 @@ class _InviteFormState extends State<InviteForm> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0)),
                       onPressed: () async {
-                        print((await Util.getAccessToken())?.token);
                         if (formKey.currentState!.validate()) {
                           var email = emailController.value.text;
                           try {
                             Team team = await TeamsRepository.invites(
                                 this.team.id, email);
                             emailController.clear();
-                            if (mounted) {
-                              for (var element in this.team.invitations) {
-                                team.invitations.remove(element.id);
-                              }
+
+                            for (var element in this.team.invitations) {
+                              team.invitations.remove(element.id);
+                            }
+                            if (team.invitations.isNotEmpty) {
                               User newMember = await UsersRepository.get(
                                   team.invitations[0]);
                               setState(() {
                                 this.team.invitations.add(newMember);
                               });
-                              if (mounted) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  content: Text("Invite sent"),
-                                ));
-                              }
+                            }
+                            if (mounted) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Invite sent"),
+                              ));
                             }
                           } on Exception {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Failed to invite member"),
-                              ),
-                            );
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Failed to invite member"),
+                                ),
+                              );
+                            }
                           }
                         }
                       },

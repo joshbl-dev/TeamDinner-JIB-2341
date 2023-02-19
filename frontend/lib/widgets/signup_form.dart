@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../Types/user.dart';
 import '../api/users_repository.dart';
 import '../homepage.dart';
 import '../util.dart';
@@ -138,11 +137,8 @@ class SignupFormState extends State<SignupForm> {
                   try {
                     var email = emailController.value.text;
                     var password = passwordController.value.text;
-                    await UsersRepository.signup(
-                        User(firstNameController.value.text,
-                            lastNameController.value.text, null),
-                        email,
-                        password);
+                    await UsersRepository.signup(firstNameController.value.text,
+                        lastNameController.value.text, email, password);
                     clear();
                     if (await Util.login(email, password) && mounted) {
                       Navigator.of(context).pushAndRemoveUntil(

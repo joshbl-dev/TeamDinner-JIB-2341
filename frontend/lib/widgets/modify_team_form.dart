@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/teams_repository.dart';
 
+import '../Types/team.dart';
+
 class ModifyTeamForm extends StatefulWidget {
-  const ModifyTeamForm({Key? key}) : super(key: key);
+  final Team team;
+
+  const ModifyTeamForm({Key? key, required this.team}) : super(key: key);
 
   @override
   State<ModifyTeamForm> createState() => _ModifyTeamFormState();
@@ -12,6 +16,13 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
   final formKey = GlobalKey<FormState>();
   final teamNameController = TextEditingController();
   final descriptionController = TextEditingController();
+  late Team team;
+
+  @override
+  void initState() {
+    super.initState();
+    team = widget.team;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +33,45 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              "Members:",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 32.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                children: List.generate(team.members.length, (index) {
+                  if (team.members[index].id == team.owner.id) {
+                    return const SizedBox();
+                  }
+                  return Row(
+                    children: [
+                      Text(team.members[index].toString()),
+                      IconButton(
+                        onPressed: () async {
+                          var user = team.members[index];
+                          try {
+                            await TeamsRepository.removeMember(
+                                team.id, user.id);
+                            setState(() {
+                              team.members.remove(user);
+                            });
+                          } on Exception {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Failed to remove member.")));
+                          }
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Container(

@@ -28,15 +28,16 @@ class UsersRepository {
     }
   }
 
-  static Future<User> signup(User user, String email, String password) async {
+  static Future<User> signup(
+      String firstName, String lastName, String email, String password) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/signup"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'firstName': user.firstName,
-        'lastName': user.lastName,
+        'firstName': firstName,
+        'lastName': lastName,
         'email': email,
         'password': password
       }),
