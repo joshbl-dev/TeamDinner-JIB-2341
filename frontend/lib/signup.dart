@@ -14,10 +14,10 @@ class SignUpPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 60.0),
+              padding: const EdgeInsets.only(top: 20.0),
               child: Container(
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(bottom: 50.0),
+                padding: const EdgeInsets.only(bottom: 30.0),
                 width: double.infinity,
                 child: IconButton(
                   color: const Color(0xFF0069FE),
