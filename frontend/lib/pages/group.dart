@@ -86,10 +86,12 @@ class _GroupPageState extends State<GroupPage> {
         }
         memberTeam.setInvitations(invitations);
       }
-      setState(() {
-        team = memberTeam;
-        reset = false;
-      });
+      if (mounted) {
+        setState(() {
+          team = memberTeam;
+          reset = false;
+        });
+      }
       return memberTeam;
     } on Exception {
       team.description = "You are not in a team";
@@ -151,10 +153,12 @@ class _GroupPageState extends State<GroupPage> {
             onPressed: () async {
               try {
                 await TeamsRepository.removeMember(team.id, null);
-                setState(() {
-                  team = Team("", "", "", "", [], []);
-                  reset = true;
-                });
+                if (mounted) {
+                  setState(() {
+                    team = Team("", "", "", "", [], []);
+                    reset = true;
+                  });
+                }
               } on Exception {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text("Could not leave team"),
@@ -175,9 +179,11 @@ class _GroupPageState extends State<GroupPage> {
   }
 
   resetPage() {
-    setState(() {
-      reset = true;
-    });
+    if (mounted) {
+      setState(() {
+        reset = true;
+      });
+    }
     _getTeam();
   }
 }
