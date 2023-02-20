@@ -1,7 +1,28 @@
 # TeamDinner
-Seamless dinner organization for sports teams
+TeamDinner presents a solution for sports teams coordinating dining efforts during game days.
+The app is a seamless dinner organization for sports teams, integrating similarities of food delivery
+service applications with functionalities to assign parent leaders and splitting payments.
+The app incorporates interfaces for login/signup, team landing page, restaurant searching, polling, 
+and connection to a third-party cost-splitting app.
 
 # Release Notes Section
+
+## v 0.2.0
+### Features
+Backend
+* Added routes to backend api
+* Fixed some broken code
+* Add routes for team entity management
+
+Frontend
+* Fixed and created new UI for login and signup screen
+* Added a new logo for TeamDinner
+* Created UI for team page
+* Added Team Management user functionality
+
+### Bug Fixes
+N/A
+
 
 ## v 0.1.0
 ### Features
