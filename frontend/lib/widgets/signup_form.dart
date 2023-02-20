@@ -38,7 +38,7 @@ class SignupFormState extends State<SignupForm> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
+            padding: const EdgeInsets.only(bottom: 12.0),
             child: TextFormField(
               controller: firstNameController,
               validator: (value) {
@@ -55,7 +55,7 @@ class SignupFormState extends State<SignupForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
+            padding: const EdgeInsets.only(bottom: 12.0),
             child: TextFormField(
               controller: lastNameController,
               validator: (value) {
@@ -72,7 +72,7 @@ class SignupFormState extends State<SignupForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
+            padding: const EdgeInsets.only(bottom: 12.0),
             child: TextFormField(
               controller: emailController,
               validator: (value) {
@@ -89,7 +89,7 @@ class SignupFormState extends State<SignupForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
+            padding: const EdgeInsets.only(bottom: 12.0),
             child: TextFormField(
               controller: passwordController,
               validator: (value) {
@@ -106,7 +106,7 @@ class SignupFormState extends State<SignupForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
+            padding: const EdgeInsets.only(bottom: 12.0),
             child: TextFormField(
               controller: confirmPasswordController,
               validator: (value) {
