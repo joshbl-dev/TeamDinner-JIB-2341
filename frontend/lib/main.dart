@@ -46,65 +46,69 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 70,
-            width: 70,
-            padding: const EdgeInsets.only(top: 30),
-            alignment: Alignment.topRight,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/TDlogo.png"),
-                )
+      child: Center(
+        child: Wrap(
+          alignment: WrapAlignment.start,
+          runAlignment: WrapAlignment.start,
+          crossAxisAlignment: WrapCrossAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: Container(
+                height: 70,
+                padding: const EdgeInsets.only(top: 30),
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                  alignment: Alignment.topLeft,
+                  image: AssetImage("assets/images/TDlogo.png"),
+                )),
+              ),
             ),
-          ),
-          // const Text(
-          //   "TeamDinner",
-          //   style: TextStyle(
-          //     color: Colors.black,
-          //     fontSize: 20.0,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 50.0),
-            child: Text(
-              "Login",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 44.0,
-                  fontWeight: FontWeight.bold),
+            // const Text(
+            //   "TeamDinner",
+            //   style: TextStyle(
+            //     color: Colors.black,
+            //     fontSize: 20.0,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
+            const Padding(
+              padding: EdgeInsets.only(top: 25.0, bottom: 25.0),
+              child: Text(
+                "Login",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 44.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-          const LoginForm(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text("Don't have an account?"),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const SignUpPage();
-                      },
+            const LoginForm(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text("Don't have an account?"),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const SignUpPage();
+                        },
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    "Sign up",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
-                  );
-                },
-                child: const Text(
-                  "Sign up",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
