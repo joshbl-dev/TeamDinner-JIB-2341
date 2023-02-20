@@ -17,7 +17,7 @@ class SignUpPage extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20.0),
               child: Container(
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(bottom: 30.0),
+                padding: const EdgeInsets.only(bottom: 20.0),
                 width: double.infinity,
                 child: IconButton(
                   color: const Color(0xFF0069FE),
@@ -31,7 +31,7 @@ class SignUpPage extends StatelessWidget {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.only(bottom: 32.0),
+              padding: EdgeInsets.only(bottom: 20.0),
               child: Text(
                 "Register for TeamDinner",
                 style: TextStyle(
