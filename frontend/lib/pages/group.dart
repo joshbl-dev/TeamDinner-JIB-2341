@@ -106,19 +106,16 @@ class _GroupPageState extends State<GroupPage> {
       Text("Members: ${team.members.toString()}"),
       Visibility(
           visible: isOwner,
-          child: Ink(
-            decoration: const ShapeDecoration(
-              color: Colors.deepPurple,
-              shape: CircleBorder(),
-            ),
-            child: IconButton(
+            child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return ModifyTeamForm(team: team);
                   })).then((value) => {resetPage()});
                 },
-                color: Colors.white,
-                icon: const Icon(Icons.edit)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue, side: BorderSide.none, shape: const StadiumBorder()
+                ),
+                child: const Text('Edit Team', style: TextStyle(color: Colors.black)),
           )),
       Visibility(
         visible: !isOwner && team.id != "",

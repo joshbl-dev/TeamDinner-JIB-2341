@@ -44,6 +44,12 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
+    android {
+        compileSdkVersion 33
+        defaultConfig {
+            minSdkVersion 18
+        }
+    }
 
     buildTypes {
         release {
