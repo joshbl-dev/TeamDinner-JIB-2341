@@ -33,6 +33,8 @@ class _GroupPageState extends State<GroupPage> {
                 if (snapshot.hasData) {
                   return Center(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: getTeamInfo(),
                     ),
                   );
@@ -97,25 +99,49 @@ class _GroupPageState extends State<GroupPage> {
 
   getTeamInfo() {
     if (team.name == "") {
-      return [const Text("You are not in a team")];
+      return [
+        const Text("You are not in a team",
+            style: TextStyle(fontSize: 30, color: Colors.black))
+      ];
     }
     return [
-      Text("Team: ${team.name}"),
-      Text("Description: ${team.description}"),
-      Text("Owner: ${team.owner.toString()}"),
-      Text("Members: ${team.members.toString()}"),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text("Team: ${team.name}",
+            style: const TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.black)),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text("Description: ${team.description}",
+            style: const TextStyle(fontSize: 20, color: Colors.black)),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text("Owner: ${team.owner.toString()}",
+            style: const TextStyle(fontSize: 20, color: Colors.black)),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text("Members: ${team.members.toString()}",
+            style: const TextStyle(fontSize: 20, color: Colors.black)),
+      ),
       Visibility(
           visible: isOwner,
-            child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ModifyTeamForm(team: team);
-                  })).then((value) => {resetPage()});
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, side: BorderSide.none, shape: const StadiumBorder()
-                ),
-                child: const Text('Edit Team', style: TextStyle(color: Colors.black)),
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ModifyTeamForm(team: team);
+              })).then((value) => {resetPage()});
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                side: BorderSide.none,
+                shape: const StadiumBorder()),
+            child:
+                const Text('Edit Team', style: TextStyle(color: Colors.black)),
           )),
       Visibility(
         visible: !isOwner && team.id != "",
