@@ -21,11 +21,12 @@ export class TeamsService {
 		private teamsRepository: TeamsRepository,
 		private usersService: UsersService,
 		private authService: AuthService
-	) {}
+	) {
+	}
 
 	async create(teamDTO: TeamCreateDto): Promise<Team> {
 		const owner: User = await this.usersService.getWithToken();
-		const isOwner = await this.checkOwner(owner.id);
+		const isOwner = await this.isOwner(owner.id);
 		if (!isOwner) {
 			return await this.teamsRepository.createTeam({
 				id: uuid(),
@@ -108,7 +109,7 @@ export class TeamsService {
 			(await this.authService.userIsInJWT(team.owner)) ||
 			(await this.authService.userIsInJWT(teamModifyDto.userId))
 		) {
-			if (await this.checkOwner(teamModifyDto.userId)) {
+			if (await this.isOwner(teamModifyDto.userId)) {
 				throw new HttpException(
 					"User is owner of a team",
 					HttpStatus.BAD_REQUEST
@@ -203,8 +204,14 @@ export class TeamsService {
 		return await this.teamsRepository.getInvitesForUser(id);
 	}
 
-	private async checkOwner(id: string): Promise<boolean> {
-		return await this.teamsRepository.checkOwner(id);
+	public async isOwner(userId: string): Promise<boolean> {
+		return await this.teamsRepository.checkOwner(userId);
+	}
+
+	public async userIsOwnerOfTeam(id: string, userId: string): Promise<boolean> {
+		const team: Team = await this.get(id);
+		return team.owner === userId;
+
 	}
 
 	private async userOnTeam(id: string): Promise<boolean> {
