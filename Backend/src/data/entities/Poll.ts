@@ -10,6 +10,7 @@ export class Poll {
 	isMultichoice: boolean;
 	options: Poll_Option[];
 	votes: Vote[];
+	stage: PollStage;
 
 	static fromDto(dto: PollCreateDto, teamId: string): Poll {
 		const options: Poll_Option[] = [];
@@ -25,7 +26,14 @@ export class Poll {
 			description: dto.description,
 			isMultichoice: dto.isMultichoice,
 			options: options,
-			votes: []
+			votes: [],
+			stage: PollStage.NOT_STARTED
 		};
 	}
+}
+
+export enum PollStage {
+	NOT_STARTED = "NOT_STARTED",
+	IN_PROGRESS = "IN_PROGRESS",
+	FINISHED = "FINISHED"
 }

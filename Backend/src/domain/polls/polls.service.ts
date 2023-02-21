@@ -28,4 +28,15 @@ export class PollsService {
 			HttpStatus.FORBIDDEN
 		);
 	}
+
+	async get(id?: string): Promise<Poll> {
+		if (!id) {
+			id = (await this.teamsService.get(id)).id;
+		}
+		const poll = await this.pollsRepository.get(id);
+		if (poll) {
+			return poll;
+		}
+		throw new HttpException("Poll not found", HttpStatus.NOT_FOUND);
+	}
 }

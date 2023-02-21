@@ -21,8 +21,7 @@ export class TeamsService {
 		private teamsRepository: TeamsRepository,
 		private usersService: UsersService,
 		private authService: AuthService
-	) {
-	}
+	) {}
 
 	async create(teamDTO: TeamCreateDto): Promise<Team> {
 		const owner: User = await this.usersService.getWithToken();
@@ -64,7 +63,10 @@ export class TeamsService {
 		return await this.teamsRepository.getTeams();
 	}
 
-	async get(id: string): Promise<Team> {
+	async get(id?: string): Promise<Team> {
+		if (!id) {
+			return this.getWithUserId(null);
+		}
 		const team = await this.teamsRepository.getTeam(id);
 		if (team) {
 			return team;
@@ -73,7 +75,11 @@ export class TeamsService {
 		}
 	}
 
-	async getWithUserId(id: string): Promise<Team> {
+	async getWithUserId(id?: string): Promise<Team> {
+		if (!id) {
+			const user: User = await this.usersService.getWithToken();
+			id = user.id;
+		}
 		const team = await this.teamsRepository.getTeamWithUserId(id);
 		if (team) {
 			return team;
@@ -208,10 +214,12 @@ export class TeamsService {
 		return await this.teamsRepository.checkOwner(userId);
 	}
 
-	public async userIsOwnerOfTeam(id: string, userId: string): Promise<boolean> {
+	public async userIsOwnerOfTeam(
+		id: string,
+		userId: string
+	): Promise<boolean> {
 		const team: Team = await this.get(id);
 		return team.owner === userId;
-
 	}
 
 	private async userOnTeam(id: string): Promise<boolean> {
