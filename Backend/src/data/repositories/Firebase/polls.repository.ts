@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { FirebaseRepository } from "./firebase.repository";
 import { Firebase } from "../../../utils/firebase";
-import { Poll } from "../../entities/Poll";
+import { Poll, PollStage } from "../../entities/Poll";
 
 @Injectable()
 export class PollsRepository extends FirebaseRepository {
@@ -10,7 +10,8 @@ export class PollsRepository extends FirebaseRepository {
 	}
 
 	async createPoll(poll: Poll): Promise<Poll> {
-		const doc = await this.collection.add(poll);
+		const doc = await this.collection.doc(poll.id);
+		await doc.set(poll);
 		return await this.get(doc.id);
 	}
 
@@ -20,5 +21,10 @@ export class PollsRepository extends FirebaseRepository {
 			.get()
 			.then((doc) => doc.data());
 		return data as Poll;
+	}
+
+	async setStage(id: string, stage: PollStage): Promise<Poll> {
+		await this.collection.doc(id).update({ stage: stage });
+		return await this.get(id);
 	}
 }

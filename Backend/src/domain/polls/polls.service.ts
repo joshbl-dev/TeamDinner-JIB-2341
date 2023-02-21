@@ -6,6 +6,7 @@ import { TeamsService } from "../teams/teams.service";
 import { Poll } from "../../data/entities/Poll";
 import { PollCreateDto } from "../../api/polls/models/requests/PollCreate.dto";
 import { User } from "../../data/entities/User";
+import { PollStageDto } from "../../api/polls/models/requests/PollStage.dto";
 
 @Injectable()
 export class PollsService {
@@ -17,9 +18,8 @@ export class PollsService {
 	) {}
 
 	async createPoll(pollCreateDto: PollCreateDto): Promise<Poll> {
-		const user: User = await this.usersService.getWithToken();
-		const team = await this.teamsService.getWithUserId(user.id);
-		if (await this.teamsService.isOwner(user.id)) {
+		const team = await this.teamsService.get();
+		if (await this.isOwner()) {
 			const poll = Poll.fromDto(pollCreateDto, team.id);
 			return await this.pollsRepository.createPoll(poll);
 		}
@@ -38,5 +38,24 @@ export class PollsService {
 			return poll;
 		}
 		throw new HttpException("Poll not found", HttpStatus.NOT_FOUND);
+	}
+
+	async setStage(pollStageDto: PollStageDto): Promise<Poll> {
+		const poll = await this.get(pollStageDto.pollId);
+		if (await this.isOwner()) {
+			return await this.pollsRepository.setStage(
+				poll.id,
+				pollStageDto.stage
+			);
+		}
+		throw new HttpException(
+			"Only the owner of the team can set the stage",
+			HttpStatus.FORBIDDEN
+		);
+	}
+
+	async isOwner(): Promise<boolean> {
+		const user: User = await this.usersService.getWithToken();
+		return await this.teamsService.isOwner(user.id);
 	}
 }

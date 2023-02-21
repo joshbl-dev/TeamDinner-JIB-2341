@@ -8,6 +8,7 @@ import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { PollsService } from "../../domain/polls/polls.service";
 import { Poll } from "../../data/entities/Poll";
 import { PollCreateDto } from "./models/requests/PollCreate.dto";
+import { PollStageDto } from "./models/requests/PollStage.dto";
 
 @ApiBearerAuth("access-token")
 @ApiTags("polls")
@@ -26,5 +27,11 @@ export class PollsController {
 	@Get("")
 	async getPoll(@Query("id") id?: string): Promise<Poll> {
 		return await this.pollsService.get(id);
+	}
+
+	@ApiOperation({ summary: "Set the current poll stage" })
+	@Post("stage")
+	async setPollStage(@Body() pollStageDto: PollStageDto): Promise<Poll> {
+		return await this.pollsService.setStage(pollStageDto);
 	}
 }
