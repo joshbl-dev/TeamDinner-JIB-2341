@@ -14,6 +14,8 @@ Backend
 * Fixed some broken code
 * Add routes for team entity management
 
+Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.1
+
 Frontend
 * Fixed and created new UI for login and signup screen
 * Added a new logo for TeamDinner
@@ -34,6 +36,8 @@ Backend
 * Create user routes for registration
 * Create API deployment for frontend
 * Create user routes for adding friends 
+
+Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.1
 
 Frontend
 The frontend deliverables started off with setting up the Flutter app and then connecting the backend
