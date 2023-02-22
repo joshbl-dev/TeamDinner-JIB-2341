@@ -3,10 +3,12 @@ import { UsersService } from "../users/users.service";
 import { AuthService } from "../auth/auth.service";
 import { PollsRepository } from "../../data/repositories/Firebase/polls.repository";
 import { TeamsService } from "../teams/teams.service";
-import { Poll } from "../../data/entities/Poll";
+import { Poll, PollStage } from "../../data/entities/Poll";
 import { PollCreateDto } from "../../api/polls/models/requests/PollCreate.dto";
 import { User } from "../../data/entities/User";
 import { PollStageDto } from "../../api/polls/models/requests/PollStage.dto";
+import { VoteDto } from "../../api/polls/models/requests/Vote.dto";
+import { Vote } from "../../data/entities/Vote";
 
 @Injectable()
 export class PollsService {
@@ -54,8 +56,79 @@ export class PollsService {
 		);
 	}
 
+	async vote(voteDto: VoteDto): Promise<Poll> {
+		const user: User = await this.usersService.get(voteDto.userId);
+		voteDto.userId = user.id;
+		const poll = await this.get(voteDto.pollId);
+		if (await this.isInProgress(poll)) {
+			if (this.optionsAreInPoll(poll, voteDto.optionIds)) {
+				if (await this.isMember(poll.id, voteDto.userId)) {
+					if (await this.hasVoted(poll, voteDto.userId)) {
+						const currentVote = poll.votes.find(
+							(v) => v.userId == voteDto.userId
+						);
+						await this.pollsRepository.removeVote(
+							poll.id,
+							currentVote
+						);
+					}
+					return await this.pollsRepository.vote(
+						poll.id,
+						Vote.fromDto(voteDto)
+					);
+				}
+				throw new HttpException(
+					"You are not a member of this team",
+					HttpStatus.FORBIDDEN
+				);
+			}
+			throw new HttpException(
+				"All options must be part of poll options",
+				HttpStatus.FORBIDDEN
+			);
+		}
+		throw new HttpException(
+			"The poll is not in progress",
+			HttpStatus.FORBIDDEN
+		);
+	}
+
+	optionsAreInPoll(poll: Poll, optionIds: string[]): boolean {
+		if (!poll.isMultichoice && optionIds.length > 1) {
+			throw new HttpException(
+				"Poll is not multichoice, only one option can be selected",
+				HttpStatus.FORBIDDEN
+			);
+		}
+		return optionIds.every((optionId) =>
+			poll.options.some((option) => option.id == optionId)
+		);
+	}
+
+	async isInProgress(poll: Poll): Promise<boolean> {
+		if (poll.time.getTime() > Date.now()) {
+			await this.pollsRepository.setStage(poll.id, PollStage.FINISHED);
+			throw new HttpException(
+				"The poll has expired",
+				HttpStatus.FORBIDDEN
+			);
+		}
+		return poll.stage == PollStage.IN_PROGRESS;
+	}
+
+	async hasVoted(poll: Poll, userId: string): Promise<boolean> {
+		return poll.votes.some((vote) => vote.userId == userId);
+	}
+
 	async isOwner(): Promise<boolean> {
 		const user: User = await this.usersService.getWithToken();
 		return await this.teamsService.isOwner(user.id);
+	}
+
+	async isMember(id: string, userId?: string): Promise<boolean> {
+		if (!userId) {
+			userId = (await this.usersService.get()).id;
+		}
+		return await this.teamsService.userIsMemberOfTeam(id, userId);
 	}
 }

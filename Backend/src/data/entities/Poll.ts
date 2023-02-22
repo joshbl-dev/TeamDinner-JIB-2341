@@ -7,6 +7,8 @@ export class Poll {
 	id: string; // matches team ID
 	topic: string;
 	description: string;
+	time: Date;
+	location: string;
 	isMultichoice: boolean;
 	options: Poll_Option[];
 	votes: Vote[];
@@ -24,6 +26,8 @@ export class Poll {
 			id: teamId,
 			topic: dto.topic,
 			description: dto.description,
+			time: dto.time,
+			location: dto.location,
 			isMultichoice: dto.isMultichoice,
 			options: options,
 			votes: [],

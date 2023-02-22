@@ -1,4 +1,4 @@
-import { IsBoolean, IsString } from "class-validator";
+import { IsBoolean, IsDate, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class PollCreateDto {
@@ -8,6 +8,12 @@ export class PollCreateDto {
 	@ApiProperty()
 	@IsString()
 	description: string;
+	@ApiProperty()
+	@IsDate()
+	time: Date;
+	@ApiProperty()
+	@IsString()
+	location: string;
 	@ApiProperty()
 	@IsBoolean()
 	isMultichoice: boolean;
