@@ -2,6 +2,7 @@ import {
 	ApiBearerAuth,
 	ApiOperation,
 	ApiQuery,
+	ApiResponse,
 	ApiTags
 } from "@nestjs/swagger";
 import { Body, Controller, Get, Post, Query } from "@nestjs/common";
@@ -10,6 +11,7 @@ import { Poll } from "../../data/entities/Poll";
 import { PollCreateDto } from "./models/requests/PollCreate.dto";
 import { PollStageDto } from "./models/requests/PollStage.dto";
 import { VoteDto } from "./models/requests/Vote.dto";
+import { PollResultsDto } from "./models/responses/PollResults.dto";
 
 @ApiBearerAuth("access-token")
 @ApiTags("polls")
@@ -40,5 +42,13 @@ export class PollsController {
 	@Post("vote")
 	async vote(@Body() voteDto: VoteDto): Promise<Poll> {
 		return await this.pollsService.vote(voteDto);
+	}
+
+	@ApiOperation({ summary: "Get the results of a poll" })
+	@ApiQuery({ name: "id", required: false })
+	@ApiResponse({ status: 200, type: PollResultsDto })
+	@Get("results")
+	async getResults(@Query("id") id?: string): Promise<PollResultsDto> {
+		return await this.pollsService.getResults(id);
 	}
 }

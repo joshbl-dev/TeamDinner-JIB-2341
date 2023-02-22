@@ -33,14 +33,14 @@ export class PollsRepository extends FirebaseRepository {
 	async vote(id: string, vote: Vote): Promise<Poll> {
 		await this.collection
 			.doc(id)
-			.update({ vote: firestore.FieldValue.arrayUnion(vote) });
+			.update({ votes: firestore.FieldValue.arrayUnion(vote) });
 		return await this.get(id);
 	}
 
 	async removeVote(id: string, vote: Vote): Promise<Poll> {
 		await this.collection
 			.doc(id)
-			.update({ vote: firestore.FieldValue.arrayRemove(vote) });
+			.update({ votes: firestore.FieldValue.arrayRemove(vote) });
 		return await this.get(id);
 	}
 }

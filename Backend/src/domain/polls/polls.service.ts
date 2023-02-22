@@ -9,6 +9,7 @@ import { User } from "../../data/entities/User";
 import { PollStageDto } from "../../api/polls/models/requests/PollStage.dto";
 import { VoteDto } from "../../api/polls/models/requests/Vote.dto";
 import { Vote } from "../../data/entities/Vote";
+import { PollResultsDto } from "../../api/polls/models/responses/PollResults.dto";
 
 @Injectable()
 export class PollsService {
@@ -40,6 +41,11 @@ export class PollsService {
 			return poll;
 		}
 		throw new HttpException("Poll not found", HttpStatus.NOT_FOUND);
+	}
+
+	async getResults(id?: string): Promise<PollResultsDto> {
+		const poll: any = await this.get(id);
+		return PollResultsDto.fromPoll(poll);
 	}
 
 	async setStage(pollStageDto: PollStageDto): Promise<Poll> {
