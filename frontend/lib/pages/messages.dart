@@ -90,6 +90,18 @@ class _MessagesPageState extends State<MessagesPage> {
                     Text(
                       days < 0 ? "ended" : "ends $days days",
                     ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    const Text(
+                      '•',
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    const Text(
+                      'Meeting at Tech Green',
+                    ),
                   ],
                 ),
               ),
