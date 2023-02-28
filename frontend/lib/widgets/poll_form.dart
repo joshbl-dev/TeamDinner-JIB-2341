@@ -9,7 +9,8 @@ class PollForm extends StatefulWidget {
 }
 
 class _PollFormState extends State<PollForm> {
-  bool? isChecked = false;
+  bool? isMultiple = false;
+  bool? isAlcohol = false;
 
   @override
   Widget build(BuildContext context) {
@@ -144,12 +145,12 @@ class _PollFormState extends State<PollForm> {
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: CheckboxListTile(
                       title: const Text("Enable Multiple Restaurant Selections"),
-                      value: isChecked,
+                      value: isMultiple,
                       activeColor: Colors.blue,
                       tristate: false,
                       onChanged: (newBool) {
                         setState(() {
-                          isChecked = newBool;
+                          isMultiple = newBool;
                         });
                       },
                     )
@@ -158,12 +159,12 @@ class _PollFormState extends State<PollForm> {
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: CheckboxListTile(
                         title: const Text("Enable Alcohol Menu"),
-                        value: isChecked,
+                        value: isAlcohol,
                         activeColor: Colors.blue,
                         tristate: false,
                         onChanged: (newBool) {
                           setState(() {
-                            isChecked = newBool;
+                            isAlcohol= newBool;
                           });
                         },
                       )
