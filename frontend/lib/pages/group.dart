@@ -102,8 +102,15 @@ class _GroupPageState extends State<GroupPage> {
   getTeamInfo() {
     if (team.name == "") {
       return [
-        const Text("You are not in a team",
-            style: TextStyle(fontSize: 30, color: Colors.black))
+      const Image(image: AssetImage('assets/images/notinteam.png'),
+            height: 230,
+            alignment: Alignment.topRight,
+      ),
+      const Text("Welcome to the team page!",
+            style: TextStyle(fontSize: 25, color: Colors.black)),
+        const Text("Click on the bottom plus button to create or join a team.",
+            style: TextStyle(fontSize: 20, color: Colors.black),
+        )
       ];
     }
     return [
