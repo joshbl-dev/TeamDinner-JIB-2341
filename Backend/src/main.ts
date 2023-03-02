@@ -43,6 +43,7 @@ async function bootstrap() {
 			operationsSorter: "method"
 		}
 	});
+	fs.writeFileSync("./swagger-spec.json", JSON.stringify(document));
 
 	await app.listen(process.env.PORT);
 	console.log(
