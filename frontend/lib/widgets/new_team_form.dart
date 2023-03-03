@@ -37,7 +37,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 16.0),
+        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,11 +124,10 @@ class _NewTeamFormState extends State<NewTeamForm> {
                       ),
                     ],
                   );
-                }),
-              ),
-            ),
+                })
+              )),
             const Padding(
-              padding: EdgeInsets.only(top: 60.0, left: 8.0, right: 8.0, bottom: 8.0),
+              padding: EdgeInsets.only(top: 45.0, bottom: 20.0),
               child: Text(
                 "Create a Team",
                 style: TextStyle(
@@ -138,12 +137,18 @@ class _NewTeamFormState extends State<NewTeamForm> {
                 ),
               ),
             ),
+            const Center(
+              child: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/default_team_image.jpg'),
+                radius: 80,
+              ),
+            ),
             Form(
               key: formKey,
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 16.0),
                     child: TextFormField(
                       controller: teamNameController,
                       validator: (value) {
@@ -152,14 +157,20 @@ class _NewTeamFormState extends State<NewTeamForm> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
-                        hintText: "Team Name",
-                        prefixIcon: Icon(Icons.abc, color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: "Enter team name",
+                        prefixIcon: const Icon(Icons.abc, color: Colors.black),
+                        fillColor: const Color(0xFFede9f0),
+                        filled: true,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none
+                        ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: const EdgeInsets.only(bottom: 30.0),
                     child: TextFormField(
                       controller: descriptionController,
                       validator: (value) {
@@ -168,9 +179,15 @@ class _NewTeamFormState extends State<NewTeamForm> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
-                        hintText: "Description",
-                        prefixIcon: Icon(Icons.abc, color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: "Enter description",
+                        prefixIcon: const Icon(Icons.abc, color: Colors.black),
+                        fillColor: const Color(0xFFede9f0),
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none
+                        ),
                       ),
                     ),
                   ),
@@ -202,10 +219,11 @@ class _NewTeamFormState extends State<NewTeamForm> {
                         }
                       },
                       child: const Text(
-                        "Create",
+                        "Create Team",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
                         ),
                       ),
                     ),
