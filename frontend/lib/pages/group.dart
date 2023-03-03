@@ -102,15 +102,27 @@ class _GroupPageState extends State<GroupPage> {
   getTeamInfo() {
     if (team.name == "") {
       return [
-      const Image(image: AssetImage('assets/images/notinteam.png'),
-            height: 230,
-            alignment: Alignment.topRight,
-      ),
-      const Text("Welcome to the team page!",
-            style: TextStyle(fontSize: 25, color: Colors.black)),
-        const Text("Click on the bottom plus button to create or join a team.",
-            style: TextStyle(fontSize: 20, color: Colors.black),
-        )
+        const Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Image(image: AssetImage('assets/images/notinteam.png'),
+          height: 250,)
+        ),
+        const Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Text("Welcome to the team page!",
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black)),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(left:40.0, right: 40.0, top: 8.0, bottom: 10.0),
+          child: Text(
+          "Click on the button plus button to create or join a team.",
+          textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18, color: Colors.black),
+          ),
+        ),
       ];
     }
     return [
