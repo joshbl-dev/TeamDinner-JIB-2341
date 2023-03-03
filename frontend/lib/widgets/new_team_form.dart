@@ -37,13 +37,29 @@ class _NewTeamFormState extends State<NewTeamForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 60.0),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                width: double.infinity,
+                child: IconButton(
+                  color: Colors.deepPurple[300],
+                  onPressed: () {
+                    Navigator.pop(
+                      context,
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
+                ),
+              ),
+            ),
             const Text(
-              "Invitations:",
+              "Pending Invitations",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 32.0,
@@ -55,25 +71,15 @@ class _NewTeamFormState extends State<NewTeamForm> {
                 children: List.generate(teams.length, (index) {
                   return Row(
                     children: [
-                      Text(teams[index].toString()),
-                      IconButton(
-                        onPressed: () async {
-                          Team team = teams[index];
-                          try {
-                            User user = await UsersRepository.get(null);
-                            await TeamsRepository.rejectInvites(
-                                team.id, user.id);
-                            setState(() {
-                              teams.removeWhere(
-                                  (element) => element.id == team.id);
-                            });
-                          } on Exception {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Failed to remove invite.")));
-                          }
-                        },
-                        icon: const Icon(Icons.delete),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 30.0),
+                        child: Text(
+                          teams[index].toString(),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black54,
+                          ),
+                        ),
                       ),
                       IconButton(
                         onPressed: () async {
@@ -91,31 +97,38 @@ class _NewTeamFormState extends State<NewTeamForm> {
                                     content: Text("Failed to accept invite.")));
                           }
                         },
-                        icon: const Icon(Icons.check),
+                        iconSize: 30,
+                        color: Colors.lightGreen,
+                        icon: const Icon(Icons.check_circle_outline),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          Team team = teams[index];
+                          try {
+                            User user = await UsersRepository.get(null);
+                            await TeamsRepository.rejectInvites(
+                                team.id, user.id);
+                            setState(() {
+                              teams.removeWhere(
+                                  (element) => element.id == team.id);
+                            });
+                          } on Exception {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Failed to remove invite.")));
+                          }
+                        },
+                        iconSize: 30,
+                        color: Colors.black45,
+                        icon: const Icon(Icons.cancel_outlined),
                       ),
                     ],
                   );
                 }),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 60.0),
-              child: Container(
-                alignment: Alignment.centerLeft,
-                width: double.infinity,
-                child: IconButton(
-                  color: Colors.deepPurple[300],
-                  onPressed: () {
-                    Navigator.pop(
-                      context,
-                    );
-                  },
-                  icon: const Icon(Icons.arrow_back_ios),
-                ),
-              ),
-            ),
             const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.only(top: 60.0, left: 8.0, right: 8.0, bottom: 8.0),
               child: Text(
                 "Create a Team",
                 style: TextStyle(
