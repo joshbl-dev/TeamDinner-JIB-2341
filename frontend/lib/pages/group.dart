@@ -9,14 +9,14 @@ import '../Types/user.dart';
 import '../widgets/modify_team_form.dart';
 import '../widgets/new_team_form.dart';
 
-class GroupPage extends StatefulWidget {
-  const GroupPage({Key? key}) : super(key: key);
+class TeamPage extends StatefulWidget {
+  const TeamPage({Key? key}) : super(key: key);
 
   @override
-  State<GroupPage> createState() => _GroupPageState();
+  State<TeamPage> createState() => _TeamPageState();
 }
 
-class _GroupPageState extends State<GroupPage> {
+class _TeamPageState extends State<TeamPage> {
   Team team = Team("", "", "", "", [], []);
   bool isOwner = false;
   bool reset = true;
@@ -103,14 +103,16 @@ class _GroupPageState extends State<GroupPage> {
   getTeamInfo() {
     if (team.name == "") {
       return [
-      const Image(image: AssetImage('assets/images/notinteam.png'),
-            height: 230,
-            alignment: Alignment.topRight,
-      ),
-      const Text("Welcome to the team page!",
+        const Image(
+          image: AssetImage('assets/images/notinteam.png'),
+          height: 230,
+          alignment: Alignment.topRight,
+        ),
+        const Text("Welcome to the team page!",
             style: TextStyle(fontSize: 25, color: Colors.black)),
-        const Text("Click on the bottom plus button to create or join a team.",
-            style: TextStyle(fontSize: 20, color: Colors.black),
+        const Text(
+          "Click on the bottom plus button to create or join a team.",
+          style: TextStyle(fontSize: 20, color: Colors.black),
         )
       ];
     }
@@ -165,8 +167,8 @@ class _GroupPageState extends State<GroupPage> {
                 backgroundColor: Colors.blue,
                 side: BorderSide.none,
                 shape: const StadiumBorder()),
-            child:
-            const Text('Create Poll', style: TextStyle(color: Colors.black)),
+            child: const Text('Create Poll',
+                style: TextStyle(color: Colors.black)),
           )),
       Visibility(
         visible: !isOwner && team.id != "",

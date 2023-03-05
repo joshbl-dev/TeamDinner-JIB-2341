@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/createteam.dart';
 import 'package:frontend/pages/group.dart';
 import 'package:frontend/pages/messages.dart';
-import 'package:frontend/pages/payment.dart';
+import 'package:frontend/pages/poll.dart';
 import 'package:frontend/pages/profile.dart';
-import 'package:frontend/pages/search.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,14 +11,16 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
 int _selectedIndex = 0;
 const List<Widget> _widgetOptions = <Widget>[
-  SearchPage(),
-  PaymentPage(),
-  GroupPage(),
+  MessagesPage(),
+  PollPage(),
+  TeamPage(),
   MessagesPage(),
   ProfilePage(),
 ];
+
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: const Text('T E A M D I N N E R'),
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex)
-      ),
+      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       bottomNavigationBar: Container(
         color: Colors.black,
         child: Padding(
@@ -50,20 +48,20 @@ class _HomePageState extends State<HomePage> {
             gap: 8,
             tabs: const [
               GButton(
-                  icon: Icons.search,
-                  text: 'Search',
+                icon: Icons.message,
+                text: 'Messages',
               ),
               GButton(
-                  icon: Icons.payment,
-                  text: 'Payment',
+                icon: Icons.poll,
+                text: 'Poll',
               ),
               GButton(
-                  icon: Icons.group,
-                  text: 'Team',
+                icon: Icons.group,
+                text: 'Team',
               ),
               GButton(
-                  icon: Icons.message,
-                  text: 'Messages',
+                icon: Icons.message,
+                text: 'Messages',
               ),
               GButton(
                 icon: Icons.person,
