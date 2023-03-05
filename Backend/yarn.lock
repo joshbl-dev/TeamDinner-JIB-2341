@@ -7746,6 +7746,11 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
+typescript-map@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/typescript-map/-/typescript-map-0.1.0.tgz#67224d440ba388975183514aab31d704be11add9"
+  integrity sha512-py1csqjGZR7LoENWvr5aqN4jYFDkthQZ1sCuMBr0/NuRJ5sSs5RqopqZhE2gFbLesKDec+RE0sraYV2ebrDexQ==
+
 typescript@4.8.4:
   version "4.8.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.4.tgz#c464abca159669597be5f96b8943500b238e60e6"

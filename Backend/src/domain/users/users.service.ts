@@ -13,7 +13,10 @@ export class UsersService {
 		private authService: AuthService
 	) {}
 
-	async get(id: string): Promise<User> {
+	async get(id?: string): Promise<User> {
+		if (!id) {
+			id = (await this.authService.getAuthFromJWT()).id;
+		}
 		const user = await this.usersRepository.getUser(id);
 		if (user) {
 			return user;
