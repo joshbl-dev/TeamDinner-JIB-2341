@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/Types/PollOption.dart';
 import 'package:frontend/api/polls_repository.dart';
 
 import '../Types/Poll.dart';
@@ -289,14 +290,19 @@ class _PollFormState extends State<PollForm> {
             if (stage == 1) {
               // Todo: create poll api call
               final now = DateTime.now();
+              List<PollOption> options = [];
+              for (var i = 0; i < this.options.length; i++) {
+                options.add(PollOption("id", this.options[i].text));
+              }
               Poll poll = Poll(
-                  topic.text,
-                  description.text,
-                  DateTime(
-                      now.year, now.month, now.day, time.hour, time.minute),
-                  meetingLocation.text,
-                  isMultiple,
-                  options.map<String>((e) => e.text).toList());
+                "",
+                topic.text,
+                description.text,
+                DateTime(now.year, now.month, now.day, time.hour, time.minute),
+                meetingLocation.text,
+                isMultiple,
+                options,
+              );
               await PollsRepository.create(poll);
 
               if (mounted) {

@@ -29,7 +29,6 @@ class PollsRepository {
 
   //create
   static Future<Poll> create(Poll poll) async {
-    print("Creating poll: ${poll.options}");
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/create"),
       headers: <String, String>{
@@ -42,7 +41,7 @@ class PollsRepository {
         "time": poll.time.toIso8601String(),
         "location": poll.location,
         "isMultichoice": poll.isMultipleChoice,
-        "options": poll.options
+        "options": poll.options.map((e) => e.option).toList()
       }),
     );
     if (response.statusCode == 201) {
