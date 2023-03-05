@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/group.dart';
 import 'package:frontend/pages/messages.dart';
-import 'package:frontend/pages/poll.dart';
+import 'package:frontend/pages/polls.dart';
 import 'package:frontend/pages/profile.dart';
+import 'package:frontend/pages/teams.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 int _selectedIndex = 0;
 const List<Widget> _widgetOptions = <Widget>[
   MessagesPage(),
-  PollPage(),
+  PollsPage(),
   TeamPage(),
   MessagesPage(),
   ProfilePage(),

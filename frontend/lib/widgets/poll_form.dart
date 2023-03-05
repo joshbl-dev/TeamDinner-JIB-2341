@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Types/PollOption.dart';
+import 'package:frontend/Types/poll_option.dart';
 import 'package:frontend/api/polls_repository.dart';
 
 import '../Types/Poll.dart';
@@ -288,7 +288,6 @@ class _PollFormState extends State<PollForm> {
         onPressed: () async {
           if (formKey.currentState!.validate()) {
             if (stage == 1) {
-              // Todo: create poll api call
               final now = DateTime.now();
               List<PollOption> options = [];
               for (var i = 0; i < this.options.length; i++) {

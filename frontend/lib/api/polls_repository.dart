@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../Types/Poll.dart';
+import '../Types/vote.dart';
 import '../util.dart';
 
 class PollsRepository {
@@ -21,7 +22,8 @@ class PollsRepository {
       },
     );
     if (response.statusCode == 200) {
-      return Poll.fromJson(json.decode(response.body));
+      Poll poll = Poll.fromJson(json.decode(response.body));
+      return poll;
     } else {
       throw Exception('Poll not found.');
     }
@@ -48,6 +50,31 @@ class PollsRepository {
       return Poll.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to create poll.');
+    }
+  }
+
+  //create
+  static Future<Poll> vote(String pollId, Vote vote) async {
+    print("pollId $pollId");
+    print("userId ${vote.userId}");
+    print("optionIds ${vote.optionIds}");
+
+    final response = await http.post(
+      Uri.parse("$baseUrl/$repositoryName/vote"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
+      },
+      body: jsonEncode(<String, dynamic>{
+        "pollId": pollId,
+        "userId": vote.userId,
+        "optionIds": vote.optionIds
+      }),
+    );
+    if (response.statusCode == 201) {
+      return Poll.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to vote on poll.');
     }
   }
 }

@@ -7,4 +7,9 @@ class PollOption {
   factory PollOption.fromJson(json) {
     return PollOption(json['id'], json['option']);
   }
+
+  @override
+  String toString() {
+    return option;
+  }
 }
