@@ -5,6 +5,7 @@ class Vote {
   Vote(this.userId, this.optionIds);
 
   factory Vote.fromJson(Map<String, dynamic> json) {
-    return Vote(json['userId'], json['optionIds']);
+    return Vote(json['userId'],
+        json['optionIds'].map<String>((e) => e as String).toList());
   }
 }

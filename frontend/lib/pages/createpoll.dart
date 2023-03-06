@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/poll_form.dart';
+import 'package:frontend/widgets/create_poll_form.dart';
 
 class CreatePollPage extends StatelessWidget {
   const CreatePollPage({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class CreatePollPage extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            const PollForm(),
+            const CreatePollForm(),
           ],
         ),
       ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/teams_repository.dart';
 import 'package:frontend/api/users_repository.dart';
 import 'package:frontend/widgets/invite_form.dart';
-import 'package:frontend/widgets/poll_form.dart';
 
 import '../Types/team.dart';
 import '../Types/user.dart';
@@ -154,21 +153,6 @@ class _TeamPageState extends State<TeamPage> {
                 shape: const StadiumBorder()),
             child:
                 const Text('Edit Team', style: TextStyle(color: Colors.black)),
-          )),
-      Visibility(
-          visible: isOwner,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const PollForm();
-              })).then((value) => {resetPage()});
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                side: BorderSide.none,
-                shape: const StadiumBorder()),
-            child: const Text('Create Poll',
-                style: TextStyle(color: Colors.black)),
           )),
       Visibility(
         visible: !isOwner && team.id != "",
