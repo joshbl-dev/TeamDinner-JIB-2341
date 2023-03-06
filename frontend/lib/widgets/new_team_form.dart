@@ -37,11 +37,30 @@ class _NewTeamFormState extends State<NewTeamForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(top: 110.0, left: 18.0, right: 18.0, bottom: 18.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 0.0),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                width: double.infinity,
+                child: IconButton(
+                  color: Colors.deepPurple[300],
+                  onPressed: () {
+                    Navigator.pop(
+                      context,
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_back_ios),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: const EdgeInsets.only(top: 30),
+            ),
             const Text(
               "Invitations:",
               style: TextStyle(
@@ -98,24 +117,9 @@ class _NewTeamFormState extends State<NewTeamForm> {
                 }),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 60.0),
-              child: Container(
-                alignment: Alignment.centerLeft,
-                width: double.infinity,
-                child: IconButton(
-                  color: Colors.deepPurple[300],
-                  onPressed: () {
-                    Navigator.pop(
-                      context,
-                    );
-                  },
-                  icon: const Icon(Icons.arrow_back_ios),
-                ),
-              ),
-            ),
+
             const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.only(bottom: 12.0, top: 70.0, left: 8.0, right: 8.0),
               child: Text(
                 "Create a Team",
                 style: TextStyle(
@@ -160,6 +164,9 @@ class _NewTeamFormState extends State<NewTeamForm> {
                         prefixIcon: Icon(Icons.abc, color: Colors.black),
                       ),
                     ),
+                  ),
+                  const Padding(
+                    padding: const EdgeInsets.only(top: 15),
                   ),
                   SizedBox(
                     width: double.infinity,
