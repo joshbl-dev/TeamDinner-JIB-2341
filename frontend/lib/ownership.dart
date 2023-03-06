@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/signup_form.dart';
+import 'package:frontend/widgets/ownership_form.dart';
 class OwnershipPage extends StatelessWidget {
   const OwnershipPage({Key? key}) : super(key: key);
 
@@ -38,7 +38,7 @@ class OwnershipPage extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            const OwnershipPage(),
+             OwnershipForm(),
           ],
         ),
       ),
