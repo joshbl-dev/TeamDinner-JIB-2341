@@ -139,7 +139,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
             ),
             const Center(
               child: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/default_team_image.jpg'),
+                backgroundImage: AssetImage('assets/images/notinteam.png'),
                 radius: 80,
               ),
             ),
