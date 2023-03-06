@@ -293,6 +293,10 @@ class _CreatePollFormState extends State<CreatePollForm> {
               for (var i = 0; i < this.options.length; i++) {
                 options.add(PollOption("id", this.options[i].text));
               }
+              if (isAlcohol) {
+                options.add(PollOption("id", "Alcohol"));
+                isMultiple = true;
+              }
               Poll poll = Poll(
                 "",
                 topic.text,
