@@ -62,12 +62,7 @@ class _PollsPageState extends State<PollsPage> {
     var user = await UsersRepository.get(null);
     try {
       Team memberTeam = await TeamsRepository.getMembersTeam(user.id);
-      if (mounted) {
-        setState(() {
-          isOwner = memberTeam.owner == user.id;
-          reset = false;
-        });
-      }
+      isOwner = memberTeam.owner == user.id;
       Poll poll = await PollsRepository.get(memberTeam.id);
 
       if (poll.votes != null) {
@@ -88,7 +83,9 @@ class _PollsPageState extends State<PollsPage> {
 
       return poll;
     } on Exception {
-      poll.description = "No active poll";
+      setState(() {
+        poll.description = "No active poll";
+      });
     }
     return poll;
   }
