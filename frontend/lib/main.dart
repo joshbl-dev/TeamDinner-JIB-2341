@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/signup.dart';
+import 'package:frontend/ownership.dart';
 import 'package:frontend/widgets/login_form.dart';
 
 void main() {
@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const SignUpPage();
+                          return const OwnershipPage();
                         },
                       ),
                     );
