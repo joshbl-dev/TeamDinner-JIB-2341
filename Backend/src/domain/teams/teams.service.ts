@@ -25,7 +25,7 @@ export class TeamsService {
 
 	async create(teamDTO: TeamCreateDto): Promise<Team> {
 		const owner: User = await this.usersService.getWithToken();
-		const isOwner = await this.checkOwner(owner.id);
+		const isOwner = await this.isOwner(owner.id);
 		if (!isOwner) {
 			return await this.teamsRepository.createTeam({
 				id: uuid(),
@@ -63,7 +63,10 @@ export class TeamsService {
 		return await this.teamsRepository.getTeams();
 	}
 
-	async get(id: string): Promise<Team> {
+	async get(id?: string): Promise<Team> {
+		if (!id) {
+			return this.getWithUserId(null);
+		}
 		const team = await this.teamsRepository.getTeam(id);
 		if (team) {
 			return team;
@@ -72,7 +75,11 @@ export class TeamsService {
 		}
 	}
 
-	async getWithUserId(id: string): Promise<Team> {
+	async getWithUserId(id?: string): Promise<Team> {
+		if (!id) {
+			const user: User = await this.usersService.getWithToken();
+			id = user.id;
+		}
 		const team = await this.teamsRepository.getTeamWithUserId(id);
 		if (team) {
 			return team;
@@ -85,7 +92,7 @@ export class TeamsService {
 		const team: Team = await this.get(teamModifyDto.teamId);
 		if (await this.authService.userIsInJWT(team.owner)) {
 			if (await this.usersService.exists(teamModifyDto.userId)) {
-				if (await this.userOnTeam(teamModifyDto.userId)) {
+				if (await this.isMember(teamModifyDto.userId)) {
 					throw new HttpException(
 						"User is already on a team",
 						HttpStatus.BAD_REQUEST
@@ -108,14 +115,14 @@ export class TeamsService {
 			(await this.authService.userIsInJWT(team.owner)) ||
 			(await this.authService.userIsInJWT(teamModifyDto.userId))
 		) {
-			if (await this.checkOwner(teamModifyDto.userId)) {
+			if (await this.isOwner(teamModifyDto.userId)) {
 				throw new HttpException(
 					"User is owner of a team",
 					HttpStatus.BAD_REQUEST
 				);
 			}
 
-			if (await this.userOnTeam(teamModifyDto.userId)) {
+			if (await this.isMember(teamModifyDto.userId)) {
 				return await this.teamsRepository.removeMember(
 					teamModifyDto.teamId,
 					teamModifyDto.userId
@@ -152,7 +159,7 @@ export class TeamsService {
 				teamInviteDto.email
 			);
 
-			if (await this.userOnTeam(user.id)) {
+			if (await this.isMember(user.id)) {
 				throw new HttpException(
 					"User is already on a team",
 					HttpStatus.BAD_REQUEST
@@ -168,7 +175,7 @@ export class TeamsService {
 	async acceptInvite(teamModifyDto: TeamMemberModifyDto): Promise<Team> {
 		if (await this.exists(teamModifyDto.teamId)) {
 			if (await this.authService.userIsInJWT(teamModifyDto.userId)) {
-				if (await this.userOnTeam(teamModifyDto.userId)) {
+				if (await this.isMember(teamModifyDto.userId)) {
 					throw new HttpException(
 						"User is already on a team",
 						HttpStatus.BAD_REQUEST
@@ -203,12 +210,28 @@ export class TeamsService {
 		return await this.teamsRepository.getInvitesForUser(id);
 	}
 
-	private async checkOwner(id: string): Promise<boolean> {
-		return await this.teamsRepository.checkOwner(id);
+	public async isOwner(userId: string): Promise<boolean> {
+		return await this.teamsRepository.checkOwner(userId);
 	}
 
-	private async userOnTeam(id: string): Promise<boolean> {
-		return await this.teamsRepository.userOnTeam(id);
+	public async userIsOwnerOfTeam(
+		id: string,
+		userId: string
+	): Promise<boolean> {
+		const team: Team = await this.get(id);
+		return team.owner === userId;
+	}
+
+	public async userIsMemberOfTeam(
+		id: string,
+		userId: string
+	): Promise<boolean> {
+		const team: Team = await this.get(id);
+		return team.members.includes(userId);
+	}
+
+	private async isMember(id: string): Promise<boolean> {
+		return await this.teamsRepository.isMember(id);
 	}
 
 	private async exists(id: string): Promise<boolean> {
