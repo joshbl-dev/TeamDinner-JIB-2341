@@ -122,6 +122,49 @@ class _GroupPageState extends State<GroupPage> {
                 fontWeight: FontWeight.bold,
                 color: Colors.black)),
       ),
+      Stack(
+        children:[
+        Container(
+          width: 130,
+          height: 130,
+          decoration: BoxDecoration(
+            border: Border.all(width: 4, color: Colors.white),
+            boxShadow: [
+              BoxShadow(
+                  spreadRadius: 2,
+                  blurRadius: 10,
+                  color: Colors.black.withOpacity(0.1)
+              )
+            ],
+            shape: BoxShape.circle,
+            image: const DecorationImage(
+              fit: BoxFit.cover,
+              image: NetworkImage('https://cdn.pixabay.com/photo/2013/07/13/10/24/board-157165_1280.png'),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Container(
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                    width: 4,
+                    color: Colors.white
+                ),
+                color: Colors.blue
+            ),
+            child: const Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        ],
+      ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text("Description: ${team.description}",
