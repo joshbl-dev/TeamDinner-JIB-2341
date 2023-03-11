@@ -112,7 +112,7 @@ export class PollsService {
 	}
 
 	async isInProgress(poll: Poll): Promise<boolean> {
-		if (poll.time.getTime() > Date.now()) {
+		if (new Date(poll.time).getTime() > Date.now()) {
 			await this.pollsRepository.setStage(poll.id, PollStage.FINISHED);
 			throw new HttpException(
 				"The poll has expired",
