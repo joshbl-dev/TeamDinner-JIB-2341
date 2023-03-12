@@ -128,6 +128,11 @@ class _TeamPageState extends State<TeamPage> {
       ];
     }
     return [
+      const Image(
+        image: AssetImage('assets/images/teamnew.png'),
+        height: 230,
+        alignment: Alignment.topRight,
+      ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text("Team: ${team.name}",
