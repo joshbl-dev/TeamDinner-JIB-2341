@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/api/teams_repository.dart';
-import 'package:frontend/api/users_repository.dart';
-import 'package:frontend/widgets/invite_form.dart';
 
 import '../Types/team.dart';
 import '../Types/user.dart';
+import '../api/teams_repository.dart';
+import '../api/users_repository.dart';
+import '../widgets/invite_form.dart';
 import '../widgets/modify_team_form.dart';
 import '../widgets/new_team_form.dart';
 
@@ -65,40 +65,6 @@ class _TeamPageState extends State<TeamPage> {
         ));
   }
 
-  Future<Team> _getTeam() async {
-    if (!reset) {
-      return team;
-    }
-    var user = await UsersRepository.get(null);
-    try {
-      var memberTeam = await TeamsRepository.getMembersTeam(user.id);
-      memberTeam.setOwner(await UsersRepository.get(memberTeam.owner));
-      List<User> members = [];
-      for (var member in memberTeam.members) {
-        members.add(await UsersRepository.get(member));
-      }
-      memberTeam.setMembers(members);
-      if (user.id == memberTeam.owner.id) {
-        isOwner = true;
-        List<User> invitations = [];
-        for (var invitation in memberTeam.invitations) {
-          invitations.add(await UsersRepository.get(invitation));
-        }
-        memberTeam.setInvitations(invitations);
-      }
-      if (mounted) {
-        setState(() {
-          team = memberTeam;
-          reset = false;
-        });
-      }
-      return memberTeam;
-    } on Exception {
-      team.description = "You are not in a team";
-    }
-    return team;
-  }
-
   getTeamInfo() {
     if (team.name == "") {
       return [
@@ -123,6 +89,45 @@ class _TeamPageState extends State<TeamPage> {
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
                 color: Colors.black)),
+      ),
+      Stack(
+        children: [
+          Container(
+            width: 130,
+            height: 130,
+            decoration: BoxDecoration(
+              border: Border.all(width: 4, color: Colors.white),
+              boxShadow: [
+                BoxShadow(
+                    spreadRadius: 2,
+                    blurRadius: 10,
+                    color: Colors.black.withOpacity(0.1))
+              ],
+              shape: BoxShape.circle,
+              image: const DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                    'https://cdn.pixabay.com/photo/2013/07/13/10/24/board-157165_1280.png'),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(width: 4, color: Colors.white),
+                  color: Colors.blue),
+              child: const Icon(
+                Icons.edit,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),
@@ -185,6 +190,40 @@ class _TeamPageState extends State<TeamPage> {
         ),
       )
     ];
+  }
+
+  Future<Team> _getTeam() async {
+    if (!reset) {
+      return team;
+    }
+    var user = await UsersRepository.get(null);
+    try {
+      var memberTeam = await TeamsRepository.getMembersTeam(user.id);
+      memberTeam.setOwner(await UsersRepository.get(memberTeam.owner));
+      List<User> members = [];
+      for (var member in memberTeam.members) {
+        members.add(await UsersRepository.get(member));
+      }
+      memberTeam.setMembers(members);
+      if (user.id == memberTeam.owner.id) {
+        isOwner = true;
+        List<User> invitations = [];
+        for (var invitation in memberTeam.invitations) {
+          invitations.add(await UsersRepository.get(invitation));
+        }
+        memberTeam.setInvitations(invitations);
+      }
+      if (mounted) {
+        setState(() {
+          team = memberTeam;
+          reset = false;
+        });
+      }
+      return memberTeam;
+    } on Exception {
+      team.description = "You are not in a team";
+    }
+    return team;
   }
 
   resetPage() {
