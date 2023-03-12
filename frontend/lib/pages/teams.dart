@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/api/teams_repository.dart';
+import 'package:frontend/api/users_repository.dart';
+import 'package:frontend/widgets/invite_form.dart';
 
 import '../Types/team.dart';
 import '../Types/user.dart';
-import '../api/teams_repository.dart';
-import '../api/users_repository.dart';
-import '../widgets/invite_form.dart';
 import '../widgets/modify_team_form.dart';
 import '../widgets/new_team_form.dart';
 
@@ -65,19 +65,65 @@ class _TeamPageState extends State<TeamPage> {
         ));
   }
 
+  Future<Team> _getTeam() async {
+    if (!reset) {
+      return team;
+    }
+    var user = await UsersRepository.get(null);
+    try {
+      var memberTeam = await TeamsRepository.getMembersTeam(user.id);
+      memberTeam.setOwner(await UsersRepository.get(memberTeam.owner));
+      List<User> members = [];
+      for (var member in memberTeam.members) {
+        members.add(await UsersRepository.get(member));
+      }
+      memberTeam.setMembers(members);
+      if (user.id == memberTeam.owner.id) {
+        isOwner = true;
+        List<User> invitations = [];
+        for (var invitation in memberTeam.invitations) {
+          invitations.add(await UsersRepository.get(invitation));
+        }
+        memberTeam.setInvitations(invitations);
+      }
+      if (mounted) {
+        setState(() {
+          team = memberTeam;
+          reset = false;
+        });
+      }
+      return memberTeam;
+    } on Exception {
+      team.description = "You are not in a team";
+    }
+    return team;
+  }
+
   getTeamInfo() {
     if (team.name == "") {
       return [
-        const Image(
-          image: AssetImage('assets/images/notinteam.png'),
-          height: 230,
-          alignment: Alignment.topRight,
+        const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Image(
+              image: AssetImage('assets/images/notinteam.png'),
+              height: 250,
+            )),
+        const Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Text("Welcome to the team page!",
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black)),
         ),
-        const Text("Welcome to the team page!",
-            style: TextStyle(fontSize: 25, color: Colors.black)),
-        const Text(
-          "Click on the bottom plus button to create or join a team.",
-          style: TextStyle(fontSize: 20, color: Colors.black),
+        const Padding(
+          padding:
+              EdgeInsets.only(left: 40.0, right: 40.0, top: 8.0, bottom: 10.0),
+          child: Text(
+            "Click on the button plus button to create or join a team.",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18, color: Colors.black),
+          ),
         )
       ];
     }
@@ -190,40 +236,6 @@ class _TeamPageState extends State<TeamPage> {
         ),
       )
     ];
-  }
-
-  Future<Team> _getTeam() async {
-    if (!reset) {
-      return team;
-    }
-    var user = await UsersRepository.get(null);
-    try {
-      var memberTeam = await TeamsRepository.getMembersTeam(user.id);
-      memberTeam.setOwner(await UsersRepository.get(memberTeam.owner));
-      List<User> members = [];
-      for (var member in memberTeam.members) {
-        members.add(await UsersRepository.get(member));
-      }
-      memberTeam.setMembers(members);
-      if (user.id == memberTeam.owner.id) {
-        isOwner = true;
-        List<User> invitations = [];
-        for (var invitation in memberTeam.invitations) {
-          invitations.add(await UsersRepository.get(invitation));
-        }
-        memberTeam.setInvitations(invitations);
-      }
-      if (mounted) {
-        setState(() {
-          team = memberTeam;
-          reset = false;
-        });
-      }
-      return memberTeam;
-    } on Exception {
-      team.description = "You are not in a team";
-    }
-    return team;
   }
 
   resetPage() {
