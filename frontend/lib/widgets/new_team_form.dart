@@ -37,7 +37,8 @@ class _NewTeamFormState extends State<NewTeamForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 110.0, left: 18.0, right: 18.0, bottom: 18.0),
+        padding: const EdgeInsets.only(
+            top: 110.0, left: 18.0, right: 18.0, bottom: 18.0),
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +63,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
               padding: const EdgeInsets.only(top: 30),
             ),
             const Text(
-              "Invitations:",
+              "Pending Invitations",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 32.0,
@@ -74,25 +75,15 @@ class _NewTeamFormState extends State<NewTeamForm> {
                 children: List.generate(teams.length, (index) {
                   return Row(
                     children: [
-                      Text(teams[index].toString()),
-                      IconButton(
-                        onPressed: () async {
-                          Team team = teams[index];
-                          try {
-                            User user = await UsersRepository.get(null);
-                            await TeamsRepository.rejectInvites(
-                                team.id, user.id);
-                            setState(() {
-                              teams.removeWhere(
-                                  (element) => element.id == team.id);
-                            });
-                          } on Exception {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Failed to remove invite.")));
-                          }
-                        },
-                        icon: const Icon(Icons.delete),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 30.0),
+                        child: Text(
+                          teams[index].toString(),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black54,
+                          ),
+                        ),
                       ),
                       IconButton(
                         onPressed: () async {
@@ -110,16 +101,39 @@ class _NewTeamFormState extends State<NewTeamForm> {
                                     content: Text("Failed to accept invite.")));
                           }
                         },
-                        icon: const Icon(Icons.check),
+                        iconSize: 30,
+                        color: Colors.lightGreen,
+                        icon: const Icon(Icons.check_circle_outline),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          Team team = teams[index];
+                          try {
+                            User user = await UsersRepository.get(null);
+                            await TeamsRepository.rejectInvites(
+                                team.id, user.id);
+                            setState(() {
+                              teams.removeWhere(
+                                  (element) => element.id == team.id);
+                            });
+                          } on Exception {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Failed to remove invite.")));
+                          }
+                        },
+                        iconSize: 30,
+                        color: Colors.black45,
+                        icon: const Icon(Icons.cancel_outlined),
                       ),
                     ],
                   );
                 }),
               ),
             ),
-
             const Padding(
-              padding: EdgeInsets.only(bottom: 12.0, top: 70.0, left: 8.0, right: 8.0),
+              padding: EdgeInsets.only(
+                  bottom: 12.0, top: 70.0, left: 8.0, right: 8.0),
               child: Text(
                 "Create a Team",
                 style: TextStyle(
@@ -129,12 +143,18 @@ class _NewTeamFormState extends State<NewTeamForm> {
                 ),
               ),
             ),
+            const Center(
+              child: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/notinteam.png'),
+                radius: 80,
+              ),
+            ),
             Form(
               key: formKey,
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 16.0),
                     child: TextFormField(
                       controller: teamNameController,
                       validator: (value) {
@@ -143,14 +163,19 @@ class _NewTeamFormState extends State<NewTeamForm> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
-                        hintText: "Team Name",
-                        prefixIcon: Icon(Icons.abc, color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: "Enter team name",
+                        prefixIcon: const Icon(Icons.abc, color: Colors.black),
+                        fillColor: const Color(0xFFede9f0),
+                        filled: true,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: const EdgeInsets.only(bottom: 30.0),
                     child: TextFormField(
                       controller: descriptionController,
                       validator: (value) {
@@ -159,9 +184,14 @@ class _NewTeamFormState extends State<NewTeamForm> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
-                        hintText: "Description",
-                        prefixIcon: Icon(Icons.abc, color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: "Enter description",
+                        prefixIcon: const Icon(Icons.abc, color: Colors.black),
+                        fillColor: const Color(0xFFede9f0),
+                        filled: true,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none),
                       ),
                     ),
                   ),
@@ -196,10 +226,11 @@ class _NewTeamFormState extends State<NewTeamForm> {
                         }
                       },
                       child: const Text(
-                        "Create",
+                        "Create Team",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
                         ),
                       ),
                     ),
