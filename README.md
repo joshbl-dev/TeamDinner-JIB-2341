@@ -7,10 +7,28 @@ and connection to a third-party cost-splitting app.
 
 # Release Notes Section
 
+## v 0.3.0
+### Features
+Backend
+* Added poll routes to backend api
+* cleaned up code to match convention
+* Add poll entity information
+
+Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.2
+
+Frontend
+* Iterated on UI for team screens
+* Added a new logo for TeamDinner
+* Created UI for poll pages
+* Added Poll Management user functionality
+
+### Bug Fixes
+N/A
+
 ## v 0.2.0
 ### Features
 Backend
-* Added routes to backend api
+* Added team routes to backend api
 * Fixed some broken code
 * Add routes for team entity management
 
