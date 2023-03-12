@@ -130,7 +130,7 @@ class _TeamPageState extends State<TeamPage> {
     return [
       const Image(
         image: AssetImage('assets/images/teamnew.png'),
-        height: 230,
+        height: 100,
         alignment: Alignment.topRight,
       ),
       Padding(
@@ -144,8 +144,8 @@ class _TeamPageState extends State<TeamPage> {
       Stack(
         children: [
           Container(
-            width: 130,
-            height: 130,
+            width: 80,
+            height: 80,
             decoration: BoxDecoration(
               border: Border.all(width: 4, color: Colors.white),
               boxShadow: [
@@ -190,11 +190,20 @@ class _TeamPageState extends State<TeamPage> {
         child: Text("Owner: ${team.owner.toString()}",
             style: const TextStyle(fontSize: 20, color: Colors.black)),
       ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text("Members: ${team.members.toString()}",
+      const Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Text("Members: ",
             style: const TextStyle(fontSize: 20, color: Colors.black)),
       ),
+      Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children:
+            <Widget>[
+              for(var name in team.members) Text(name.toString(), style: const TextStyle(fontSize: 14, color: Colors.black))
+          ])
+        ),
       Visibility(
           visible: isOwner,
           child: ElevatedButton(
@@ -242,6 +251,8 @@ class _TeamPageState extends State<TeamPage> {
       )
     ];
   }
+
+
 
   resetPage() {
     if (mounted) {
