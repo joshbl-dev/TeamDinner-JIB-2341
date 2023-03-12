@@ -8,15 +8,15 @@ import '../Types/user.dart';
 import '../widgets/modify_team_form.dart';
 import '../widgets/new_team_form.dart';
 
-class GroupPage extends StatefulWidget {
-  const GroupPage({Key? key}) : super(key: key);
+class TeamPage extends StatefulWidget {
+  const TeamPage({Key? key}) : super(key: key);
 
   @override
-  State<GroupPage> createState() => _GroupPageState();
+  State<TeamPage> createState() => _TeamPageState();
 }
 
-class _GroupPageState extends State<GroupPage> {
-  Team team = Team("", "", "", "", [], []);
+class _TeamPageState extends State<TeamPage> {
+  Team team = Team("", "", "", false, [], []);
   bool isOwner = false;
   bool reset = true;
 
@@ -102,18 +102,37 @@ class _GroupPageState extends State<GroupPage> {
   getTeamInfo() {
     if (team.name == "") {
       return [
-      const Image(image: AssetImage('assets/images/notinteam.png'),
-            height: 230,
-            alignment: Alignment.topRight,
-      ),
-      const Text("Welcome to the team page!",
-            style: TextStyle(fontSize: 25, color: Colors.black)),
-        const Text("Click on the bottom plus button to create or join a team.",
-            style: TextStyle(fontSize: 20, color: Colors.black),
+        const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Image(
+              image: AssetImage('assets/images/notinteam.png'),
+              height: 250,
+            )),
+        const Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Text("Welcome to the team page!",
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black)),
+        ),
+        const Padding(
+          padding:
+              EdgeInsets.only(left: 40.0, right: 40.0, top: 8.0, bottom: 10.0),
+          child: Text(
+            "Click on the button plus button to create or join a team.",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18, color: Colors.black),
+          ),
         )
       ];
     }
     return [
+      const Image(
+        image: AssetImage('assets/images/teamnew.png'),
+        height: 230,
+        alignment: Alignment.topRight,
+      ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text("Team: ${team.name}",
@@ -121,6 +140,45 @@ class _GroupPageState extends State<GroupPage> {
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
                 color: Colors.black)),
+      ),
+      Stack(
+        children: [
+          Container(
+            width: 130,
+            height: 130,
+            decoration: BoxDecoration(
+              border: Border.all(width: 4, color: Colors.white),
+              boxShadow: [
+                BoxShadow(
+                    spreadRadius: 2,
+                    blurRadius: 10,
+                    color: Colors.black.withOpacity(0.1))
+              ],
+              shape: BoxShape.circle,
+              image: const DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                    'https://cdn.pixabay.com/photo/2013/07/13/10/24/board-157165_1280.png'),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(width: 4, color: Colors.white),
+                  color: Colors.blue),
+              child: const Icon(
+                Icons.edit,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),

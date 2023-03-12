@@ -37,13 +37,14 @@ class _NewTeamFormState extends State<NewTeamForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+        padding: const EdgeInsets.only(
+            top: 110.0, left: 18.0, right: 18.0, bottom: 18.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 60.0),
+              padding: const EdgeInsets.only(top: 0.0),
               child: Container(
                 alignment: Alignment.centerLeft,
                 width: double.infinity,
@@ -57,6 +58,9 @@ class _NewTeamFormState extends State<NewTeamForm> {
                   icon: const Icon(Icons.arrow_back_ios),
                 ),
               ),
+            ),
+            const Padding(
+              padding: const EdgeInsets.only(top: 30),
             ),
             const Text(
               "Pending Invitations",
@@ -124,10 +128,12 @@ class _NewTeamFormState extends State<NewTeamForm> {
                       ),
                     ],
                   );
-                })
-              )),
+                }),
+              ),
+            ),
             const Padding(
-              padding: EdgeInsets.only(top: 45.0, bottom: 20.0),
+              padding: EdgeInsets.only(
+                  bottom: 12.0, top: 70.0, left: 8.0, right: 8.0),
               child: Text(
                 "Create a Team",
                 style: TextStyle(
@@ -164,8 +170,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
                         filled: true,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide.none
-                        ),
+                            borderSide: BorderSide.none),
                       ),
                     ),
                   ),
@@ -185,11 +190,13 @@ class _NewTeamFormState extends State<NewTeamForm> {
                         fillColor: const Color(0xFFede9f0),
                         filled: true,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none
-                        ),
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none),
                       ),
                     ),
+                  ),
+                  const Padding(
+                    padding: const EdgeInsets.only(top: 15),
                   ),
                   SizedBox(
                     width: double.infinity,
