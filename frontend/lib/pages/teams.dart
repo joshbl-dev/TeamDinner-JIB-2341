@@ -201,7 +201,7 @@ class _TeamPageState extends State<TeamPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children:
             <Widget>[
-              for(var name in team.members) Text(name.toString(), style: const TextStyle(fontSize: 14, color: Colors.black))
+              for(gvar name in team.members) Text(name.toString(), style: const TextStyle(fontSize: 14, color: Colors.black))
           ])
         ),
       Visibility(
