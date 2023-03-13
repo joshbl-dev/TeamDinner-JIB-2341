@@ -196,14 +196,14 @@ class _TeamPageState extends State<TeamPage> {
             style: const TextStyle(fontSize: 20, color: Colors.black)),
       ),
       Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children:
-            <Widget>[
-              for(gvar name in team.members) Text(name.toString(), style: const TextStyle(fontSize: 14, color: Colors.black))
-          ])
-        ),
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                for (var name in team.members)
+                  Text(name.toString(),
+                      style: const TextStyle(fontSize: 14, color: Colors.black))
+              ])),
       Visibility(
           visible: isOwner,
           child: ElevatedButton(
@@ -251,8 +251,6 @@ class _TeamPageState extends State<TeamPage> {
       )
     ];
   }
-
-
 
   resetPage() {
     if (mounted) {
