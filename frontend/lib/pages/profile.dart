@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import '../Types/user.dart';
-
-import '../Types/team.dart';
-import 'package:frontend/api/teams_repository.dart';
-import 'package:frontend/api/users_repository.dart';
-import '../Types/token.dart';
 import 'package:frontend/pages/teams.dart';
 
-
+import '../Types/user.dart';
 import '../util.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -166,14 +160,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         var email = emailController.value.text;
                         var password = passwordController.value.text;
                         try {
-                          await UsersRepository.signup(firstName,
-                              lastName, email, password);
+                          // Todo: Hook up to a modify user endpoint. Currently not implemented.
+                          // await UsersRepository.signup(firstName,
+                          //     lastName, email, password);
                           clear();
                           if (await Util.login(email, password) && mounted) {
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (context) => const TeamPage()),
-                                    (r) => false);
+                                (r) => false);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Login failed.')));
@@ -181,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         } on Exception {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text("Failed to create team"),
+                              content: Text("Failed to modify user"),
                             ),
                           );
                         }
