@@ -17,6 +17,7 @@ class SignupFormState extends State<SignupForm> {
   final formKey = GlobalKey<FormState>();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
+  final venmoUserController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -85,6 +86,23 @@ class SignupFormState extends State<SignupForm> {
               decoration: const InputDecoration(
                 hintText: "Email",
                 prefixIcon: Icon(Icons.mail, color: Colors.black),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: TextFormField(
+              controller: venmoUserController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please enter a venmo username";
+                }
+                return null;
+              },
+              obscureText: false,
+              decoration: const InputDecoration(
+                hintText: "Venmo username (i.e. @janedoe)",
+                prefixIcon: Icon(Icons.money_outlined, color: Colors.black),
               ),
             ),
           ),

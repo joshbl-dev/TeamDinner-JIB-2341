@@ -107,8 +107,7 @@ class _CreatePollFormState extends State<CreatePollForm> {
         getHeader(),
         buildTextField(topic, "Topic", Icons.topic),
         buildTextField(description, "Description", Icons.description),
-        buildTextField(
-            meetingLocation, "Meeting Location", Icons.location_city),
+        buildTextField(meetingLocation, "Meeting Location", Icons.location_city),
         buildTextField(meetingTime, "Meeting Time", Icons.punch_clock,
             () async {
           FocusScope.of(context).requestFocus(FocusNode());

@@ -54,7 +54,6 @@ class _PollsPageState extends State<PollsPage> {
       ),
     );
   }
-
   Future<Poll> _getPoll() async {
     if (!reset) {
       return poll;
@@ -195,7 +194,6 @@ class _PollsPageState extends State<PollsPage> {
     }
     return widgets;
   }
-
   resetPage() {
     if (mounted) {
       setState(() {
