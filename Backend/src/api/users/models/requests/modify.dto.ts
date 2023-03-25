@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString } from "class-validator";
+import { IsEmail, IsOptional, IsPositive, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class ModifyDto {
@@ -22,4 +22,8 @@ export class ModifyDto {
 	@IsOptional()
 	@IsString()
 	venmo?: string;
+	@ApiProperty()
+	@IsOptional()
+	@IsPositive()
+	tipAmount?: number;
 }
