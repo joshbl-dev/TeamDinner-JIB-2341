@@ -14,6 +14,7 @@ import { AuthService } from "../auth/auth.service";
 import { TeamInviteDto } from "../../api/teams/models/requests/TeamInvite.dto";
 import { User } from "../../data/entities/User";
 import { TeamModifyDto } from "../../api/teams/models/requests/TeamModify.dto";
+import { Member } from "../../data/entities/Member";
 
 @Injectable()
 export class TeamsService {
@@ -211,6 +212,19 @@ export class TeamsService {
 				teamModifyDto.userId
 			);
 		}
+	}
+
+	async updateMember(teamId: string, member: Member): Promise<Team> {
+		return await this.teamsRepository.updateMember(teamId, member);
+	}
+
+	async payDebt(teamMemberModifyDto: TeamMemberModifyDto): Promise<Team> {
+		const team: Team = await this.get();
+		const member = team.members.filter(
+			(member) => member.id == teamMemberModifyDto.userId
+		)[0];
+		member.debt -= teamMemberModifyDto.amount;
+		return await this.teamsRepository.updateMember(team.id, member);
 	}
 
 	async getInvitesForUser(id?: string): Promise<Team[]> {

@@ -23,7 +23,7 @@ export class Poll {
 			})
 		);
 		options.push({
-			id: uuid(),
+			id: "-1",
 			option: "Opt Out"
 		});
 		return {

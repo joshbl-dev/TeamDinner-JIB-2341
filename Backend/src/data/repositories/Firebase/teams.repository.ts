@@ -82,6 +82,17 @@ export class TeamsRepository extends FirebaseRepository {
 		await docRef.delete();
 	}
 
+	async updateMember(teamId: string, member: Member): Promise<Team> {
+		const docRef: DocumentReference = await this.collection.doc(teamId);
+		await docRef.update({
+			members: firestore.FieldValue.arrayRemove(member)
+		});
+		await docRef.update({
+			members: firestore.FieldValue.arrayUnion(member)
+		});
+		return await this.getTeam(teamId);
+	}
+
 	async isMember(id: string): Promise<boolean> {
 		const snapshot: firestore.QuerySnapshot = await this.collection
 			.where("members", "array-contains", (obj) =>
