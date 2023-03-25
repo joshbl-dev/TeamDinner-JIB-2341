@@ -53,6 +53,9 @@ export class UsersService {
 		if (modifyDto.lastName) {
 			updateData.lastName = modifyDto.lastName;
 		}
+		if (modifyDto.venmo) {
+			updateData.venmo = modifyDto.venmo;
+		}
 		return await this.usersRepository.modify(user.id, updateData);
 	}
 

@@ -18,4 +18,8 @@ export class ModifyDto {
 	@IsOptional()
 	@IsEmail()
 	email?: string;
+	@ApiProperty()
+	@IsOptional()
+	@IsString()
+	venmo?: string;
 }
