@@ -1,11 +1,12 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { LoginDto } from "../../api/users/models/requests/login.dto";
 import { AuthsRepository } from "../../data/repositories/Firebase/auths.repository";
-import { compareHash } from "../../utils/util";
+import { compareHash, hash } from "../../utils/util";
 import { Auth } from "../../data/entities/Auth";
 import { JwtService } from "@nestjs/jwt";
 import { JwtDto } from "../../api/users/models/responses/jwt.dto";
 import { RequestModel } from "../../requests/request.model";
+import { ModifyDto } from "../../api/users/models/requests/modify.dto";
 
 @Injectable()
 export class AuthService {
@@ -37,6 +38,18 @@ export class AuthService {
 		return {
 			token: this.jwtService.sign(payload)
 		};
+	}
+
+	async modify(modifyDto: ModifyDto): Promise<Auth> {
+		const auth: Auth = RequestModel.currentUser as Auth;
+		const updateData: any = {};
+		if (modifyDto.password) {
+			updateData.password = await hash(modifyDto.password);
+		}
+		if (modifyDto.email) {
+			updateData.email = modifyDto.email;
+		}
+		return await this.authsRepository.modify(auth.id, updateData);
 	}
 
 	async userIsInJWT(userId: string): Promise<boolean> {
