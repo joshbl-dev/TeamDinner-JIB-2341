@@ -55,6 +55,9 @@ export class PollsService {
 		const optOuts = await this.getOptOuts(team.id);
 		const split = teamBillDto.amount / (team.members.length - optOuts);
 		for (const member of team.members) {
+			if (await this.isOptedOut(member.id)) {
+				continue;
+			}
 			const user: User = await this.usersService.get(member.id);
 			member.debt += split * (1 + user.tips ? user.tips : 0);
 			await this.teamsService.updateMember(team.id, member);
@@ -71,6 +74,12 @@ export class PollsService {
 		});
 
 		return optOuts;
+	}
+
+	async isOptedOut(userId?: string): Promise<boolean> {
+		const poll = await this.get();
+		const vote = poll.votes.find((vote: Vote) => vote.userId == userId);
+		return vote && vote.optionIds.includes("-1");
 	}
 
 	async setStage(pollStageDto: PollStageDto): Promise<Poll> {
