@@ -191,9 +191,9 @@ class _TeamPageState extends State<TeamPage> {
             style: const TextStyle(fontSize: 20, color: Colors.black)),
       ),
       const Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: EdgeInsets.all(4.0),
         child: Text("Members: ",
-            style: const TextStyle(fontSize: 20, color: Colors.black)),
+            style: TextStyle(fontSize: 20, color: Colors.black)),
       ),
       Padding(
           padding: const EdgeInsets.all(4.0),
