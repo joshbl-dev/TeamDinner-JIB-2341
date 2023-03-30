@@ -17,6 +17,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final preferredTipController = TextEditingController();
   late User user;
 
   @override
@@ -25,6 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
     lastNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    preferredTipController.dispose();
     super.dispose();
   }
 
@@ -146,6 +148,23 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: TextFormField(
+                    controller: emailController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your preferred tip percentage";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      hintText: "Default Tip Percentage (e.g 20)",
+                      prefixIcon: Icon(Icons.percent, color: Colors.black),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   width: double.infinity,
                   child: RawMaterialButton(
@@ -205,5 +224,6 @@ class _ProfilePageState extends State<ProfilePage> {
     lastNameController.clear();
     emailController.clear();
     passwordController.clear();
+    preferredTipController.clear();
   }
 }
