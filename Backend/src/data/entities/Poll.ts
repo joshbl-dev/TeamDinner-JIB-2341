@@ -22,6 +22,10 @@ export class Poll {
 				option: option
 			})
 		);
+		options.push({
+			id: "-1",
+			option: "Opt Out"
+		});
 		return {
 			id: teamId,
 			topic: dto.topic,

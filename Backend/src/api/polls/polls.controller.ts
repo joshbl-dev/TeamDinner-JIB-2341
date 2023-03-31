@@ -12,6 +12,7 @@ import { PollCreateDto } from "./models/requests/PollCreate.dto";
 import { PollStageDto } from "./models/requests/PollStage.dto";
 import { VoteDto } from "./models/requests/Vote.dto";
 import { PollResultsDto } from "./models/responses/PollResults.dto";
+import { TeamBillDto } from "../teams/models/requests/TeamBill.dto";
 
 @ApiBearerAuth("access-token")
 @ApiTags("polls")
@@ -50,5 +51,11 @@ export class PollsController {
 	@Get("results")
 	async getResults(@Query("id") id?: string): Promise<PollResultsDto> {
 		return await this.pollsService.getResults(id);
+	}
+
+	@ApiOperation({ summary: "Split a bill between team members" })
+	@Post("split")
+	async splitBill(@Body() teamBillDto: TeamBillDto): Promise<void> {
+		await this.pollsService.splitBill(teamBillDto);
 	}
 }

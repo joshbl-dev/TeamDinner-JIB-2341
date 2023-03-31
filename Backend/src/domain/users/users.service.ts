@@ -56,6 +56,9 @@ export class UsersService {
 		if (modifyDto.venmo) {
 			updateData.venmo = modifyDto.venmo;
 		}
+		if (modifyDto.tipAmount) {
+			updateData.tipAmount = modifyDto.tipAmount;
+		}
 		return await this.usersRepository.modify(user.id, updateData);
 	}
 
