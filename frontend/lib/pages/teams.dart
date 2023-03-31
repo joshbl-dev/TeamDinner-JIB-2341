@@ -195,6 +195,16 @@ class _TeamPageState extends State<TeamPage> {
         child: Text("Members: ",
             style: TextStyle(fontSize: 20, color: Colors.black)),
       ),
+      const Padding(
+        padding: EdgeInsets.all(4.0),
+        child: Text("Owner Venmo: @placeholder123",
+            style: TextStyle(fontSize: 20, color: Colors.black)),
+      ),
+      const Padding(
+        padding: EdgeInsets.all(4.0),
+        child: Text("Team owes \$30 each!",
+            style: TextStyle(fontSize: 20, color: Colors.black)),
+      ),
       Padding(
           padding: const EdgeInsets.all(4.0),
           child: Column(

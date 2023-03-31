@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/personalized_payment_form.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({Key? key}) : super(key: key);
@@ -25,6 +26,29 @@ class _PaymentPageState extends State<PaymentPage> {
                 color: Colors.black,
                 fontSize: 32.0,
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: RawMaterialButton(
+                fillColor: Colors.red[300],
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(3.0)
+                ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)
+                  {
+                    return const IndividualPaymentPage();
+                  }));
+                },
+                child: const Text(
+                  "Steven",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                ),
               ),
             ),
             Padding(

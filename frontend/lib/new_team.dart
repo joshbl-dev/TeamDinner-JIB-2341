@@ -7,6 +7,7 @@ class CreateNewTeamPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : true,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -30,7 +31,7 @@ class CreateNewTeamPage extends StatelessWidget {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.only(bottom: 32.0),
+              padding: EdgeInsets.only(top: 10.0),
               child: Text(
                 "Create New Team",
                 style: TextStyle(
