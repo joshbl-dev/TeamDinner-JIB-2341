@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/api/polls_repository.dart';
-import 'package:frontend/widgets/personalized_payment_form.dart';
 
-class PaymentPage extends StatefulWidget {
-  const PaymentPage({Key? key}) : super(key: key);
+class SplitBillForm extends StatefulWidget {
+  const SplitBillForm({Key? key}) : super(key: key);
 
   @override
-  State<PaymentPage> createState() => _PaymentPageState();
+  State<SplitBillForm> createState() => _SplitBillFormState();
 }
 
-class _PaymentPageState extends State<PaymentPage> {
+class _SplitBillFormState extends State<SplitBillForm> {
   final formKey = GlobalKey<FormState>();
   final paymentController = TextEditingController();
 
@@ -20,38 +19,9 @@ class _PaymentPageState extends State<PaymentPage> {
         body: Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Pending Payments:",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 32.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: RawMaterialButton(
-              fillColor: Colors.red[300],
-              padding: const EdgeInsets.symmetric(vertical: 5.0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(3.0)),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const IndividualPaymentPage();
-                }));
-              },
-              child: const Text(
-                "Steven",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.only(top: 60.0),
             child: Container(

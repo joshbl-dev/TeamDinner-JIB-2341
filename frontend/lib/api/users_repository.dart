@@ -74,7 +74,6 @@ class UsersRepository {
         "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {
       return User.fromJson(json.decode(response.body));
     } else {

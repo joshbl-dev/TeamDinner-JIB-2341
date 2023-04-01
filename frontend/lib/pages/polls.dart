@@ -11,8 +11,8 @@ import '../api/polls_repository.dart';
 import '../api/teams_repository.dart';
 import '../api/users_repository.dart';
 import '../widgets/create_poll_form.dart';
-import '../widgets/payment_form.dart';
 import '../widgets/poll_form.dart';
+import '../widgets/split_bill_form.dart';
 
 class PollsPage extends StatefulWidget {
   const PollsPage({Key? key}) : super(key: key);
@@ -198,11 +198,11 @@ class _PollsPageState extends State<PollsPage> {
         widgets.add(ElevatedButton(
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const PaymentPage();
+              return const SplitBillForm();
             })).then((value) => {resetPage()});
           },
           style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.greenAccent,
               side: BorderSide.none,
               shape: const StadiumBorder()),
           child: const Text('Calculate Payments',
