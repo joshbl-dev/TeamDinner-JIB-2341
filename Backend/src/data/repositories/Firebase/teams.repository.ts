@@ -23,17 +23,14 @@ export class TeamsRepository extends FirebaseRepository {
 	}
 
 	async getTeamWithUserId(id: string): Promise<Team> {
-		const snapshot: QuerySnapshot = await this.collection
-			.where("members", "array-contains", (obj) =>
-				obj.where("id", "==", id)
-			)
-			.get();
-
-		if (snapshot.docs.length > 0) {
-			return snapshot.docs[0].data() as Team;
-		} else {
-			return null;
+		const snapshot: QuerySnapshot = await this.collection.get();
+		for (let doc of snapshot.docs) {
+			const team: Team = doc.data() as Team;
+			if (team.members.find((member) => member.id === id)) {
+				return team;
+			}
 		}
+		return null;
 	}
 
 	async getTeams(): Promise<Team[]> {
@@ -94,12 +91,11 @@ export class TeamsRepository extends FirebaseRepository {
 	}
 
 	async isMember(id: string): Promise<boolean> {
-		const snapshot: firestore.QuerySnapshot = await this.collection
-			.where("members", "array-contains", (obj) =>
-				obj.where("id", "==", id)
-			)
-			.get();
-		return snapshot.docs.length > 0;
+		const snapshot: firestore.QuerySnapshot = await this.collection.get();
+		return snapshot.docs.some((doc) => {
+			const team: Team = doc.data() as Team;
+			return team.members.some((member) => member.id === id);
+		});
 	}
 
 	async inviteMember(teamId: string, userId: string): Promise<Team> {
