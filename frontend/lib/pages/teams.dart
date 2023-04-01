@@ -19,6 +19,7 @@ class _TeamPageState extends State<TeamPage> {
   Team team = Team("", "", "", false, [], []);
   bool isOwner = false;
   bool reset = true;
+  User user = User("", "", "");
 
   @override
   Widget build(BuildContext context) {
@@ -69,13 +70,13 @@ class _TeamPageState extends State<TeamPage> {
     if (!reset) {
       return team;
     }
-    var user = await UsersRepository.get(null);
+    user = await UsersRepository.get(null);
     try {
       var memberTeam = await TeamsRepository.getMembersTeam(user.id);
       memberTeam.setOwner(await UsersRepository.get(memberTeam.owner));
       List<User> members = [];
       for (var member in memberTeam.members) {
-        members.add(await UsersRepository.get(member));
+        members.add(await UsersRepository.get(member["id"]));
       }
       memberTeam.setMembers(members);
       if (user.id == memberTeam.owner.id) {
@@ -141,45 +142,6 @@ class _TeamPageState extends State<TeamPage> {
                 fontWeight: FontWeight.bold,
                 color: Colors.black)),
       ),
-      Stack(
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              border: Border.all(width: 4, color: Colors.white),
-              boxShadow: [
-                BoxShadow(
-                    spreadRadius: 2,
-                    blurRadius: 10,
-                    color: Colors.black.withOpacity(0.1))
-              ],
-              shape: BoxShape.circle,
-              image: const DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                    'https://cdn.pixabay.com/photo/2013/07/13/10/24/board-157165_1280.png'),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 4, color: Colors.white),
-                  color: Colors.blue),
-              child: const Icon(
-                Icons.edit,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text("Description: ${team.description}",
@@ -195,16 +157,6 @@ class _TeamPageState extends State<TeamPage> {
         child: Text("Members: ",
             style: TextStyle(fontSize: 20, color: Colors.black)),
       ),
-      const Padding(
-        padding: EdgeInsets.all(4.0),
-        child: Text("Owner Venmo: @placeholder123",
-            style: TextStyle(fontSize: 20, color: Colors.black)),
-      ),
-      const Padding(
-        padding: EdgeInsets.all(4.0),
-        child: Text("Team owes \$30 each!",
-            style: TextStyle(fontSize: 20, color: Colors.black)),
-      ),
       Padding(
           padding: const EdgeInsets.all(4.0),
           child: Column(
@@ -214,6 +166,15 @@ class _TeamPageState extends State<TeamPage> {
                   Text(name.toString(),
                       style: const TextStyle(fontSize: 14, color: Colors.black))
               ])),
+      Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text("Owner Venmo: ${team.owner.venmo ?? "N/A"}",
+              style: const TextStyle(fontSize: 20, color: Colors.black))),
+      Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Text("You owe \$${calculateDebt()} to the team",
+            style: const TextStyle(fontSize: 20, color: Colors.black)),
+      ),
       Visibility(
           visible: isOwner,
           child: ElevatedButton(
@@ -269,5 +230,9 @@ class _TeamPageState extends State<TeamPage> {
       });
     }
     _getTeam();
+  }
+
+  calculateDebt() {
+    return double.parse((user.debt ?? 0).toStringAsFixed(2));
   }
 }

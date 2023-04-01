@@ -11,8 +11,8 @@ import '../api/polls_repository.dart';
 import '../api/teams_repository.dart';
 import '../api/users_repository.dart';
 import '../widgets/create_poll_form.dart';
-import '../widgets/poll_form.dart';
 import '../widgets/payment_form.dart';
+import '../widgets/poll_form.dart';
 
 class PollsPage extends StatefulWidget {
   const PollsPage({Key? key}) : super(key: key);
@@ -86,6 +86,7 @@ class _PollsPageState extends State<PollsPage> {
     } on Exception {
       setState(() {
         poll.description = "No active poll";
+        reset = false;
       });
     }
     return poll;
@@ -203,7 +204,8 @@ class _PollsPageState extends State<PollsPage> {
             backgroundColor: Colors.blue,
             side: BorderSide.none,
             shape: const StadiumBorder()),
-        child: const Text('Calculate Payments', style: TextStyle(color: Colors.black)),
+        child: const Text('Calculate Payments',
+            style: TextStyle(color: Colors.black)),
       ));
     }
     return widgets;
