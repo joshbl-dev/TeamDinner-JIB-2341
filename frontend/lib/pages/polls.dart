@@ -12,6 +12,7 @@ import '../api/teams_repository.dart';
 import '../api/users_repository.dart';
 import '../widgets/create_poll_form.dart';
 import '../widgets/poll_form.dart';
+import '../widgets/split_bill_form.dart';
 
 class PollsPage extends StatefulWidget {
   const PollsPage({Key? key}) : super(key: key);
@@ -85,6 +86,7 @@ class _PollsPageState extends State<PollsPage> {
     } on Exception {
       setState(() {
         poll.description = "No active poll";
+        reset = false;
       });
     }
     return poll;
@@ -192,6 +194,21 @@ class _PollsPageState extends State<PollsPage> {
             shape: const StadiumBorder()),
         child: const Text('Create Poll', style: TextStyle(color: Colors.black)),
       ));
+      if (poll.stage == PollStage.FINISHED) {
+        widgets.add(ElevatedButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const SplitBillForm();
+            })).then((value) => {resetPage()});
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.greenAccent,
+              side: BorderSide.none,
+              shape: const StadiumBorder()),
+          child: const Text('Calculate Payments',
+              style: TextStyle(color: Colors.black)),
+        ));
+      }
     }
     return widgets;
   }

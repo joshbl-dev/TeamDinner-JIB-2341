@@ -115,4 +115,18 @@ class PollsRepository {
       throw Exception('Failed to vote on poll.');
     }
   }
+
+  static Future<void> split(double amount) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/$repositoryName/split"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
+      },
+      body: jsonEncode(<String, dynamic>{"amount": amount}),
+    );
+    if (response.statusCode != 201) {
+      throw Exception('Failed to split payments.');
+    }
+  }
 }

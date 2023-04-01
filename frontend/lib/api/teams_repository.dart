@@ -181,4 +181,24 @@ class TeamsRepository {
       throw Exception('Failed to get invites for User.');
     }
   }
+
+  static Future<Team> pay(String teamId, String userId, double amount) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/$repositoryName/pay"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
+      },
+      body: jsonEncode(<String, dynamic>{
+        'teamId': teamId,
+        'userId': userId,
+        'amount': amount
+      }),
+    );
+    if (response.statusCode == 201) {
+      return Team.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to reduce debt.');
+    }
+  }
 }

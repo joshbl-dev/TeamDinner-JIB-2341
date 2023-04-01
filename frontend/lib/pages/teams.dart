@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/teams_repository.dart';
 import 'package:frontend/api/users_repository.dart';
 import 'package:frontend/widgets/invite_form.dart';
+import 'package:frontend/widgets/member_list_widgets.dart';
 
 import '../Types/team.dart';
 import '../Types/user.dart';
@@ -19,6 +20,7 @@ class _TeamPageState extends State<TeamPage> {
   Team team = Team("", "", "", false, [], []);
   bool isOwner = false;
   bool reset = true;
+  User user = User("", "", "");
 
   @override
   Widget build(BuildContext context) {
@@ -69,13 +71,18 @@ class _TeamPageState extends State<TeamPage> {
     if (!reset) {
       return team;
     }
-    var user = await UsersRepository.get(null);
+    user = await UsersRepository.get(null);
     try {
       var memberTeam = await TeamsRepository.getMembersTeam(user.id);
       memberTeam.setOwner(await UsersRepository.get(memberTeam.owner));
       List<User> members = [];
       for (var member in memberTeam.members) {
-        members.add(await UsersRepository.get(member));
+        if (member["id"] == user.id) {
+          user.setDebt(member["debt"]);
+        }
+        User memberUser = await UsersRepository.get(member["id"]);
+        memberUser.setDebt(member["debt"]);
+        members.add(memberUser);
       }
       memberTeam.setMembers(members);
       if (user.id == memberTeam.owner.id) {
@@ -141,45 +148,6 @@ class _TeamPageState extends State<TeamPage> {
                 fontWeight: FontWeight.bold,
                 color: Colors.black)),
       ),
-      Stack(
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              border: Border.all(width: 4, color: Colors.white),
-              boxShadow: [
-                BoxShadow(
-                    spreadRadius: 2,
-                    blurRadius: 10,
-                    color: Colors.black.withOpacity(0.1))
-              ],
-              shape: BoxShape.circle,
-              image: const DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                    'https://cdn.pixabay.com/photo/2013/07/13/10/24/board-157165_1280.png'),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 4, color: Colors.white),
-                  color: Colors.blue),
-              child: const Icon(
-                Icons.edit,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text("Description: ${team.description}",
@@ -190,20 +158,29 @@ class _TeamPageState extends State<TeamPage> {
         child: Text("Owner: ${team.owner.toString()}",
             style: const TextStyle(fontSize: 20, color: Colors.black)),
       ),
-      const Padding(
+      Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Text("Members: ",
+        child: Text("Members: ${team.members.length}",
             style: const TextStyle(fontSize: 20, color: Colors.black)),
       ),
+      // Padding(
+      //     padding: const EdgeInsets.all(4.0),
+      //     child: Column(
+      //         mainAxisAlignment: MainAxisAlignment.center,
+      //         children: <Widget>[
+      //           for (var name in team.members)
+      //             Text(name.toString(),
+      //                 style: const TextStyle(fontSize: 14, color: Colors.black))
+      //         ])),
       Padding(
           padding: const EdgeInsets.all(4.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                for (var name in team.members)
-                  Text(name.toString(),
-                      style: const TextStyle(fontSize: 14, color: Colors.black))
-              ])),
+          child: Text("Owner Venmo: ${team.owner.venmo ?? "N/A"}",
+              style: const TextStyle(fontSize: 20, color: Colors.black))),
+      Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Text("You owe \$${calculateDebt()} to the team",
+            style: const TextStyle(fontSize: 20, color: Colors.black)),
+      ),
       Visibility(
           visible: isOwner,
           child: ElevatedButton(
@@ -218,6 +195,21 @@ class _TeamPageState extends State<TeamPage> {
                 shape: const StadiumBorder()),
             child:
                 const Text('Edit Team', style: TextStyle(color: Colors.black)),
+          )),
+      Visibility(
+          visible: isOwner,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return MemberListWidget(team: team);
+              })).then((value) => {resetPage()});
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.greenAccent,
+                side: BorderSide.none,
+                shape: const StadiumBorder()),
+            child:
+                const Text('Payments', style: TextStyle(color: Colors.black)),
           )),
       Visibility(
         visible: !isOwner && team.id != "",
@@ -259,5 +251,9 @@ class _TeamPageState extends State<TeamPage> {
       });
     }
     _getTeam();
+  }
+
+  calculateDebt() {
+    return double.parse((user.debt ?? 0).toStringAsFixed(2));
   }
 }

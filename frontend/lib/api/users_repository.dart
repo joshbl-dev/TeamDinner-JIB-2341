@@ -45,7 +45,24 @@ class UsersRepository {
     if (response.statusCode == 201) {
       return User.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to login.');
+      throw Exception('Failed to signup.');
+    }
+  }
+
+  static Future<User> modify(Map<String, dynamic> values) async {
+    final response = await http.post(
+      Uri.parse("$baseUrl/$repositoryName/modify"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
+      },
+      body: jsonEncode(values),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 201) {
+      return User.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to modify.');
     }
   }
 

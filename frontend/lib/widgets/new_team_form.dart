@@ -36,7 +36,8 @@ class _NewTeamFormState extends State<NewTeamForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+      resizeToAvoidBottomInset : false,
+      body: SingleChildScrollView(
         padding: const EdgeInsets.only(
             top: 110.0, left: 18.0, right: 18.0, bottom: 18.0),
         child: Column(
@@ -196,7 +197,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
                     ),
                   ),
                   const Padding(
-                    padding: const EdgeInsets.only(top: 15),
+                    padding: EdgeInsets.only(top: 1),
                   ),
                   SizedBox(
                     width: double.infinity,

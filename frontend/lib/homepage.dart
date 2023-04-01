@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/messages.dart';
 import 'package:frontend/pages/polls.dart';
 import 'package:frontend/pages/profile.dart';
 import 'package:frontend/pages/teams.dart';
@@ -14,10 +13,8 @@ class HomePage extends StatefulWidget {
 
 int _selectedIndex = 0;
 const List<Widget> _widgetOptions = <Widget>[
-  MessagesPage(),
-  PollsPage(),
   TeamPage(),
-  MessagesPage(),
+  PollsPage(),
   ProfilePage(),
 ];
 
@@ -40,6 +37,7 @@ class _HomePageState extends State<HomePage> {
             vertical: 20,
           ),
           child: GNav(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             backgroundColor: Colors.black,
             color: Colors.white,
             activeColor: Colors.white,
@@ -48,20 +46,12 @@ class _HomePageState extends State<HomePage> {
             gap: 8,
             tabs: const [
               GButton(
-                icon: Icons.message,
-                text: 'Messages',
-              ),
-              GButton(
-                icon: Icons.poll,
-                text: 'Poll',
-              ),
-              GButton(
                 icon: Icons.group,
                 text: 'Team',
               ),
               GButton(
-                icon: Icons.message,
-                text: 'Messages',
+                icon: Icons.poll,
+                text: 'Poll',
               ),
               GButton(
                 icon: Icons.person,
