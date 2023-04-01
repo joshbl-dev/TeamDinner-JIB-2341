@@ -48,7 +48,10 @@ class _PollFormState extends State<PollForm> {
           color: Colors.red[400],
           onPressed: (index) {
             setState(() {
-              if (!poll.isMultipleChoice) {
+              if (index != poll.options.length - 1) {
+                isSelected[poll.options.length - 1] = false;
+              }
+              if (!poll.isMultipleChoice || index == poll.options.length - 1) {
                 isSelected = List.filled(poll.options.length, false);
               }
               isSelected[index] = !isSelected[index];

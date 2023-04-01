@@ -194,19 +194,21 @@ class _PollsPageState extends State<PollsPage> {
             shape: const StadiumBorder()),
         child: const Text('Create Poll', style: TextStyle(color: Colors.black)),
       ));
-      widgets.add(ElevatedButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return const PaymentPage();
-          })).then((value) => {resetPage()});
-        },
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
-            side: BorderSide.none,
-            shape: const StadiumBorder()),
-        child: const Text('Calculate Payments',
-            style: TextStyle(color: Colors.black)),
-      ));
+      if (poll.stage == PollStage.FINISHED) {
+        widgets.add(ElevatedButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const PaymentPage();
+            })).then((value) => {resetPage()});
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              side: BorderSide.none,
+              shape: const StadiumBorder()),
+          child: const Text('Calculate Payments',
+              style: TextStyle(color: Colors.black)),
+        ));
+      }
     }
     return widgets;
   }
