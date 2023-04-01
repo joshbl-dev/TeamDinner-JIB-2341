@@ -59,7 +59,7 @@ export class PollsService {
 				continue;
 			}
 			const user: User = await this.usersService.get(member.id);
-			member.debt += split * (1 + user.tips ? user.tips : 0);
+			member.debt += split * (1 + (user.tips ? user.tips : 0));
 			await this.teamsService.updateMember(team.id, member);
 		}
 	}

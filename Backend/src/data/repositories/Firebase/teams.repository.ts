@@ -80,11 +80,12 @@ export class TeamsRepository extends FirebaseRepository {
 	}
 
 	async updateMember(teamId: string, member: Member): Promise<Team> {
-		const docRef: DocumentReference = await this.collection.doc(teamId);
-		await docRef.update({
-			members: firestore.FieldValue.arrayRemove(member)
+		const doc = await this.collection.doc(teamId).get();
+		const oldMem = doc.data().members.find((m) => m.id === member.id);
+		await doc.ref.update({
+			members: firestore.FieldValue.arrayRemove(oldMem)
 		});
-		await docRef.update({
+		await doc.ref.update({
 			members: firestore.FieldValue.arrayUnion(member)
 		});
 		return await this.getTeam(teamId);
