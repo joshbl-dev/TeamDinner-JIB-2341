@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/homepage.dart';
 import 'package:frontend/signup.dart';
+import 'package:frontend/util.dart';
 import 'package:frontend/widgets/login_form.dart';
 
 void main() {
@@ -13,23 +15,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: LoginScreen(),
+      home: Scaffold(
+        body: LoginScreen(),
+      ),
     );
   }
 }
@@ -42,6 +30,28 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      asyncInit();
+    });
+  }
+
+  void asyncInit() async {
+    var token = await Util.getAccessToken();
+    if (token != null && mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return const HomePage();
+          },
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(

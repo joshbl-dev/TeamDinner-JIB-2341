@@ -1,6 +1,3 @@
-
-
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'Types/token.dart';
@@ -25,5 +22,10 @@ class Util {
       return Token(token: token);
     }
     return null;
+  }
+
+  static void logout() {
+    const storage = FlutterSecureStorage();
+    storage.delete(key: "token");
   }
 }
