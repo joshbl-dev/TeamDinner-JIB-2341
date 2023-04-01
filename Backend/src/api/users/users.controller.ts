@@ -12,6 +12,7 @@ import { AuthService } from "../../domain/auth/auth.service";
 import { LoginDto } from "./models/requests/login.dto";
 import { JwtDto } from "./models/responses/jwt.dto";
 import { SkipAuth } from "../../utils/decorators";
+import { ModifyDto } from "./models/requests/modify.dto";
 
 @ApiBearerAuth("access-token")
 @ApiTags("users")
@@ -20,7 +21,8 @@ export class UsersController {
 	constructor(
 		private readonly usersService: UsersService,
 		private readonly authService: AuthService
-	) {}
+	) {
+	}
 
 	@Get("all")
 	async getAll(): Promise<User[]> {
@@ -50,5 +52,10 @@ export class UsersController {
 	})
 	async login(@Body() loginDto: LoginDto): Promise<JwtDto> {
 		return await this.authService.login(loginDto);
+	}
+
+	@Post("modify")
+	async modify(@Body() modifyDto: ModifyDto): Promise<User> {
+		return await this.usersService.modify(modifyDto);
 	}
 }

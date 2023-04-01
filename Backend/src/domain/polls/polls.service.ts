@@ -10,6 +10,8 @@ import { PollStageDto } from "../../api/polls/models/requests/PollStage.dto";
 import { VoteDto } from "../../api/polls/models/requests/Vote.dto";
 import { Vote } from "../../data/entities/Vote";
 import { PollResultsDto } from "../../api/polls/models/responses/PollResults.dto";
+import { TeamBillDto } from "../../api/teams/models/requests/TeamBill.dto";
+import { Team } from "../../data/entities/Team";
 
 @Injectable()
 export class PollsService {
@@ -46,6 +48,38 @@ export class PollsService {
 	async getResults(id?: string): Promise<PollResultsDto> {
 		const poll: any = await this.get(id);
 		return PollResultsDto.fromPoll(poll);
+	}
+
+	async splitBill(teamBillDto: TeamBillDto): Promise<void> {
+		const team: Team = await this.teamsService.get();
+		const optOuts = await this.getOptOuts(team.id);
+		const split = teamBillDto.amount / (team.members.length - optOuts);
+		for (const member of team.members) {
+			if (await this.isOptedOut(member.id)) {
+				continue;
+			}
+			const user: User = await this.usersService.get(member.id);
+			member.debt += split * (1 + user.tips ? user.tips : 0);
+			await this.teamsService.updateMember(team.id, member);
+		}
+	}
+
+	async getOptOuts(id?: string): Promise<number> {
+		const poll = await this.get(id);
+		let optOuts = 0;
+		poll.votes.forEach((vote: Vote) => {
+			if (vote.optionIds.includes("-1")) {
+				optOuts++;
+			}
+		});
+
+		return optOuts;
+	}
+
+	async isOptedOut(userId?: string): Promise<boolean> {
+		const poll = await this.get();
+		const vote = poll.votes.find((vote: Vote) => vote.userId == userId);
+		return vote && vote.optionIds.includes("-1");
 	}
 
 	async setStage(pollStageDto: PollStageDto): Promise<Poll> {

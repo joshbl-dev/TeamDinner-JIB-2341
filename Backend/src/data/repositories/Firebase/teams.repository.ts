@@ -3,6 +3,7 @@ import { FirebaseRepository } from "./firebase.repository";
 import { Firebase } from "../../../utils/firebase";
 import { Team } from "../../entities/Team";
 import { firestore } from "firebase-admin";
+import { Member } from "../../entities/Member";
 import DocumentReference = firestore.DocumentReference;
 import DocumentData = firestore.DocumentData;
 import QuerySnapshot = firestore.QuerySnapshot;
@@ -23,7 +24,9 @@ export class TeamsRepository extends FirebaseRepository {
 
 	async getTeamWithUserId(id: string): Promise<Team> {
 		const snapshot: QuerySnapshot = await this.collection
-			.where("members", "array-contains", id)
+			.where("members", "array-contains", (obj) =>
+				obj.where("id", "==", id)
+			)
 			.get();
 
 		if (snapshot.docs.length > 0) {
@@ -58,18 +61,18 @@ export class TeamsRepository extends FirebaseRepository {
 		return snapshot.docs.length > 0;
 	}
 
-	async addMember(teamId: string, userId: string): Promise<Team> {
+	async addMember(teamId: string, member: Member): Promise<Team> {
 		const docRef: DocumentReference = await this.collection.doc(teamId);
 		await docRef.update({
-			members: firestore.FieldValue.arrayUnion(userId)
+			members: firestore.FieldValue.arrayUnion(member)
 		});
 		return await this.getTeam(teamId);
 	}
 
-	async removeMember(teamId: string, userId: string): Promise<Team> {
+	async removeMember(teamId: string, member: Member): Promise<Team> {
 		const docRef: DocumentReference = await this.collection.doc(teamId);
 		await docRef.update({
-			members: firestore.FieldValue.arrayRemove(userId)
+			members: firestore.FieldValue.arrayRemove(member)
 		});
 		return await this.getTeam(teamId);
 	}
@@ -79,9 +82,22 @@ export class TeamsRepository extends FirebaseRepository {
 		await docRef.delete();
 	}
 
+	async updateMember(teamId: string, member: Member): Promise<Team> {
+		const docRef: DocumentReference = await this.collection.doc(teamId);
+		await docRef.update({
+			members: firestore.FieldValue.arrayRemove(member)
+		});
+		await docRef.update({
+			members: firestore.FieldValue.arrayUnion(member)
+		});
+		return await this.getTeam(teamId);
+	}
+
 	async isMember(id: string): Promise<boolean> {
 		const snapshot: firestore.QuerySnapshot = await this.collection
-			.where("members", "array-contains", id)
+			.where("members", "array-contains", (obj) =>
+				obj.where("id", "==", id)
+			)
 			.get();
 		return snapshot.docs.length > 0;
 	}

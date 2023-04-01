@@ -3,4 +3,6 @@ export class User {
 	firstName?: string;
 	lastName?: string;
 	teams?: string[];
+	venmo?: string;
+	tips?: number;
 }

@@ -5,6 +5,7 @@ import { hash, uuid } from "../../utils/util";
 import { SignupDto } from "../../api/users/models/requests/signup.dto";
 import { Auth } from "../../data/entities/Auth";
 import { AuthService } from "../auth/auth.service";
+import { ModifyDto } from "../../api/users/models/requests/modify.dto";
 
 @Injectable()
 export class UsersService {
@@ -41,6 +42,24 @@ export class UsersService {
 			...userQueryDTO,
 			password: hashedPassword
 		});
+	}
+
+	async modify(modifyDto: ModifyDto): Promise<User> {
+		const user: User = await this.getWithToken();
+		const updateData: any = {};
+		if (modifyDto.firstName) {
+			updateData.firstName = modifyDto.firstName;
+		}
+		if (modifyDto.lastName) {
+			updateData.lastName = modifyDto.lastName;
+		}
+		if (modifyDto.venmo) {
+			updateData.venmo = modifyDto.venmo;
+		}
+		if (modifyDto.tipAmount) {
+			updateData.tipAmount = modifyDto.tipAmount;
+		}
+		return await this.usersRepository.modify(user.id, updateData);
 	}
 
 	async exists(id: string): Promise<boolean> {

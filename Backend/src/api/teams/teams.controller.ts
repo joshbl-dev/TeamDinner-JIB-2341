@@ -101,4 +101,11 @@ export class TeamsController {
 	async getInvitesForUser(@Query("id") id?: string): Promise<Team[]> {
 		return this.teamsService.getInvitesForUser(id);
 	}
+
+	@Post("pay")
+	async payDebt(
+		@Body() teamMemberModifyDto: TeamMemberModifyDto
+	): Promise<Team> {
+		return this.teamsService.payDebt(teamMemberModifyDto);
+	}
 }

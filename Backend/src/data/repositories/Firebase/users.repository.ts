@@ -42,4 +42,9 @@ export class UsersRepository extends FirebaseRepository {
 		});
 		return this.getUser(user.id);
 	}
+
+	async modify(id: string, data: any): Promise<User> {
+		await this.collection.doc(id).update(data);
+		return await this.getUser(id);
+	}
 }

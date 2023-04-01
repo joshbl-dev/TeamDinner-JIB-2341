@@ -14,6 +14,7 @@ import { AuthService } from "../auth/auth.service";
 import { TeamInviteDto } from "../../api/teams/models/requests/TeamInvite.dto";
 import { User } from "../../data/entities/User";
 import { TeamModifyDto } from "../../api/teams/models/requests/TeamModify.dto";
+import { Member } from "../../data/entities/Member";
 
 @Injectable()
 export class TeamsService {
@@ -29,7 +30,12 @@ export class TeamsService {
 		if (!isOwner) {
 			return await this.teamsRepository.createTeam({
 				id: uuid(),
-				members: [owner.id],
+				members: [
+					{
+						id: owner.id,
+						debt: 0
+					}
+				],
 				owner: owner.id,
 				name: teamDTO.name,
 				description: teamDTO.description,
@@ -100,7 +106,10 @@ export class TeamsService {
 				}
 				return await this.teamsRepository.addMember(
 					teamModifyDto.teamId,
-					teamModifyDto.userId
+					{
+						id: teamModifyDto.userId,
+						debt: 0
+					}
 				);
 			}
 		}
@@ -123,9 +132,12 @@ export class TeamsService {
 			}
 
 			if (await this.isMember(teamModifyDto.userId)) {
+				const member = team.members.filter(
+					(member) => member.id == teamModifyDto.userId
+				)[0];
 				return await this.teamsRepository.removeMember(
 					teamModifyDto.teamId,
-					teamModifyDto.userId
+					member
 				);
 			}
 			throw new HttpException(
@@ -202,6 +214,19 @@ export class TeamsService {
 		}
 	}
 
+	async updateMember(teamId: string, member: Member): Promise<Team> {
+		return await this.teamsRepository.updateMember(teamId, member);
+	}
+
+	async payDebt(teamMemberModifyDto: TeamMemberModifyDto): Promise<Team> {
+		const team: Team = await this.get();
+		const member = team.members.filter(
+			(member) => member.id == teamMemberModifyDto.userId
+		)[0];
+		member.debt -= teamMemberModifyDto.amount;
+		return await this.teamsRepository.updateMember(team.id, member);
+	}
+
 	async getInvitesForUser(id?: string): Promise<Team[]> {
 		if (!id) {
 			const user: User = await this.usersService.getWithToken();
@@ -227,7 +252,7 @@ export class TeamsService {
 		userId: string
 	): Promise<boolean> {
 		const team: Team = await this.get(id);
-		return team.members.includes(userId);
+		return team.members.map((member) => member.id).includes(userId);
 	}
 
 	private async isMember(id: string): Promise<boolean> {
