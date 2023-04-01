@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:frontend/api/users_repository.dart';
 import 'package:frontend/pages/teams.dart';
 
 import '../Types/user.dart';
@@ -18,6 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final preferredTipController = TextEditingController();
+  final venmoController = TextEditingController();
   late User user;
 
   @override
@@ -27,6 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
     emailController.dispose();
     passwordController.dispose();
     preferredTipController.dispose();
+    venmoController.dispose();
     super.dispose();
   }
 
@@ -37,45 +41,6 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  border: Border.all(width: 4, color: Colors.white),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 2,
-                        blurRadius: 10,
-                        color: Colors.black.withOpacity(0.1))
-                  ],
-                  shape: BoxShape.circle,
-                  image: const DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                        'https://cdn.pixabay.com/photo/2013/07/13/10/24/board-157165_1280.png'),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(width: 4, color: Colors.white),
-                      color: Colors.blue),
-                  child: const Icon(
-                    Icons.edit,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
           Form(
             key: formKey,
             child: Column(
@@ -84,12 +49,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: TextFormField(
                     controller: firstNameController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter a first name";
-                      }
-                      return null;
-                    },
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       hintText: "First Name",
@@ -101,12 +60,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: TextFormField(
                     controller: lastNameController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter a last name";
-                      }
-                      return null;
-                    },
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       hintText: "Last Name",
@@ -118,12 +71,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: TextFormField(
                     controller: emailController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter an email";
-                      }
-                      return null;
-                    },
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       hintText: "Email",
@@ -135,12 +82,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: TextFormField(
                     controller: passwordController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter a password";
-                      }
-                      return null;
-                    },
                     obscureText: true,
                     decoration: const InputDecoration(
                       hintText: "Password",
@@ -151,16 +92,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: TextFormField(
-                    controller: emailController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your preferred tip percentage";
-                      }
-                      return null;
-                    },
+                    controller: venmoController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
-                      hintText: "Default Tip Percentage (e.g 20)",
+                      hintText: "Venmo Username",
+                      prefixIcon: Icon(Icons.money, color: Colors.black),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: TextFormField(
+                    controller: preferredTipController,
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: false),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    ],
+                    decoration: const InputDecoration(
+                      hintText: "Default Tip Percentage (e.g. 20)",
                       prefixIcon: Icon(Icons.percent, color: Colors.black),
                     ),
                   ),
@@ -174,21 +124,37 @@ class _ProfilePageState extends State<ProfilePage> {
                         borderRadius: BorderRadius.circular(12.0)),
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        var firstName = firstNameController.value.text;
-                        var lastName = lastNameController.value.text;
-                        var email = emailController.value.text;
-                        var password = passwordController.value.text;
+                        final email = emailController.value.text;
+                        final password = passwordController.value.text;
+                        double? tipAmount =
+                            double.tryParse(preferredTipController.value.text);
+                        if (tipAmount != null) {
+                          tipAmount /= 100;
+                        }
+                        final loginUpdated =
+                            email.isNotEmpty || password.isNotEmpty;
+                        Map<String, dynamic> updates = {
+                          'firstName': firstNameController.value.text,
+                          'lastName': lastNameController.value.text,
+                          'email': email,
+                          'password': password,
+                          'venmo': venmoController.value.text,
+                          'tipAmount': tipAmount,
+                        };
+                        updates.removeWhere((key, value) =>
+                            value == null ||
+                            (value is String && value.isEmpty));
                         try {
-                          // Todo: Hook up to a modify user endpoint. Currently not implemented.
-                          // await UsersRepository.signup(firstName,
-                          //     lastName, email, password);
+                          await UsersRepository.modify(updates);
                           clear();
-                          if (await Util.login(email, password) && mounted) {
+                          if (loginUpdated &&
+                              await Util.login(email, password) &&
+                              mounted) {
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (context) => const TeamPage()),
                                 (r) => false);
-                          } else {
+                          } else if (loginUpdated) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Login failed.')));
                           }
@@ -225,5 +191,6 @@ class _ProfilePageState extends State<ProfilePage> {
     emailController.clear();
     passwordController.clear();
     preferredTipController.clear();
+    venmoController.clear();
   }
 }

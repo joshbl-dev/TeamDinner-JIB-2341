@@ -20,7 +20,6 @@ class SignupFormState extends State<SignupForm> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  final venmoController = TextEditingController();
 
   @override
   void dispose() {
@@ -29,7 +28,6 @@ class SignupFormState extends State<SignupForm> {
     firstNameController.dispose();
     lastNameController.dispose();
     confirmPasswordController.dispose();
-    venmoController.dispose();
     super.dispose();
   }
 
@@ -87,23 +85,6 @@ class SignupFormState extends State<SignupForm> {
               decoration: const InputDecoration(
                 hintText: "Email",
                 prefixIcon: Icon(Icons.mail, color: Colors.black),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
-            child: TextFormField(
-              controller: venmoController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter your venmo username";
-                }
-                return null;
-              },
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                hintText: "Venmo Username",
-                prefixIcon: Icon(Icons.money, color: Colors.black),
               ),
             ),
           ),
@@ -194,6 +175,5 @@ class SignupFormState extends State<SignupForm> {
     emailController.clear();
     passwordController.clear();
     confirmPasswordController.clear();
-    venmoController.clear();
   }
 }
