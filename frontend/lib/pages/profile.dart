@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/api/users_repository.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/pages/teams.dart';
 
 import '../Types/user.dart';
@@ -181,6 +182,41 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: RawMaterialButton(
+                  fillColor: Colors.redAccent,
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0)),
+                  onPressed: () async {
+                    try {
+                      Util.logout();
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const MyApp()),
+                          (r) => false);
+                    } on Exception {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Failed to logout"),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text(
+                    "Sign Out",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
