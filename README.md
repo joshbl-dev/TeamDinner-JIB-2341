@@ -7,6 +7,25 @@ and connection to a third-party cost-splitting app.
 
 # Release Notes Section
 
+## v 0.4.0
+### Features
+Backend
+* Added Venmo and Tip Percentage to User
+* Added split bill functionality
+* Added payment tracking
+
+Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.3
+
+Frontend
+* Iterated on UI for team screens and poll screens
+* Added a User Modification page
+* Added Logout functionality
+* Added Payment tracking system
+* Added split bill page
+
+### Bug Fixes
+* Login is saved between sessions now
+
 ## v 0.3.0
 ### Features
 Backend
