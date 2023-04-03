@@ -119,7 +119,10 @@ export class TeamsRepository extends FirebaseRepository {
 		const docRef: DocumentReference = await this.collection.doc(teamId);
 		await docRef.update({
 			invitations: firestore.FieldValue.arrayRemove(userId),
-			members: firestore.FieldValue.arrayUnion(userId)
+			members: firestore.FieldValue.arrayUnion({
+				id: userId,
+				debt: 0
+			})
 		});
 		return await this.getTeam(teamId);
 	}
