@@ -48,7 +48,7 @@ export class PollsController {
 	}
 
 	@ApiOperation({ summary: "Set the current poll stage" })
-	@ApiOkResponse({ description: "Poll stage set", type: Poll })
+	@ApiCreatedResponse({ description: "Poll stage set", type: Poll })
 	@ApiUnauthorizedResponse({ description: "Unauthorized JWT Token" })
 	@ApiForbiddenResponse({ description: "Not owner of team" })
 	@ApiNotFoundResponse({ description: "Entity not found" })
@@ -59,7 +59,7 @@ export class PollsController {
 	}
 
 	@ApiOperation({ summary: "Vote for a poll" })
-	@ApiOkResponse({ description: "Poll vote set", type: Poll })
+	@ApiCreatedResponse({ description: "Poll vote set", type: Poll })
 	@ApiUnauthorizedResponse({ description: "Unauthorized JWT Token" })
 	@ApiNotFoundResponse({ description: "Entity not found" })
 	@ApiBadRequestResponse({ description: "Invalid poll vote" })
@@ -84,7 +84,7 @@ export class PollsController {
 	@ApiOperation({
 		summary: "Split a bill between team members and get tip amount"
 	})
-	@ApiOkResponse({ description: "Bill split", type: SplitBillDto })
+	@ApiCreatedResponse({ description: "Bill split", type: SplitBillDto })
 	@ApiUnauthorizedResponse({ description: "Unauthorized JWT Token" })
 	@ApiForbiddenResponse({ description: "Not owner of team" })
 	@ApiNotFoundResponse({ description: "Entity not found" })
