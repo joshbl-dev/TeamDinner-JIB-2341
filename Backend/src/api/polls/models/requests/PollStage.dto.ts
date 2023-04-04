@@ -1,9 +1,9 @@
 import { PollStage } from "../../../../data/entities/Poll";
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsEnum, IsOptional, IsString } from "class-validator";
 
 export class PollStageDto {
-	@ApiProperty()
+	@ApiPropertyOptional()
 	@IsString()
 	@IsOptional()
 	pollId?: string;
