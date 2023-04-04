@@ -1,6 +1,8 @@
-export class Member {
-	id: string;
-	debt: number;
+import { ApiProperty } from "@nestjs/swagger";
 
-	
+export class Member {
+	@ApiProperty()
+	id: string;
+	@ApiProperty()
+	debt: number;
 }

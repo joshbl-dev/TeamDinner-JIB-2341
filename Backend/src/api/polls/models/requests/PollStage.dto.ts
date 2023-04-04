@@ -7,7 +7,7 @@ export class PollStageDto {
 	@IsString()
 	@IsOptional()
 	pollId?: string;
-	@ApiProperty()
+	@ApiProperty({ enum: PollStage })
 	@IsEnum(PollStage)
 	stage: PollStage;
 }
