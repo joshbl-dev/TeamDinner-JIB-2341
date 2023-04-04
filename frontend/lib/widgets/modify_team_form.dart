@@ -30,48 +30,9 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Members:",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 32.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: List.generate(team.members.length, (index) {
-                  if (team.members[index].id == team.owner.id) {
-                    return const SizedBox();
-                  }
-                  return Row(
-                    children: [
-                      Text(team.members[index].toString()),
-                      IconButton(
-                        onPressed: () async {
-                          var user = team.members[index];
-                          try {
-                            await TeamsRepository.removeMember(
-                                team.id, user.id);
-                            setState(() {
-                              team.members.remove(user);
-                            });
-                          } on Exception {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Failed to remove member.")));
-                          }
-                        },
-                        icon: const Icon(Icons.delete),
-                      ),
-                    ],
-                  );
-                }),
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Container(
@@ -88,6 +49,50 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                 ),
               ),
             ),
+            Visibility(
+                visible: team.members.length > 1,
+                child: Column(children: [
+                  const Text(
+                    "Members:",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 32.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: List.generate(team.members.length, (index) {
+                        if (team.members[index].id == team.owner.id) {
+                          return const SizedBox();
+                        }
+                        return Row(
+                          children: [
+                            Text(team.members[index].toString()),
+                            IconButton(
+                              onPressed: () async {
+                                var user = team.members[index];
+                                try {
+                                  await TeamsRepository.removeMember(
+                                      team.id, user.id);
+                                  setState(() {
+                                    team.members.remove(user);
+                                  });
+                                } on Exception {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              "Failed to remove member.")));
+                                }
+                              },
+                              icon: const Icon(Icons.delete),
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
+                ])),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
