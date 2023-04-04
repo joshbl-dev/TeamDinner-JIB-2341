@@ -12,6 +12,7 @@ import { Vote } from "../../data/entities/Vote";
 import { PollResultsDto } from "../../api/polls/models/responses/PollResults.dto";
 import { TeamBillDto } from "../../api/teams/models/requests/TeamBill.dto";
 import { Team } from "../../data/entities/Team";
+import { SplitBillDto } from "../../api/polls/models/responses/SplitBill.dto";
 
 @Injectable()
 export class PollsService {
@@ -50,18 +51,24 @@ export class PollsService {
 		return PollResultsDto.fromPoll(poll);
 	}
 
-	async splitBill(teamBillDto: TeamBillDto): Promise<void> {
+	async splitBill(teamBillDto: TeamBillDto): Promise<SplitBillDto> {
 		const team: Team = await this.teamsService.get();
 		const optOuts = await this.getOptOuts(team.id);
 		const split = teamBillDto.amount / (team.members.length - optOuts);
+		let tipTotal = 0;
 		for (const member of team.members) {
 			if (await this.isOptedOut(member.id)) {
 				continue;
 			}
 			const user: User = await this.usersService.get(member.id);
-			member.debt += split * (1 + (user.tips ? user.tips : 0));
+			const tip = split * (user.tips ? user.tips : 0);
+			tipTotal += tip;
+			member.debt += split + tip;
 			await this.teamsService.updateMember(team.id, member);
 		}
+		return {
+			tip: tipTotal
+		};
 	}
 
 	async getOptOuts(id?: string): Promise<number> {
