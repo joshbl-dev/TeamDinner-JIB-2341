@@ -10,8 +10,8 @@ export class Team {
 	description: string;
 	@ApiProperty()
 	owner: string;
-	@ApiProperty()
+	@ApiProperty({ type: [Member] })
 	members: Member[];
-	@ApiProperty()
+	@ApiProperty({ type: [String] })
 	invitations: string[];
 }

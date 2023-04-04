@@ -9,7 +9,7 @@ export class User {
 	firstName?: string;
 	@ApiPropertyOptional()
 	lastName?: string;
-	@ApiPropertyOptional()
+	@ApiPropertyOptional({ type: [String] })
 	teams?: string[];
 	@ApiPropertyOptional()
 	venmo?: string;
