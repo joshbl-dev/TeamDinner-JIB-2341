@@ -14,7 +14,7 @@ Backend
 * Added split bill functionality
 * Added payment tracking
 
-Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.3
+Swagger: https://app.swaggerhub.com/apis-docs/joshbl-dev/team-dinner_api/0.0.3
 
 Frontend
 * Iterated on UI for team screens and poll screens
@@ -33,7 +33,7 @@ Backend
 * cleaned up code to match convention
 * Add poll entity information
 
-Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.2
+Swagger: https://app.swaggerhub.com/apis-docs/joshbl-dev/team-dinner_api/0.0.2
 
 Frontend
 * Iterated on UI for team screens
@@ -51,7 +51,7 @@ Backend
 * Fixed some broken code
 * Add routes for team entity management
 
-Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.1
+Swagger: https://app.swaggerhub.com/apis-docs/joshbl-dev/team-dinner_api/0.0.1
 
 Frontend
 * Fixed and created new UI for login and signup screen
@@ -74,7 +74,7 @@ Backend
 * Create API deployment for frontend
 * Create user routes for adding friends 
 
-Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.1
+Swagger: https://app.swaggerhub.com/apis-docs/joshbl-dev/team-dinner_api/0.0.1
 
 Frontend
 The frontend deliverables started off with setting up the Flutter app and then connecting the backend
