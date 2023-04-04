@@ -1,11 +1,12 @@
 import {
 	ApiBadRequestResponse,
 	ApiBearerAuth,
+	ApiCreatedResponse,
 	ApiForbiddenResponse,
 	ApiNotFoundResponse,
+	ApiOkResponse,
 	ApiOperation,
 	ApiQuery,
-	ApiResponse,
 	ApiTags,
 	ApiUnauthorizedResponse
 } from "@nestjs/swagger";
@@ -26,7 +27,7 @@ export class PollsController {
 	constructor(private readonly pollsService: PollsService) {}
 
 	@ApiOperation({ summary: "Create a new poll for team" })
-	@ApiResponse({ status: 201, type: Poll })
+	@ApiCreatedResponse({ description: "Poll created", type: Poll })
 	@ApiUnauthorizedResponse({ description: "Unauthorized JWT Token" })
 	@ApiForbiddenResponse({ description: "Not owner of team" })
 	@ApiNotFoundResponse({ description: "Entity not found" })
@@ -37,7 +38,7 @@ export class PollsController {
 	}
 
 	@ApiOperation({ summary: "Get the current poll for team" })
-	@ApiResponse({ status: 200, type: Poll })
+	@ApiOkResponse({ description: "Poll found", type: Poll })
 	@ApiUnauthorizedResponse({ description: "Unauthorized JWT Token" })
 	@ApiNotFoundResponse({ description: "Entity not found" })
 	@ApiQuery({ name: "id", required: false })
@@ -47,7 +48,7 @@ export class PollsController {
 	}
 
 	@ApiOperation({ summary: "Set the current poll stage" })
-	@ApiResponse({ status: 201, type: Poll })
+	@ApiOkResponse({ description: "Poll stage set", type: Poll })
 	@ApiUnauthorizedResponse({ description: "Unauthorized JWT Token" })
 	@ApiForbiddenResponse({ description: "Not owner of team" })
 	@ApiNotFoundResponse({ description: "Entity not found" })
@@ -58,7 +59,7 @@ export class PollsController {
 	}
 
 	@ApiOperation({ summary: "Vote for a poll" })
-	@ApiResponse({ status: 201, type: Poll })
+	@ApiOkResponse({ description: "Poll vote set", type: Poll })
 	@ApiUnauthorizedResponse({ description: "Unauthorized JWT Token" })
 	@ApiNotFoundResponse({ description: "Entity not found" })
 	@ApiBadRequestResponse({ description: "Invalid poll vote" })
@@ -69,7 +70,10 @@ export class PollsController {
 
 	@ApiOperation({ summary: "Get the results of a poll" })
 	@ApiQuery({ name: "id", required: false })
-	@ApiResponse({ status: 200, type: PollResultsDto })
+	@ApiOkResponse({
+		description: "Poll results calculated",
+		type: PollResultsDto
+	})
 	@ApiUnauthorizedResponse({ description: "Unauthorized JWT Token" })
 	@ApiNotFoundResponse({ description: "Entity not found" })
 	@Get("results")
@@ -80,7 +84,7 @@ export class PollsController {
 	@ApiOperation({
 		summary: "Split a bill between team members and get tip amount"
 	})
-	@ApiResponse({ status: 200, type: SplitBillDto })
+	@ApiOkResponse({ description: "Bill split", type: SplitBillDto })
 	@ApiUnauthorizedResponse({ description: "Unauthorized JWT Token" })
 	@ApiForbiddenResponse({ description: "Not owner of team" })
 	@ApiNotFoundResponse({ description: "Entity not found" })
