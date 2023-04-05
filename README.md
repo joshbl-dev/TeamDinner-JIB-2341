@@ -5,7 +5,52 @@ service applications with functionalities to assign parent leaders and splitting
 The app incorporates interfaces for login/signup, team landing page, restaurant searching, polling, 
 and connection to a third-party cost-splitting app.
 
+# Setup Instructions
+## Frontend - Flutter
+Install Flutter by following the directions at https://docs.flutter.dev/get-started/install
+Open the Project and run main.dart
+
+## Backend - NestJS
+Install NestJS by following the directions at https://docs.nestjs.com/first-steps
+Install yarn by following the directions at https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable
+Open the project and run ```yarn start:dev``` on windows or ```yarn start:mac-dev``` on mac
+Once deployed on Vercel, Frontend baseUrl in Repository files will need to be updated.
+
+## Firestore
+Database is stored on Firestore at https://console.firebase.google.com/u/0/
+
+## Vercel
+
+Backend can be deployed via vercel at https://vercel.com with the following setup:
+### Project Settings:
+Framework Preset - Other
+Root Directory - "Backend" (check "Include source files outside of the Root Directory in the Build Step."
+Node.js Version - 18.x
+### Domains:
+Git Branch - main
+### Git:
+Connect to Github Repository
+### Environment Variables
+Check "Automatically expose System Envionment Variables"
+FIREBASE_CLIENT_EMAIL (Found via Firestore service account file)
+FIREBASE_PROJECT_ID (Found via Firestore service account file)
+FIREBASE_PRIVATE_KEY (Found via Firestore service account file)
+NODE_ENV=prod
+JWT_SECRET (whatever you choose)
+
 # Release Notes Section
+
+## v 0.5.0
+### Features
+Backend
+* Swagger Documentation completed
+
+Frontend
+* Frontend Documentation completed
+* Tip total added
+
+### Bug Fixes
+* Fixed missing tip value in split payment route
 
 ## v 0.4.0
 ### Features
