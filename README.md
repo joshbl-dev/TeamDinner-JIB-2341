@@ -24,7 +24,9 @@ Database is stored on Firestore at https://console.firebase.google.com/u/0/
 Backend can be deployed via vercel at https://vercel.com with the following setup:
 ### Project Settings:
 Framework Preset - Other
+
 Root Directory - "Backend" (check "Include source files outside of the Root Directory in the Build Step."
+
 Node.js Version - 18.x
 ### Domains:
 Git Branch - main
@@ -32,10 +34,15 @@ Git Branch - main
 Connect to Github Repository
 ### Environment Variables
 Check "Automatically expose System Envionment Variables"
+
 FIREBASE_CLIENT_EMAIL (Found via Firestore service account file)
+
 FIREBASE_PROJECT_ID (Found via Firestore service account file)
+
 FIREBASE_PRIVATE_KEY (Found via Firestore service account file)
+
 NODE_ENV=prod
+
 JWT_SECRET (whatever you choose)
 
 # Release Notes Section
