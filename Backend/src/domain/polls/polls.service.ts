@@ -62,7 +62,7 @@ export class PollsService {
 					continue;
 				}
 				const user: User = await this.usersService.get(member.id);
-				const tip = split * (user.tips ? user.tips : 0);
+				const tip = split * (user.tipAmount ? user.tipAmount : 0);
 				tipTotal += tip;
 				member.debt += split + tip;
 				await this.teamsService.updateMember(team.id, member);

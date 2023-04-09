@@ -14,5 +14,5 @@ export class User {
 	@ApiPropertyOptional()
 	venmo?: string;
 	@ApiPropertyOptional()
-	tips?: number;
+	tipAmount?: number;
 }
