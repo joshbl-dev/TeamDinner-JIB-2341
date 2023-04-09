@@ -4,5 +4,5 @@ export class User {
 	lastName?: string;
 	teams?: string[];
 	venmo?: string;
-	tips?: number;
+	tipAmount?: number;
 }
