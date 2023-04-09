@@ -12,6 +12,7 @@ class SplitBillForm extends StatefulWidget {
 class _SplitBillFormState extends State<SplitBillForm> {
   final formKey = GlobalKey<FormState>();
   final paymentController = TextEditingController();
+  double? tip;
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +85,11 @@ class _SplitBillFormState extends State<SplitBillForm> {
                           borderRadius: BorderRadius.circular(12.0)),
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          await PollsRepository.split(
+                          final tip = await PollsRepository.split(
                               double.parse(paymentController.text));
+                          setState(() {
+                            this.tip = tip;
+                          };
                         }
                         paymentController.clear();
                       },
@@ -97,7 +101,14 @@ class _SplitBillFormState extends State<SplitBillForm> {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  Visibility(
+                    visible: tip != null,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Tip: $tip"),
+                    ),
+                  ),
                 ],
               )),
         ],
