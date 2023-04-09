@@ -84,7 +84,6 @@ class PollsRepository {
         "optionIds": vote.optionIds
       }),
     );
-    print(response.body);
     if (response.statusCode == 201) {
       return Poll.fromJson(json.decode(response.body));
     } else {
@@ -127,7 +126,7 @@ class PollsRepository {
       body: jsonEncode(<String, dynamic>{"amount": amount}),
     );
     if (response.statusCode == 201) {
-      return json.decode(response.body)["tip"] * 1.0;
+      return double.parse(json.decode(response.body)["tip"]);
     } else {
       throw Exception('Failed to split payments.');
     }

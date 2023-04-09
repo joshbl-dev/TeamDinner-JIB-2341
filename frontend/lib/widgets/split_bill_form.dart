@@ -89,7 +89,7 @@ class _SplitBillFormState extends State<SplitBillForm> {
                               double.parse(paymentController.text));
                           setState(() {
                             this.tip = tip;
-                          };
+                          });
                         }
                         paymentController.clear();
                       },
@@ -106,7 +106,12 @@ class _SplitBillFormState extends State<SplitBillForm> {
                     visible: tip != null,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text("Tip: $tip"),
+                      child: Text("Tip: $tip",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          )),
                     ),
                   ),
                 ],
