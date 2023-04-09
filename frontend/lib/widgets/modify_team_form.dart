@@ -94,7 +94,7 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                   ),
                 ])),
             const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
                 "Modify you team",
                 style: TextStyle(

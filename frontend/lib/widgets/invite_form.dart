@@ -31,45 +31,9 @@ class _InviteFormState extends State<InviteForm> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Invitations:",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 32.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: List.generate(team.invitations.length, (index) {
-                  return Row(
-                    children: [
-                      Text(team.invitations[index].toString()),
-                      IconButton(
-                        onPressed: () async {
-                          var user = team.invitations[index];
-                          try {
-                            await TeamsRepository.rejectInvites(
-                                team.id, user.id);
-                            setState(() {
-                              team.invitations.remove(user);
-                            });
-                          } on Exception {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Failed to remove invite.")));
-                          }
-                        },
-                        icon: const Icon(Icons.delete),
-                      ),
-                    ],
-                  );
-                }),
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Container(
@@ -86,8 +50,14 @@ class _InviteFormState extends State<InviteForm> {
                 ),
               ),
             ),
+            Visibility(
+              visible: team.invitations.isNotEmpty,
+              child: Column(
+                children: getInvitations(),
+              ),
+            ),
             const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
                 "Invite team members",
                 style: TextStyle(
@@ -176,5 +146,41 @@ class _InviteFormState extends State<InviteForm> {
         ),
       ),
     );
+  }
+
+  getInvitations() {
+    List<Widget> widgets = [
+      const Text(
+        "Invitations:",
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 32.0,
+          fontWeight: FontWeight.bold,
+        ),
+      )
+    ];
+    widgets.addAll(List.generate(team.invitations.length, (index) {
+      return Row(
+        children: [
+          Text(team.invitations[index].toString()),
+          IconButton(
+            onPressed: () async {
+              var user = team.invitations[index];
+              try {
+                await TeamsRepository.rejectInvites(team.id, user.id);
+                setState(() {
+                  team.invitations.remove(user);
+                });
+              } on Exception {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Failed to remove invite.")));
+              }
+            },
+            icon: const Icon(Icons.delete),
+          ),
+        ],
+      );
+    }));
+    return widgets;
   }
 }
