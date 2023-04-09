@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/api/polls_repository.dart';
+import 'package:intl/intl.dart';
 
 class SplitBillForm extends StatefulWidget {
   const SplitBillForm({Key? key}) : super(key: key);
@@ -105,8 +106,10 @@ class _SplitBillFormState extends State<SplitBillForm> {
                   Visibility(
                     visible: tip != null,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Tip: $tip",
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                          "Payment split:\nTotal tip was ${NumberFormat.simpleCurrency().format(tip ?? 0)}",
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 18.0,
