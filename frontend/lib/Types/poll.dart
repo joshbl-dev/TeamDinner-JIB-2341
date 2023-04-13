@@ -3,6 +3,7 @@ import 'package:frontend/Types/vote.dart';
 import 'poll_option.dart';
 import 'poll_stage.dart';
 
+// Initializing all the elements of the poll
 class Poll {
   String id;
   String topic;

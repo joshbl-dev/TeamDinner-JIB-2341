@@ -7,7 +7,7 @@ class CreateTeamPage extends StatefulWidget {
   @override
   State<CreateTeamPage> createState() => _CreateTeamPageState();
 }
-
+// Create the "create team page"
 class _CreateTeamPageState extends State<CreateTeamPage> {
   @override
   Widget build(BuildContext context) {
@@ -83,6 +83,7 @@ Widget listViewItem(int index) {
     ),
   );
 }
+// Layout of displaying team and team description
 Widget message(int index) {
   double textSize = 14;
   return RichText(
@@ -106,7 +107,7 @@ Widget message(int index) {
     ),
   );
 }
-
+// Hard coded date and time of team creation to test functionality
 Widget timeAndDate(int index) {
   return Container(
     margin: const EdgeInsets.only(top: 5),

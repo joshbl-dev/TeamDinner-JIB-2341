@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_polls/flutter_polls.dart';
 import '../api/polls.dart';
-
+// Messaging page no current functionality
 class MessagesPage extends StatefulWidget {
   const MessagesPage({Key? key}) : super(key: key);
 

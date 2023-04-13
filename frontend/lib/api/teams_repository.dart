@@ -6,13 +6,14 @@ import '../Types/team.dart';
 import '../Types/user.dart';
 import '../util.dart';
 
+/* Repository for teams; stores descriptions and behaviors of the teams object */
 class TeamsRepository {
   static const String baseUrl = "https://team-dinner-jib-2341.vercel.app";
   static final Map<String, String> headers = <String, String>{
     'Content-Type': 'application/json; charset=UTF-8',
   };
   static const String repositoryName = "teams";
-
+  /* Waiting for team user information */
   static Future<User> get(String id) async {
     final response = await http.get(
       Uri.parse("$baseUrl/$repositoryName?id=$id"),
@@ -21,6 +22,7 @@ class TeamsRepository {
         "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
     );
+    /* Error handling for no existing team */
     if (response.statusCode == 200) {
       return User.fromJson(json.decode(response.body));
     } else {
@@ -28,7 +30,7 @@ class TeamsRepository {
     }
   }
 
-  //create
+  /* create a team with name and description */
   static Future<Team> create(String name, String description) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/create"),
@@ -39,6 +41,7 @@ class TeamsRepository {
       body: jsonEncode(
           <String, String>{'name': name, "description": description}),
     );
+    /* Error handling for not being able to create team */
     if (response.statusCode == 201) {
       return Team.fromJson(json.decode(response.body));
     } else {
@@ -46,7 +49,7 @@ class TeamsRepository {
     }
   }
 
-  //update
+  /* update the team name and description */
   static Future<Team> update(String? name, String? description) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/update"),
@@ -57,6 +60,7 @@ class TeamsRepository {
       body: jsonEncode(
           <String, String?>{'name': name, "description": description}),
     );
+    /* Error handling for failing to create a team */
     if (response.statusCode == 201) {
       return Team.fromJson(json.decode(response.body));
     } else {
@@ -64,7 +68,7 @@ class TeamsRepository {
     }
   }
 
-  //delete
+  /* delete the current team */
   static Future<bool> delete(String? id) async {
     final response = await http.delete(
         Uri.parse("$baseUrl/$repositoryName${id != null ? "?id=$id" : ""}"),
@@ -72,6 +76,7 @@ class TeamsRepository {
           'Content-Type': 'application/json; charset=UTF-8',
           "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
         });
+    /* Error handling for failing to delete team */
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -79,7 +84,7 @@ class TeamsRepository {
     }
   }
 
-  //members
+  /* Handling team member data */
   static Future<Team> getMembersTeam(String? id) async {
     final response = await http.get(
       Uri.parse(
@@ -89,6 +94,7 @@ class TeamsRepository {
         "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
     );
+    /* Error handling for not finding team member */
     if (response.statusCode == 200) {
       return Team.fromJson(json.decode(response.body));
     } else {
@@ -96,7 +102,7 @@ class TeamsRepository {
     }
   }
 
-  //members remove
+  /* removing team member with teamId and userId */
   static Future<Team> removeMember(String teamId, String? userId) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/members/remove"),
@@ -106,13 +112,14 @@ class TeamsRepository {
       },
       body: jsonEncode(<String, String?>{'teamId': teamId, 'userId': userId}),
     );
+    /* Error handling failed to remove member */
     if (response.statusCode == 201) {
       return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to remove member.');
     }
   }
-
+  /* invite users to the team with teamId and email */
   static Future<Team> invites(String teamID, String email) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/invites"),
@@ -122,6 +129,7 @@ class TeamsRepository {
       },
       body: jsonEncode(<String, String>{'teamId': teamID, 'email': email}),
     );
+    /* Error handling failed to invite user */
     if (response.statusCode == 201) {
       return Team.fromJson(json.decode(response.body));
     } else {
@@ -129,7 +137,7 @@ class TeamsRepository {
     }
   }
 
-  //invites accept
+  /* accept team invite, process teamId and userId */
   static Future<Team> acceptInvites(String teamId, String userId) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/invites/accept"),
@@ -139,13 +147,14 @@ class TeamsRepository {
       },
       body: jsonEncode(<String, String>{'teamId': teamId, 'userId': userId}),
     );
+    /* Error handling failed to accept invite */
     if (response.statusCode == 201) {
       return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to accept invite.');
     }
   }
-
+  /* reject pending invites, processing teamId and userId */
   static Future<Team> rejectInvites(String teamId, String userId) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/invites/reject"),
@@ -155,13 +164,14 @@ class TeamsRepository {
       },
       body: jsonEncode(<String, String>{'teamId': teamId, 'userId': userId}),
     );
+    /* Error handling failed to reject invite */
     if (response.statusCode == 201) {
       return Team.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to reject invite.');
     }
   }
-
+  /* Get current invites for user with userId */
   static Future<List<Team>> getInvitesForUser(String? userId) async {
     final response = await http.get(
       Uri.parse("$baseUrl/$repositoryName/invites/member"
@@ -171,6 +181,7 @@ class TeamsRepository {
         "Authorization": "Bearer ${(await Util.getAccessToken())!.token}"
       },
     );
+    /* Error handling failed to get invites for user */
     if (response.statusCode == 200) {
       List<Team> teams = [];
       for (var element in json.decode(response.body)) {
@@ -181,7 +192,7 @@ class TeamsRepository {
       throw Exception('Failed to get invites for User.');
     }
   }
-
+  /* Handles payment with teamId, userId, and amount */
   static Future<Team> pay(String teamId, String userId, double amount) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/pay"),
@@ -195,6 +206,7 @@ class TeamsRepository {
         'amount': amount
       }),
     );
+    /* Error handling cannot reduce debt */
     if (response.statusCode == 201) {
       return Team.fromJson(json.decode(response.body));
     } else {

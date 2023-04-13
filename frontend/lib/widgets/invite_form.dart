@@ -13,7 +13,7 @@ class InviteForm extends StatefulWidget {
   @override
   State<InviteForm> createState() => _InviteFormState();
 }
-
+// Functionality of creating invites
 class _InviteFormState extends State<InviteForm> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -26,6 +26,7 @@ class _InviteFormState extends State<InviteForm> {
   }
 
   @override
+  // Formatting and layout of the invitations page
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -57,6 +58,7 @@ class _InviteFormState extends State<InviteForm> {
                             setState(() {
                               team.invitations.remove(user);
                             });
+                            // Error Handling for failing to remove invite
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -70,6 +72,7 @@ class _InviteFormState extends State<InviteForm> {
                 }),
               ),
             ),
+            // button to invite team members
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Container(
@@ -97,6 +100,7 @@ class _InviteFormState extends State<InviteForm> {
                 ),
               ),
             ),
+            // Text field for inviting new members using their email
             Form(
               key: formKey,
               child: Column(
@@ -118,6 +122,7 @@ class _InviteFormState extends State<InviteForm> {
                       ),
                     ),
                   ),
+                  // button to invite members
                   SizedBox(
                     width: double.infinity,
                     child: RawMaterialButton(
@@ -143,12 +148,14 @@ class _InviteFormState extends State<InviteForm> {
                                 this.team.invitations.add(newMember);
                               });
                             }
+                            // Invite sent confirmation
                             if (mounted) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
                                 content: Text("Invite sent"),
                               ));
                             }
+                            // Error handling for failing to invite a member
                           } on Exception {
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(

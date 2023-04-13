@@ -5,6 +5,7 @@ class CreatePollPage extends StatelessWidget {
   const CreatePollPage({Key? key}) : super(key: key);
 
   @override
+  // Create the body of the poll with proper alignments
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -29,6 +30,7 @@ class CreatePollPage extends StatelessWidget {
                 ),
               ),
             ),
+            // Title for the poll page
             const Padding(
               padding: EdgeInsets.only(bottom: 32.0),
               child: Text(
@@ -39,6 +41,7 @@ class CreatePollPage extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
             ),
+            // Call CreatePollForm file, for more poll functions
             const CreatePollForm(),
           ],
         ),

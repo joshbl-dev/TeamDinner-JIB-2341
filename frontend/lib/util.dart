@@ -2,7 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'Types/token.dart';
 import 'api/users_repository.dart';
-
+// Using token to make login functionality work
 class Util {
   static Future<bool> login(String email, String password) async {
     try {

@@ -5,6 +5,7 @@ class CreateNewTeamPage extends StatelessWidget {
   const CreateNewTeamPage({Key? key}) : super(key: key);
 
   @override
+  // Formatting of creating a new team
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset : true,
@@ -40,6 +41,7 @@ class CreateNewTeamPage extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
             ),
+            // Call new team form to load all functions of creating a new team
             const NewTeamForm(),
           ],
         ),

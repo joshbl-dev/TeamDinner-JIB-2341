@@ -1,3 +1,4 @@
+// authorization processing, receives id, email, and password
 class Auth {
   String id;
   String email;

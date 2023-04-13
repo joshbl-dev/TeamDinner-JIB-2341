@@ -15,7 +15,7 @@ class OwnershipForm extends StatefulWidget {
   @override
   State<OwnershipForm> createState() => OwnershipFormState();
 }
-
+// Page for the owner of the team
 class OwnershipFormState extends State<OwnershipForm> {
   final formKey = GlobalKey<FormState>();
   late Team team;
@@ -28,7 +28,7 @@ class OwnershipFormState extends State<OwnershipForm> {
 
   @override
   Widget build(BuildContext context) {
-
+  // Body of the ownership page, able to view notification, team name, and team description 
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),

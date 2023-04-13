@@ -10,7 +10,7 @@ class CreatePollForm extends StatefulWidget {
   @override
   State<CreatePollForm> createState() => _CreatePollFormState();
 }
-
+// File for creating the actual poll
 class _CreatePollFormState extends State<CreatePollForm> {
   final formKey = GlobalKey<FormState>();
   bool isMultiple = false;
@@ -25,6 +25,7 @@ class _CreatePollFormState extends State<CreatePollForm> {
   int stage = 0;
 
   @override
+  // layout of the poll page
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -36,19 +37,19 @@ class _CreatePollFormState extends State<CreatePollForm> {
           )),
     );
   }
-
+  // function to add poll option
   void addOption() {
     setState(() {
       options.add(TextEditingController());
     });
   }
-
+  // function to remove a poll option
   void removeOption() {
     setState(() {
       options.removeLast();
     });
   }
-
+  // Text field to create options in the poll
   Widget buildOption(int index) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
@@ -67,7 +68,7 @@ class _CreatePollFormState extends State<CreatePollForm> {
       ),
     );
   }
-
+  // Text form to create a hint text for each option
   Widget buildTextField(
       TextEditingController controller, String hintText, IconData icon,
       [Function()? onTap]) {
@@ -89,7 +90,7 @@ class _CreatePollFormState extends State<CreatePollForm> {
       ),
     );
   }
-
+  // establish build stage for the poll
   Widget buildStage(context) {
     switch (stage) {
       case 0:
@@ -100,7 +101,7 @@ class _CreatePollFormState extends State<CreatePollForm> {
         return buildStage0(context);
     }
   }
-
+  // first build stage create topic, description, meeting location, and meeting time
   Widget buildStage0(context) {
     return Column(
       children: [
@@ -124,6 +125,7 @@ class _CreatePollFormState extends State<CreatePollForm> {
             });
           }
         }),
+        // Check box to enable eating at multiple restaurants
         Padding(
             padding: const EdgeInsets.only(bottom: 16.0),
             child: CheckboxListTile(
@@ -139,6 +141,7 @@ class _CreatePollFormState extends State<CreatePollForm> {
                 }
               },
             )),
+        // Check box to enable alcohol menu
         Padding(
             padding: const EdgeInsets.only(bottom: 16.0),
             child: CheckboxListTile(
@@ -158,7 +161,7 @@ class _CreatePollFormState extends State<CreatePollForm> {
       ],
     );
   }
-
+  // Second stage creates the options
   Widget buildStage1() {
     var widgets = [getHeader()];
     widgets
@@ -167,7 +170,7 @@ class _CreatePollFormState extends State<CreatePollForm> {
     widgets.add(getButton());
     return Column(children: widgets);
   }
-
+  // Functionality for adding and removing options
   Widget getAddRemove() {
     return Row(
       children: [
@@ -276,7 +279,7 @@ class _CreatePollFormState extends State<CreatePollForm> {
       ],
     );
   }
-
+  // Finalizing poll and create button
   Widget getButton() {
     return SizedBox(
       width: double.infinity,

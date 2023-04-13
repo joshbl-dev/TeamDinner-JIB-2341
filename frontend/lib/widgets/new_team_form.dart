@@ -4,7 +4,7 @@ import 'package:frontend/api/users_repository.dart';
 
 import '../Types/team.dart';
 import '../Types/user.dart';
-
+// Functionality of creating a new team
 class NewTeamForm extends StatefulWidget {
   const NewTeamForm({Key? key}) : super(key: key);
 
@@ -63,6 +63,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
             const Padding(
               padding: const EdgeInsets.only(top: 30),
             ),
+            // List of pending invitations
             const Text(
               "Pending Invitations",
               style: TextStyle(
@@ -86,6 +87,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
                           ),
                         ),
                       ),
+                      // Accept invite button
                       IconButton(
                         onPressed: () async {
                           Team team = teams[index];
@@ -96,6 +98,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
                             if (mounted) {
                               Navigator.pop(context);
                             }
+                            // Error handling for not being able to accept invite
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -106,6 +109,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
                         color: Colors.lightGreen,
                         icon: const Icon(Icons.check_circle_outline),
                       ),
+                      // remove invite button
                       IconButton(
                         onPressed: () async {
                           Team team = teams[index];
@@ -117,6 +121,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
                               teams.removeWhere(
                                   (element) => element.id == team.id);
                             });
+                            // Error handling for failing to remove invite
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -132,6 +137,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
                 }),
               ),
             ),
+            // Creating a team when not currently in one
             const Padding(
               padding: EdgeInsets.only(
                   bottom: 12.0, top: 70.0, left: 8.0, right: 8.0),
@@ -150,6 +156,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
                 radius: 80,
               ),
             ),
+            // Text fields to create a team, with team name and team description
             Form(
               key: formKey,
               child: Column(
@@ -199,6 +206,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
                   const Padding(
                     padding: EdgeInsets.only(top: 1),
                   ),
+                  // Button to create the team
                   SizedBox(
                     width: double.infinity,
                     child: RawMaterialButton(
@@ -217,6 +225,7 @@ class _NewTeamFormState extends State<NewTeamForm> {
                             if (mounted) {
                               Navigator.pop(context);
                             }
+                            // Error handling for failing to create a team
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

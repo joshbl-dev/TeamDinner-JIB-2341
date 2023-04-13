@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/teams_repository.dart';
 
 import '../Types/team.dart';
-
+// Functionality and format of the modify team page
 class ModifyTeamForm extends StatefulWidget {
   final Team team;
 
@@ -23,7 +23,7 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
     super.initState();
     team = widget.team;
   }
-
+  // Formatting the modifying team page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +33,7 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // List of members
             const Text(
               "Members:",
               style: TextStyle(
@@ -59,6 +60,7 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                             setState(() {
                               team.members.remove(user);
                             });
+                            // Error handling for not being able to remove member
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -72,6 +74,7 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                 }),
               ),
             ),
+            // back button
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Container(
@@ -88,6 +91,7 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                 ),
               ),
             ),
+            // Title of the page
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
@@ -99,6 +103,7 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                 ),
               ),
             ),
+            // Text fields to modify elements of the team; team name and description
             Form(
               key: formKey,
               child: Column(
@@ -123,6 +128,7 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                       ),
                     ),
                   ),
+                  // Update team button
                   SizedBox(
                     width: double.infinity,
                     child: RawMaterialButton(
@@ -145,6 +151,7 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                                 ),
                               );
                             }
+                            // Error handling if you cannot update the team
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -163,6 +170,7 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                       ),
                     ),
                   ),
+                  // Delete team button
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: SizedBox(
@@ -179,6 +187,7 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                               if (mounted) {
                                 Navigator.pop(context);
                               }
+                              // Error handling for not being able to delete team
                             } on Exception {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

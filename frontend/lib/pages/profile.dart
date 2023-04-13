@@ -13,7 +13,7 @@ class ProfilePage extends StatefulWidget {
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
-
+// Functions of the pofile page
 class _ProfilePageState extends State<ProfilePage> {
   final formKey = GlobalKey<FormState>();
   final firstNameController = TextEditingController();
@@ -34,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
     venmoController.dispose();
     super.dispose();
   }
-
+  // Layout of the profile page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Form(
               key: formKey,
               child: Column(
+                // Handling user information in profile page firstName, lastName, email, password, venmo, and tipAmount
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12.0),
@@ -144,6 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             'venmo': venmoController.value.text,
                             'tipAmount': tipAmount,
                           };
+                          // handling updating the suer profiling
                           updates.removeWhere((key, value) =>
                               value == null ||
                               (value is String && value.isEmpty));
@@ -171,6 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           }
                         }
                       },
+                      // button to update user profile
                       child: const Text(
                         "Update Profile",
                         style: TextStyle(
@@ -184,6 +187,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
+            // Sign-out button
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(

@@ -1,3 +1,4 @@
+/*Hard coded poll for app just to test functionality*/
 List polls() => [
   {
     'id': 1,

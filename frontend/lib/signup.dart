@@ -5,6 +5,7 @@ class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
   @override
+  // Format of the signup page
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -43,6 +44,7 @@ class SignUpPage extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
               ),
+              // Call SignupForm in order to load all functions of signing up
               const SignupForm(),
             ],
           ),

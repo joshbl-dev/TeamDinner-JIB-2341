@@ -1,3 +1,4 @@
+// Initializing the functionality of a vote
 class Vote {
   String userId;
   List<String> optionIds;

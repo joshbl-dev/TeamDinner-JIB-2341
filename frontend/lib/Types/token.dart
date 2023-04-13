@@ -1,3 +1,4 @@
+// Creating token for implementation in other files
 class Token {
   final String token;
 

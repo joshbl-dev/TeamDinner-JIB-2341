@@ -1,3 +1,4 @@
+// Initializing the options within the poll
 class PollOption {
   String id;
   String option;
