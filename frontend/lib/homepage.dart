@@ -17,6 +17,7 @@ const List<Widget> _widgetOptions = <Widget>[
   PollsPage(),
   ProfilePage(),
 ];
+
 // Basic layout of the homepage
 class _HomePageState extends State<HomePage> {
   @override
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.deepPurple[300],
         elevation: 0,
         centerTitle: true,
