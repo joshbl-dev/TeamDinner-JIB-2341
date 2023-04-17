@@ -121,8 +121,9 @@ class PollsRepository {
       throw Exception('Failed to vote on poll.');
     }
   }
+
   /* Handles splitting payment after poll has been completed */
-  static Future<void> split(double amount) async {
+  static Future<double> split(double amount) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/split"),
       headers: <String, String>{
@@ -131,8 +132,11 @@ class PollsRepository {
       },
       body: jsonEncode(<String, dynamic>{"amount": amount}),
     );
+    
     /* Error handling not able to split payments */
-    if (response.statusCode != 201) {
+    if (response.statusCode == 201) {
+      return json.decode(response.body)["tip"] * 1.0;
+    } else {
       throw Exception('Failed to split payments.');
     }
   }

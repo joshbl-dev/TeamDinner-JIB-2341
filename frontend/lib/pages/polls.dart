@@ -208,8 +208,8 @@ class _PollsPageState extends State<PollsPage> {
               backgroundColor: Colors.greenAccent,
               side: BorderSide.none,
               shape: const StadiumBorder()),
-          child: const Text('Calculate Payments',
-              style: TextStyle(color: Colors.black)),
+          child:
+              const Text('Split Bill', style: TextStyle(color: Colors.black)),
         ));
       }
     }

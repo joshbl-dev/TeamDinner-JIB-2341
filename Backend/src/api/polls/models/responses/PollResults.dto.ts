@@ -1,14 +1,15 @@
 import { Poll } from "../../../../data/entities/Poll";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsObject } from "class-validator";
 
 export class PollResultsDto {
 	@ApiProperty()
 	id: string;
 	@ApiProperty({
-		example: { optionId: "voteCount" }
+		example: {
+			option_id_1: 4,
+			option_id_2: 1
+		}
 	})
-	@IsObject()
 	results: { [key: string]: number };
 
 	static fromPoll(poll: Poll): PollResultsDto {

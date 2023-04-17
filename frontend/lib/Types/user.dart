@@ -4,7 +4,7 @@ class User {
   String firstName;
   String lastName;
   String? venmo;
-  dynamic? debt;
+  dynamic debt;
 
   User(this.firstName, this.lastName, this.id, {this.venmo, this.debt});
 

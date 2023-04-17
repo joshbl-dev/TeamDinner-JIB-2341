@@ -2,16 +2,32 @@ import { Poll_Option } from "./Poll_Option";
 import { Vote } from "./Vote";
 import { PollCreateDto } from "../../api/polls/models/requests/PollCreate.dto";
 import { uuid } from "../../utils/util";
+import { ApiProperty } from "@nestjs/swagger";
+
+export enum PollStage {
+	NOT_STARTED = "NOT_STARTED",
+	IN_PROGRESS = "IN_PROGRESS",
+	FINISHED = "FINISHED"
+}
 
 export class Poll {
+	@ApiProperty()
 	id: string; // matches team ID
+	@ApiProperty()
 	topic: string;
+	@ApiProperty()
 	description: string;
+	@ApiProperty()
 	time: Date;
+	@ApiProperty()
 	location: string;
+	@ApiProperty()
 	isMultichoice: boolean;
+	@ApiProperty({ type: () => [Poll_Option] })
 	options: Poll_Option[];
+	@ApiProperty({ type: () => [Vote] })
 	votes: Vote[];
+	@ApiProperty({ enum: PollStage })
 	stage: PollStage;
 
 	static fromDto(dto: PollCreateDto, teamId: string): Poll {
@@ -38,10 +54,4 @@ export class Poll {
 			stage: PollStage.NOT_STARTED
 		};
 	}
-}
-
-export enum PollStage {
-	NOT_STARTED = "NOT_STARTED",
-	IN_PROGRESS = "IN_PROGRESS",
-	FINISHED = "FINISHED"
 }

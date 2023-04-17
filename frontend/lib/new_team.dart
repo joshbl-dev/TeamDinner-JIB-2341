@@ -8,12 +8,12 @@ class CreateNewTeamPage extends StatelessWidget {
   // Formatting of creating a new team
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : true,
+      resizeToAvoidBottomInset: true,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisAlignment: MainAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),

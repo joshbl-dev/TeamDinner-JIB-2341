@@ -1,8 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class Member {
+export class SplitBillDto {
 	@ApiProperty()
-	id: string;
-	@ApiProperty()
-	debt: number;
+	tip: number;
 }

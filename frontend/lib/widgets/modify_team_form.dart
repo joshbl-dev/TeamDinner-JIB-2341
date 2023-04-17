@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/api/teams_repository.dart';
 
 import '../Types/team.dart';
-// Functionality and format of the modify team page
+
 class ModifyTeamForm extends StatefulWidget {
   final Team team;
 
@@ -23,58 +23,16 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
     super.initState();
     team = widget.team;
   }
-  // Formatting the modifying team page
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // List of members
-            const Text(
-              "Members:",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 32.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: List.generate(team.members.length, (index) {
-                  if (team.members[index].id == team.owner.id) {
-                    return const SizedBox();
-                  }
-                  return Row(
-                    children: [
-                      Text(team.members[index].toString()),
-                      IconButton(
-                        onPressed: () async {
-                          var user = team.members[index];
-                          try {
-                            await TeamsRepository.removeMember(
-                                team.id, user.id);
-                            setState(() {
-                              team.members.remove(user);
-                            });
-                            // Error handling for not being able to remove member
-                          } on Exception {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Failed to remove member.")));
-                          }
-                        },
-                        icon: const Icon(Icons.delete),
-                      ),
-                    ],
-                  );
-                }),
-              ),
-            ),
-            // back button
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Container(
@@ -91,9 +49,52 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                 ),
               ),
             ),
-            // Title of the page
+            Visibility(
+                visible: team.members.length > 1,
+                child: Column(children: [
+                  const Text(
+                    "Members:",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 32.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: List.generate(team.members.length, (index) {
+                        if (team.members[index].id == team.owner.id) {
+                          return const SizedBox();
+                        }
+                        return Row(
+                          children: [
+                            Text(team.members[index].toString()),
+                            IconButton(
+                              onPressed: () async {
+                                var user = team.members[index];
+                                try {
+                                  await TeamsRepository.removeMember(
+                                      team.id, user.id);
+                                  setState(() {
+                                    team.members.remove(user);
+                                  });
+                                } on Exception {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              "Failed to remove member.")));
+                                }
+                              },
+                              icon: const Icon(Icons.delete),
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
+                ])),
             const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
                 "Modify you team",
                 style: TextStyle(
@@ -103,7 +104,6 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                 ),
               ),
             ),
-            // Text fields to modify elements of the team; team name and description
             Form(
               key: formKey,
               child: Column(
@@ -128,7 +128,6 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                       ),
                     ),
                   ),
-                  // Update team button
                   SizedBox(
                     width: double.infinity,
                     child: RawMaterialButton(
@@ -151,7 +150,6 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                                 ),
                               );
                             }
-                            // Error handling if you cannot update the team
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -170,7 +168,6 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                       ),
                     ),
                   ),
-                  // Delete team button
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: SizedBox(
@@ -187,7 +184,6 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
                               if (mounted) {
                                 Navigator.pop(context);
                               }
-                              // Error handling for not being able to delete team
                             } on Exception {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
