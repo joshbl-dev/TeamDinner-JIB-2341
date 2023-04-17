@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/api/polls_repository.dart';
+import 'package:intl/intl.dart';
 
 class SplitBillForm extends StatefulWidget {
   const SplitBillForm({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class SplitBillForm extends StatefulWidget {
 class _SplitBillFormState extends State<SplitBillForm> {
   final formKey = GlobalKey<FormState>();
   final paymentController = TextEditingController();
+  double? tip;
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +86,11 @@ class _SplitBillFormState extends State<SplitBillForm> {
                           borderRadius: BorderRadius.circular(12.0)),
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          await PollsRepository.split(
+                          final tip = await PollsRepository.split(
                               double.parse(paymentController.text));
+                          setState(() {
+                            this.tip = tip;
+                          });
                         }
                         paymentController.clear();
                       },
@@ -97,7 +102,21 @@ class _SplitBillFormState extends State<SplitBillForm> {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  Visibility(
+                    visible: tip != null,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                          "Payment split:\nTotal tip was ${NumberFormat.simpleCurrency().format(tip ?? 0)}",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                  ),
                 ],
               )),
         ],

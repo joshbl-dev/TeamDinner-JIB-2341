@@ -116,7 +116,7 @@ class PollsRepository {
     }
   }
 
-  static Future<void> split(double amount) async {
+  static Future<double> split(double amount) async {
     final response = await http.post(
       Uri.parse("$baseUrl/$repositoryName/split"),
       headers: <String, String>{
@@ -125,7 +125,9 @@ class PollsRepository {
       },
       body: jsonEncode(<String, dynamic>{"amount": amount}),
     );
-    if (response.statusCode != 201) {
+    if (response.statusCode == 201) {
+      return json.decode(response.body)["tip"] * 1.0;
+    } else {
       throw Exception('Failed to split payments.');
     }
   }
