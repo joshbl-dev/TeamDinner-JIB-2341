@@ -52,23 +52,29 @@ export class PollsService {
 	}
 
 	async splitBill(teamBillDto: TeamBillDto): Promise<SplitBillDto> {
-		const team: Team = await this.teamsService.get();
-		const optOuts = await this.getOptOuts(team.id);
-		const split = teamBillDto.amount / (team.members.length - optOuts);
-		let tipTotal = 0;
-		for (const member of team.members) {
-			if (await this.isOptedOut(member.id)) {
-				continue;
+		if (await this.isOwner()) {
+			const team: Team = await this.teamsService.get();
+			const optOuts = await this.getOptOuts(team.id);
+			const split = teamBillDto.amount / (team.members.length - optOuts);
+			let tipTotal = 0;
+			for (const member of team.members) {
+				if (await this.isOptedOut(member.id)) {
+					continue;
+				}
+				const user: User = await this.usersService.get(member.id);
+				const tip = split * (user.tipAmount ? user.tipAmount : 0);
+				tipTotal += tip;
+				member.debt += split + tip;
+				await this.teamsService.updateMember(team.id, member);
 			}
-			const user: User = await this.usersService.get(member.id);
-			const tip = split * (user.tipAmount ? user.tipAmount : 0);
-			tipTotal += tip;
-			member.debt += split + tip;
-			await this.teamsService.updateMember(team.id, member);
+			return {
+				tip: tipTotal
+			};
 		}
-		return {
-			tip: tipTotal
-		};
+		throw new HttpException(
+			"You are not the owner of this team",
+			HttpStatus.FORBIDDEN
+		);
 	}
 
 	async getOptOuts(id?: string): Promise<number> {

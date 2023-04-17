@@ -44,7 +44,7 @@ export class TeamsService {
 		}
 		throw new HttpException(
 			"User is already owner of a team",
-			HttpStatus.BAD_REQUEST
+			HttpStatus.FORBIDDEN
 		);
 	}
 
@@ -101,7 +101,7 @@ export class TeamsService {
 				if (await this.isMember(teamModifyDto.userId)) {
 					throw new HttpException(
 						"User is already on a team",
-						HttpStatus.BAD_REQUEST
+						HttpStatus.FORBIDDEN
 					);
 				}
 				return await this.teamsRepository.addMember(
@@ -127,7 +127,7 @@ export class TeamsService {
 			if (await this.isOwner(teamModifyDto.userId)) {
 				throw new HttpException(
 					"User is owner of a team",
-					HttpStatus.BAD_REQUEST
+					HttpStatus.FORBIDDEN
 				);
 			}
 
