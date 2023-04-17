@@ -178,7 +178,7 @@ class _TeamPageState extends State<TeamPage> {
               style: const TextStyle(fontSize: 20, color: Colors.black))),
       Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Text("You owe \$${calculateDebt()} to the team",
+        child: Text(getDebtText(),
             style: const TextStyle(fontSize: 20, color: Colors.black)),
       ),
       Visibility(
@@ -255,5 +255,15 @@ class _TeamPageState extends State<TeamPage> {
 
   calculateDebt() {
     return double.parse((user.debt ?? 0).toStringAsFixed(2));
+  }
+
+  getDebtText() {
+    if (calculateDebt() == 0) {
+      return "You do not owe money!";
+    } else if (calculateDebt() > 0) {
+      return "You owe \$${calculateDebt()}";
+    } else {
+      return "You are owed \$${calculateDebt() * -1}";
+    }
   }
 }

@@ -237,8 +237,8 @@ class _CreatePollFormState extends State<CreatePollForm> {
 
   Widget getHeader() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 60.0),
@@ -263,7 +263,7 @@ class _CreatePollFormState extends State<CreatePollForm> {
           ),
         ),
         const Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(vertical: 16.0),
           child: Text(
             "Create a Poll",
             style: TextStyle(
