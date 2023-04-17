@@ -32,7 +32,9 @@ class SignupFormState extends State<SignupForm> {
   }
 
   @override
+  // Formatting and functionality of the signup page
   Widget build(BuildContext context) {
+    // Text fields that let the user enter first name, last name, email, and password
     return Form(
       key: formKey,
       child: Column(
@@ -145,16 +147,19 @@ class SignupFormState extends State<SignupForm> {
                           MaterialPageRoute(
                               builder: (context) => const HomePage()),
                           (r) => false);
+                      // Error handling for not being able to login
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Login failed.')));
                     }
+                    // Error handling for not being able to register
                   } on Exception {
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Register failed.')));
                   }
                 }
               },
+              // button to signup with the inputted information
               child: const Text(
                 "Signup",
                 style: TextStyle(

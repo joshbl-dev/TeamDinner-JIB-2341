@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../Types/token.dart';
 import '../homepage.dart';
 import '../util.dart';
-
+// Form for login screen functionality
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
@@ -26,7 +26,9 @@ class LoginFormState extends State<LoginForm> {
   }
 
   @override
+  // Format and layout of the login screen
   Widget build(BuildContext context) {
+    // Text field to enter username and password to login
     return Form(
       key: formKey,
       child: Column(
@@ -70,6 +72,7 @@ class LoginFormState extends State<LoginForm> {
             "Don't remember your Password?",
             style: TextStyle(color: Colors.blue),
           ),
+          // Button to login to account
           Padding(
             padding: const EdgeInsets.only(top: 100.0),
             child: SizedBox(
@@ -88,6 +91,7 @@ class LoginFormState extends State<LoginForm> {
                             MaterialPageRoute(
                                 builder:(context) => const HomePage())
                         );
+                        // Error handling for not being able to login
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Login failed.')));

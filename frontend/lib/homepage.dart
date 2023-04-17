@@ -17,7 +17,7 @@ const List<Widget> _widgetOptions = <Widget>[
   PollsPage(),
   ProfilePage(),
 ];
-
+// Basic layout of the homepage
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
             horizontal: 15.0,
             vertical: 20,
           ),
+          // Navigation bar to go to other pages team page, poll page, and profile page
           child: GNav(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             backgroundColor: Colors.black,

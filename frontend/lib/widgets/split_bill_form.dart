@@ -16,6 +16,7 @@ class _SplitBillFormState extends State<SplitBillForm> {
   double? tip;
 
   @override
+  // Formatting of the split payment page
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
@@ -40,6 +41,7 @@ class _SplitBillFormState extends State<SplitBillForm> {
               ),
             ),
           ),
+          // Display how much the dinner cost
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
@@ -51,6 +53,7 @@ class _SplitBillFormState extends State<SplitBillForm> {
               ),
             ),
           ),
+          // Form that lets the owner input how much they spent on the dinner
           Form(
               key: formKey,
               child: Column(
@@ -77,6 +80,7 @@ class _SplitBillFormState extends State<SplitBillForm> {
                       ),
                     ),
                   ),
+                  // Button to split payment after entering dinner amount
                   SizedBox(
                     width: double.infinity,
                     child: RawMaterialButton(

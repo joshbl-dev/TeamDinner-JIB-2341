@@ -23,7 +23,7 @@ class _MemberListWidgetState extends State<MemberListWidget> {
     super.initState();
     team = widget.team;
   }
-
+  // Format of user payments
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +49,7 @@ class _MemberListWidgetState extends State<MemberListWidget> {
                 ),
               ),
             ),
+            // Title of the page
             const Text(
               "Log Member Payments",
               style: TextStyle(
@@ -57,6 +58,7 @@ class _MemberListWidgetState extends State<MemberListWidget> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            // Text field to enter how much the user has paid
             SingleChildScrollView(
               child: Column(
                 children: List.generate(team.members.length, (index) {
@@ -98,6 +100,7 @@ class _MemberListWidgetState extends State<MemberListWidget> {
                             await TeamsRepository.pay(team.id, user.id,
                                 double.parse(controller.text));
                             controller.clear();
+                            // Error handling for not being able to reduce the users debt
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

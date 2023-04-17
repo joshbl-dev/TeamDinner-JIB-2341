@@ -1,3 +1,4 @@
+// Initializing the attributes of a team
 import 'package:frontend/Types/user.dart';
 
 class Team {

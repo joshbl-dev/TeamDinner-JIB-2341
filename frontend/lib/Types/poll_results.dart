@@ -1,3 +1,4 @@
+// Initialization of poll results
 import 'dart:collection';
 
 class PollResults {

@@ -10,6 +10,7 @@ class IndividualPaymentPage extends StatefulWidget {
 class _IndividualPaymentPageState extends State<IndividualPaymentPage> {
   final formKey = GlobalKey<FormState>();
   final paymentController = TextEditingController();
+  // Format and Function of the personalized payments
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +20,7 @@ class _IndividualPaymentPageState extends State<IndividualPaymentPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // back arrow
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Container(
@@ -35,6 +37,7 @@ class _IndividualPaymentPageState extends State<IndividualPaymentPage> {
                 ),
               ),
             ),
+            // Text field to enter how much has been paid and how much a user has sent
             Form(
               key: formKey,
               child: Column(
@@ -55,6 +58,7 @@ class _IndividualPaymentPageState extends State<IndividualPaymentPage> {
                       ),
                     ),
                   ),
+                  // Button to confirm what the user has paid to you
                   SizedBox(
                     width: double.infinity,
                     child: RawMaterialButton(

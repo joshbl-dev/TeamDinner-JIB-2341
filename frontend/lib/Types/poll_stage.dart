@@ -1,3 +1,4 @@
+// Initializing all possible stages of the poll
 enum PollStage {
   NOT_STARTED,
   IN_PROGRESS,

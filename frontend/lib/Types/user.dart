@@ -1,3 +1,4 @@
+// Initializing the attributes of a user
 class User {
   String id;
   String firstName;

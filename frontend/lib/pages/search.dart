@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+// Search page to find food, no functionality yet
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super(key: key);
 

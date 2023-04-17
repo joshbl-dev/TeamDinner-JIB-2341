@@ -53,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  // Format of the initial page as soon as you load the app; either login or signup
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),

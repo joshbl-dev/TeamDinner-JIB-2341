@@ -15,7 +15,7 @@ class TeamPage extends StatefulWidget {
   @override
   State<TeamPage> createState() => _TeamPageState();
 }
-
+// Layout and functions of the team page
 class _TeamPageState extends State<TeamPage> {
   Team team = Team("", "", "", false, [], []);
   bool isOwner = false;
@@ -23,6 +23,7 @@ class _TeamPageState extends State<TeamPage> {
   User user = User("", "", "");
 
   @override
+  // layout of the body of the team page
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(
@@ -47,11 +48,13 @@ class _TeamPageState extends State<TeamPage> {
             ),
           ],
         ),
+        // determining what the user sees depending on if they are the owner or just user
         floatingActionButton: Visibility(
           visible: isOwner || team.id == "",
           child: FloatingActionButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
+                // If they are the owner there is an invite form, if not they can make a team
                 if (isOwner) {
                   return InviteForm(
                     team: team,
@@ -66,7 +69,7 @@ class _TeamPageState extends State<TeamPage> {
           ),
         ));
   }
-
+  // processing user info of the team
   Future<Team> _getTeam() async {
     if (!reset) {
       return team;
@@ -99,6 +102,7 @@ class _TeamPageState extends State<TeamPage> {
           reset = false;
         });
       }
+      // Error handling for not being in a team
       return memberTeam;
     } on Exception {
       team.description = "You are not in a team";
@@ -106,7 +110,9 @@ class _TeamPageState extends State<TeamPage> {
     return team;
   }
 
+
   getTeamInfo() {
+    // Layout of the page when you are not in the team
     if (team.name == "") {
       return [
         const Padding(
@@ -127,13 +133,14 @@ class _TeamPageState extends State<TeamPage> {
           padding:
               EdgeInsets.only(left: 40.0, right: 40.0, top: 8.0, bottom: 10.0),
           child: Text(
-            "Click on the button plus button to create or join a team.",
+            "Click on the plus button to create or join a team.",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 18, color: Colors.black),
           ),
         )
       ];
     }
+    // Layout of the team page when in a team, has team icon and lists, teamName, Description, Owner, and Members
     return [
       const Image(
         image: AssetImage('assets/images/teamnew.png'),
@@ -172,6 +179,7 @@ class _TeamPageState extends State<TeamPage> {
       //             Text(name.toString(),
       //                 style: const TextStyle(fontSize: 14, color: Colors.black))
       //         ])),
+      // Display the owners venmmo with how much the user owes
       Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text("Owner Venmo: ${team.owner.venmo ?? "N/A"}",
@@ -181,6 +189,7 @@ class _TeamPageState extends State<TeamPage> {
         child: Text(getDebtText(),
             style: const TextStyle(fontSize: 20, color: Colors.black)),
       ),
+      // Edit team button is visible if you are the owner
       Visibility(
           visible: isOwner,
           child: ElevatedButton(
@@ -196,6 +205,7 @@ class _TeamPageState extends State<TeamPage> {
             child:
                 const Text('Edit Team', style: TextStyle(color: Colors.black)),
           )),
+      // Payments are visible if you are the owner
       Visibility(
           visible: isOwner,
           child: ElevatedButton(
@@ -211,6 +221,7 @@ class _TeamPageState extends State<TeamPage> {
             child:
                 const Text('Payments', style: TextStyle(color: Colors.black)),
           )),
+      // Both owner and user can see the leave team button
       Visibility(
         visible: !isOwner && team.id != "",
         child: Padding(
@@ -225,6 +236,7 @@ class _TeamPageState extends State<TeamPage> {
                     reset = true;
                   });
                 }
+                // Error handling for not being able to leave the team
               } on Exception {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text("Could not leave team"),
@@ -243,7 +255,7 @@ class _TeamPageState extends State<TeamPage> {
       )
     ];
   }
-
+  // this resets the entire team page
   resetPage() {
     if (mounted) {
       setState(() {
@@ -252,7 +264,7 @@ class _TeamPageState extends State<TeamPage> {
     }
     _getTeam();
   }
-
+  // calculation for debit for the users
   calculateDebt() {
     return double.parse((user.debt ?? 0).toStringAsFixed(2));
   }

@@ -36,6 +36,7 @@ class _PollFormState extends State<PollForm> {
   }
 
   @override
+  // Functionality and format for voting in a poll
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -65,6 +66,7 @@ class _PollFormState extends State<PollForm> {
                   ))
               .toList(),
         ),
+        // Button to submit your vote
         Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
@@ -86,7 +88,7 @@ class _PollFormState extends State<PollForm> {
       ],
     );
   }
-
+  // shows the user which option is currently selected by them
   Widget buildOption(PollOption option) {
     return ToggleButtons(
       isSelected: isSelected,
