@@ -1,4 +1,4 @@
-import { IsOptional, IsPositive, IsString } from "class-validator";
+import { IsNumber, IsOptional, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class TeamMemberModifyDto {
@@ -10,7 +10,7 @@ export class TeamMemberModifyDto {
 	@IsOptional()
 	userId?: string;
 	@ApiProperty()
-	@IsPositive()
+	@IsNumber()
 	@IsOptional()
 	amount?: number;
 }
