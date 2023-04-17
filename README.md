@@ -5,7 +5,59 @@ service applications with functionalities to assign parent leaders and splitting
 The app incorporates interfaces for login/signup, team landing page, restaurant searching, polling, 
 and connection to a third-party cost-splitting app.
 
+# Setup Instructions
+## Frontend - Flutter
+Install Flutter by following the directions at https://docs.flutter.dev/get-started/install
+Open the Project and run main.dart
+
+## Backend - NestJS
+Install NestJS by following the directions at https://docs.nestjs.com/first-steps
+Install yarn by following the directions at https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable
+Open the project and run ```yarn start:dev``` on windows or ```yarn start:mac-dev``` on mac
+Once deployed on Vercel, Frontend baseUrl in Repository files will need to be updated.
+
+## Firestore
+Database is stored on Firestore at https://console.firebase.google.com/u/0/
+
+## Vercel
+
+Backend can be deployed via vercel at https://vercel.com with the following setup:
+### Project Settings:
+Framework Preset - Other
+
+Root Directory - "Backend" (check "Include source files outside of the Root Directory in the Build Step."
+
+Node.js Version - 18.x
+### Domains:
+Git Branch - main
+### Git:
+Connect to Github Repository
+### Environment Variables
+Check "Automatically expose System Envionment Variables"
+
+FIREBASE_CLIENT_EMAIL (Found via Firestore service account file)
+
+FIREBASE_PROJECT_ID (Found via Firestore service account file)
+
+FIREBASE_PRIVATE_KEY (Found via Firestore service account file)
+
+NODE_ENV=prod
+
+JWT_SECRET (whatever you choose)
+
 # Release Notes Section
+
+## v 0.5.0
+### Features
+Backend
+* Swagger Documentation completed
+
+Frontend
+* Frontend Documentation completed
+* Tip total added
+
+### Bug Fixes
+* Fixed missing tip value in split payment route
 
 ## v 0.4.0
 ### Features
@@ -14,7 +66,7 @@ Backend
 * Added split bill functionality
 * Added payment tracking
 
-Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.3
+Swagger: https://app.swaggerhub.com/apis-docs/joshbl-dev/team-dinner_api/0.0.3
 
 Frontend
 * Iterated on UI for team screens and poll screens
@@ -33,7 +85,7 @@ Backend
 * cleaned up code to match convention
 * Add poll entity information
 
-Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.2
+Swagger: https://app.swaggerhub.com/apis-docs/joshbl-dev/team-dinner_api/0.0.2
 
 Frontend
 * Iterated on UI for team screens
@@ -51,7 +103,7 @@ Backend
 * Fixed some broken code
 * Add routes for team entity management
 
-Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.1
+Swagger: https://app.swaggerhub.com/apis-docs/joshbl-dev/team-dinner_api/0.0.1
 
 Frontend
 * Fixed and created new UI for login and signup screen
@@ -74,7 +126,7 @@ Backend
 * Create API deployment for frontend
 * Create user routes for adding friends 
 
-Swagger: https://app.swaggerhub.com/apis/joshbl-dev/team-dinner_api/0.0.1
+Swagger: https://app.swaggerhub.com/apis-docs/joshbl-dev/team-dinner_api/0.0.1
 
 Frontend
 The frontend deliverables started off with setting up the Flutter app and then connecting the backend
