@@ -11,6 +11,8 @@ Install Android Studio at https://developer.android.com/studio
 
 Install Flutter by following the directions at https://docs.flutter.dev/get-started/install
 
+Flutter issues can be diagnosed by running ```flutter doctor``` in terminal
+
 Open the Project in Android Studio and run main.dart after installing an emulator of choice in Android Studio
 
 ## Backend - NestJS
