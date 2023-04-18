@@ -7,19 +7,24 @@ and connection to a third-party cost-splitting app.
 
 # Setup Instructions
 ## Frontend - Flutter
+Install Android Studio at https://developer.android.com/studio
+
 Install Flutter by following the directions at https://docs.flutter.dev/get-started/install
-Open the Project and run main.dart
+
+Open the Project in Android Studio and run main.dart after installing an emulator of choice in Android Studio
 
 ## Backend - NestJS
+### Local Run
 Install NestJS by following the directions at https://docs.nestjs.com/first-steps
-Install yarn by following the directions at https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable
+Install yarn by following the directions at https://classic.yarnpkg.com/lang/en/docs/install
 Open the project and run ```yarn start:dev``` on windows or ```yarn start:mac-dev``` on mac
-Once deployed on Vercel, Frontend baseUrl in Repository files will need to be updated.
 
 ## Firestore
 Database is stored on Firestore at https://console.firebase.google.com/u/0/
 
-## Vercel
+## Deployed Run - Vercel
+
+Once deployed on Vercel, Frontend baseUrl in Repository files will need to be updated.
 
 Backend can be deployed via vercel at https://vercel.com with the following setup:
 ### Project Settings:
