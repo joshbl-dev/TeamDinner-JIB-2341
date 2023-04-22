@@ -15,6 +15,7 @@ class PollsRepository {
     'Content-Type': 'application/json; charset=UTF-8',
   };
   static const String repositoryName = "polls";
+
   /* Waiting for creator to send in poll */
   static Future<Poll> get(String id) async {
     final response = await http.get(
@@ -32,6 +33,7 @@ class PollsRepository {
       throw Exception('Poll not found.');
     }
   }
+
   /* Handling poll results that are sent in */
   static Future<PollResults> getResults(String id) async {
     final response = await http.get(
@@ -74,6 +76,7 @@ class PollsRepository {
       throw Exception('Failed to create poll.');
     }
   }
+
   /* Waiting for poll vote info to be sent in for processing, pollId, userId, optionIds */
   static Future<Poll> vote(String pollId, Vote vote) async {
     final response = await http.post(
@@ -89,20 +92,24 @@ class PollsRepository {
       }),
     );
     /* Error handling no votes for the poll */
+    print(response.body);
     if (response.statusCode == 201) {
       return Poll.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to vote on poll.');
     }
   }
+
   /* There is a poll currently running */
   static Future<Poll> startPoll(String pollId) async {
     return changeStage(pollId, PollStage.IN_PROGRESS);
   }
+
   /* Current poll has been completed */
   static Future<Poll> endPoll(String pollId) async {
     return changeStage(pollId, PollStage.FINISHED);
   }
+
   /* Change the stage of the current poll, i.e. in progress or finished */
   static Future<Poll> changeStage(String pollId, PollStage stage) async {
     final response = await http.post(
@@ -132,7 +139,7 @@ class PollsRepository {
       },
       body: jsonEncode(<String, dynamic>{"amount": amount}),
     );
-    
+
     /* Error handling not able to split payments */
     if (response.statusCode == 201) {
       return json.decode(response.body)["tip"] * 1.0;

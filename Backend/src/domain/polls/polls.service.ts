@@ -159,13 +159,13 @@ export class PollsService {
 	}
 
 	async isInProgress(poll: Poll): Promise<boolean> {
-		if (new Date(poll.time).getTime() < Date.now()) {
-			await this.pollsRepository.setStage(poll.id, PollStage.FINISHED);
-			throw new HttpException(
-				"The poll has expired",
-				HttpStatus.FORBIDDEN
-			);
-		}
+		// if (new Date(poll.time).getTime() < Date.now()) {
+		// 	await this.pollsRepository.setStage(poll.id, PollStage.FINISHED);
+		// 	throw new HttpException(
+		// 		"The poll has expired",
+		// 		HttpStatus.FORBIDDEN
+		// 	);
+		// }
 		return poll.stage == PollStage.IN_PROGRESS;
 	}
 
