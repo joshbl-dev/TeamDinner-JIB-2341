@@ -13,6 +13,7 @@ class ProfilePage extends StatefulWidget {
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
+
 // Functions of the pofile page
 class _ProfilePageState extends State<ProfilePage> {
   final formKey = GlobalKey<FormState>();
@@ -25,6 +26,24 @@ class _ProfilePageState extends State<ProfilePage> {
   late User user;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      asyncInit();
+    });
+  }
+
+  Future<void> asyncInit() async {
+    user = await UsersRepository.get(null);
+    final tipPercent = user.tipPercent != null ? user.tipPercent * 100 : 0;
+    firstNameController.text = user.firstName;
+    lastNameController.text = user.lastName;
+    preferredTipController.text = tipPercent.toString();
+    venmoController.text = user.venmo ?? "";
+    setState(() {});
+  }
+
+  @override
   void dispose() {
     firstNameController.dispose();
     lastNameController.dispose();
@@ -34,6 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
     venmoController.dispose();
     super.dispose();
   }
+
   // Layout of the profile page
   @override
   Widget build(BuildContext context) {

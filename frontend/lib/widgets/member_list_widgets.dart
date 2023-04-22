@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/api/teams_repository.dart';
+import 'package:intl/intl.dart';
 
 import '../Types/team.dart';
 
@@ -23,6 +24,7 @@ class _MemberListWidgetState extends State<MemberListWidget> {
     super.initState();
     team = widget.team;
   }
+
   // Format of user payments
   @override
   Widget build(BuildContext context) {
@@ -69,6 +71,8 @@ class _MemberListWidgetState extends State<MemberListWidget> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(team.members[index].toString()),
+                      Text(
+                          "Debt: ${NumberFormat.simpleCurrency().format(team.members[index].debt ?? 0)}"),
                       SizedBox(
                         width: 100,
                         child: Form(

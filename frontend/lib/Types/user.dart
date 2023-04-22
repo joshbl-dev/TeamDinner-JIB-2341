@@ -5,12 +5,16 @@ class User {
   String lastName;
   String? venmo;
   dynamic debt;
+  dynamic tipPercent;
 
-  User(this.firstName, this.lastName, this.id, {this.venmo, this.debt});
+  User(this.firstName, this.lastName, this.id,
+      {this.venmo, this.debt, this.tipPercent});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(json['firstName'], json['lastName'], json['id'],
-        venmo: json['venmo'], debt: json['debt']);
+        venmo: json['venmo'],
+        debt: json['debt'],
+        tipPercent: json['tipAmount']);
   }
 
   setDebt(dynamic debt) {

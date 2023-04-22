@@ -3,6 +3,7 @@ import 'package:frontend/api/teams_repository.dart';
 import 'package:frontend/api/users_repository.dart';
 import 'package:frontend/widgets/invite_form.dart';
 import 'package:frontend/widgets/member_list_widgets.dart';
+import 'package:intl/intl.dart';
 
 import '../Types/team.dart';
 import '../Types/user.dart';
@@ -15,6 +16,7 @@ class TeamPage extends StatefulWidget {
   @override
   State<TeamPage> createState() => _TeamPageState();
 }
+
 // Layout and functions of the team page
 class _TeamPageState extends State<TeamPage> {
   Team team = Team("", "", "", false, [], []);
@@ -69,6 +71,7 @@ class _TeamPageState extends State<TeamPage> {
           ),
         ));
   }
+
   // processing user info of the team
   Future<Team> _getTeam() async {
     if (!reset) {
@@ -109,7 +112,6 @@ class _TeamPageState extends State<TeamPage> {
     }
     return team;
   }
-
 
   getTeamInfo() {
     // Layout of the page when you are not in the team
@@ -255,6 +257,7 @@ class _TeamPageState extends State<TeamPage> {
       )
     ];
   }
+
   // this resets the entire team page
   resetPage() {
     if (mounted) {
@@ -264,18 +267,20 @@ class _TeamPageState extends State<TeamPage> {
     }
     _getTeam();
   }
+
   // calculation for debit for the users
   calculateDebt() {
-    return double.parse((user.debt ?? 0).toStringAsFixed(2));
+    return user.debt ?? 0;
   }
 
   getDebtText() {
-    if (calculateDebt() == 0) {
+    final debt = calculateDebt();
+    if (debt == 0) {
       return "You do not owe money!";
-    } else if (calculateDebt() > 0) {
-      return "You owe \$${calculateDebt()}";
+    } else if (debt > 0) {
+      return "You owe ${NumberFormat.simpleCurrency().format(debt)}";
     } else {
-      return "You are owed \$${calculateDebt() * -1}";
+      return "You are owed ${NumberFormat.simpleCurrency().format(-debt)}";
     }
   }
 }

@@ -22,6 +22,8 @@ class _ModifyTeamFormState extends State<ModifyTeamForm> {
   void initState() {
     super.initState();
     team = widget.team;
+    teamNameController.text = team.name;
+    descriptionController.text = team.description;
   }
 
   @override
