@@ -66,13 +66,19 @@ class _MemberListWidgetState extends State<MemberListWidget> {
                 children: List.generate(team.members.length, (index) {
                   final controller = TextEditingController();
                   final formKey = GlobalKey<FormState>();
+                  double debt = 0;
+                  try {
+                    debt = team.members[index].debt * 1.0 ?? 0.0;
+                  } on Exception {
+                    debt = 0.0;
+                  }
                   controllers.add(controller);
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(team.members[index].toString()),
                       Text(
-                          "Debt: ${NumberFormat.simpleCurrency().format(team.members[index].debt ?? 0)}"),
+                          "Debt: ${NumberFormat.simpleCurrency().format(debt)}"),
                       SizedBox(
                         width: 100,
                         child: Form(
@@ -101,8 +107,12 @@ class _MemberListWidgetState extends State<MemberListWidget> {
                           }
                           var user = team.members[index];
                           try {
-                            await TeamsRepository.pay(team.id, user.id,
-                                double.parse(controller.text));
+                            final payment = double.parse(controller.text);
+                            await TeamsRepository.pay(
+                                team.id, user.id, payment);
+                            setState(() {
+                              team.members[index].debt -= payment;
+                            });
                             controller.clear();
                             // Error handling for not being able to reduce the users debt
                           } on Exception {
