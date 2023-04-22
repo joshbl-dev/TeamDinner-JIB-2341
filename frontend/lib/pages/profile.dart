@@ -23,6 +23,9 @@ class _ProfilePageState extends State<ProfilePage> {
   final preferredTipController = TextEditingController();
   final venmoController = TextEditingController();
   late User user;
+  late User currUser;
+
+
 
   @override
   void dispose() {
@@ -37,6 +40,10 @@ class _ProfilePageState extends State<ProfilePage> {
   // Layout of the profile page
   @override
   Widget build(BuildContext context) {
+    Future<User> _getUser() async {
+      currUser = await UsersRepository.get(null) as User;
+      return currUser;
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
@@ -45,6 +52,29 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            FutureBuilder(
+              future: _getUser(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Center(
+                    child:
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: Text(
+                        currUser.firstName + " " + currUser.lastName,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 32.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      ),
+                    );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
             Form(
               key: formKey,
               child: Column(
@@ -239,3 +269,4 @@ class _ProfilePageState extends State<ProfilePage> {
     venmoController.clear();
   }
 }
+
