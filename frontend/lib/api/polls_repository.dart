@@ -92,7 +92,6 @@ class PollsRepository {
       }),
     );
     /* Error handling no votes for the poll */
-    print(response.body);
     if (response.statusCode == 201) {
       return Poll.fromJson(json.decode(response.body));
     } else {

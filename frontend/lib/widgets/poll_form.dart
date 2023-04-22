@@ -77,6 +77,10 @@ class _PollFormState extends State<PollForm> {
                     .toList();
                 var user = await UsersRepository.get(null);
                 await PollsRepository.vote(poll.id, Vote(user.id, optionIds));
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Vote cast.')));
+                }
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -88,6 +92,7 @@ class _PollFormState extends State<PollForm> {
       ],
     );
   }
+
   // shows the user which option is currently selected by them
   Widget buildOption(PollOption option) {
     return ToggleButtons(
