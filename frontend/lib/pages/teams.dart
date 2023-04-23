@@ -151,7 +151,7 @@ class _TeamPageState extends State<TeamPage> {
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text("Team: ${team.name}",
+        child: Text(team.name,
             style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,

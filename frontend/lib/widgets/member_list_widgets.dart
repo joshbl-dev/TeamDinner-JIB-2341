@@ -82,22 +82,28 @@ class _MemberListWidgetState extends State<MemberListWidget> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        SizedBox(
-                          width: 200,
-                          child: Text(team.members[index].toString(),
-                              style: const TextStyle(fontSize: 20),
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1),
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: 150,
+                              child: Text(team.members[index].toString(),
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1),
+                            ),
+                            SizedBox(
+                              width: 150,
+                              child: Text(
+                                  "Debt: ${NumberFormat.simpleCurrency().format(debt)}",
+                                  textAlign: TextAlign.left),
+                            ),
+                          ],
                         ),
                         SizedBox(
-                          width: 200,
-                          child: Text(
-                              "Debt: ${NumberFormat.simpleCurrency().format(debt)}",
-                              textAlign: TextAlign.left),
-                        ),
-                        SizedBox(
-                          width: 100,
+                          width: 75,
                           child: Form(
                             key: formKey,
                             child: Padding(
