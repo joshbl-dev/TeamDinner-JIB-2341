@@ -13,6 +13,7 @@ import '../api/users_repository.dart';
 import '../widgets/create_poll_form.dart';
 import '../widgets/poll_form.dart';
 import '../widgets/split_bill_form.dart';
+
 // Poll handling and functionality page
 class PollsPage extends StatefulWidget {
   const PollsPage({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _PollsPageState extends State<PollsPage> {
   Vote vote = Vote("", []);
   bool reset = true;
   PollResults? results;
+
   // Establish layout of the page
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,7 @@ class _PollsPageState extends State<PollsPage> {
       ),
     );
   }
+
   // Getting poll information for processing
   Future<Poll> _getPoll() async {
     if (!reset) {
@@ -92,6 +95,7 @@ class _PollsPageState extends State<PollsPage> {
     }
     return poll;
   }
+
   // List of all the poll information topic, description, and stage processing
   List<Widget> getPollInfo() {
     List<Widget> widgets = [];
@@ -183,39 +187,38 @@ class _PollsPageState extends State<PollsPage> {
       ));
     } else if (isOwner &&
         (poll.stage == PollStage.FINISHED || poll.stage == null)) {
-      widgets.add(
-          ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  side: BorderSide.none,
-                  shape: const StadiumBorder()),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const CreatePollForm();
-                })).then((value) => {resetPage()});
-              },
-              icon: const Icon(Icons.poll),
-              label: const Text('Create Poll', style: TextStyle(color: Colors.black))
-          ));
+      widgets.add(ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              side: BorderSide.none,
+              shape: const StadiumBorder()),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const CreatePollForm();
+            })).then((value) => {resetPage()});
+          },
+          icon: const Icon(Icons.poll),
+          label: const Text('Create Poll',
+              style: TextStyle(color: Colors.black))));
       if (poll.stage == PollStage.FINISHED) {
-        widgets.add(
-            ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    side: BorderSide.none,
-                    shape: const StadiumBorder()),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const SplitBillForm();
-                  })).then((value) => {resetPage()});
-                },
-                icon: const Icon(Icons.monetization_on),
-                label: const Text('Split Bill', style: TextStyle(color: Colors.black))
-            ));
+        widgets.add(ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.greenAccent,
+                side: BorderSide.none,
+                shape: const StadiumBorder()),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const SplitBillForm();
+              })).then((value) => {resetPage()});
+            },
+            icon: const Icon(Icons.monetization_on),
+            label: const Text('Split Bill',
+                style: TextStyle(color: Colors.black))));
       }
     }
     return widgets;
   }
+
   // Used to reset the poll page when finished
   resetPage() {
     if (mounted) {

@@ -194,33 +194,35 @@ class _TeamPageState extends State<TeamPage> {
       // Edit team button is visible if you are the owner
       Visibility(
           visible: isOwner,
-          child: ElevatedButton(
+          child: ElevatedButton.icon(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return ModifyTeamForm(team: team);
               })).then((value) => {resetPage()});
             },
+            icon: const Icon(Icons.edit),
             style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 side: BorderSide.none,
                 shape: const StadiumBorder()),
-            child:
+            label:
                 const Text('Edit Team', style: TextStyle(color: Colors.black)),
           )),
       // Payments are visible if you are the owner
       Visibility(
           visible: isOwner,
-          child: ElevatedButton(
+          child: ElevatedButton.icon(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return MemberListWidget(team: team);
               })).then((value) => {resetPage()});
             },
+            icon: const Icon(Icons.payment),
             style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.greenAccent,
                 side: BorderSide.none,
                 shape: const StadiumBorder()),
-            child:
+            label:
                 const Text('Payments', style: TextStyle(color: Colors.black)),
           )),
       // Both owner and user can see the leave team button
