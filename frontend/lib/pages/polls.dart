@@ -183,34 +183,35 @@ class _PollsPageState extends State<PollsPage> {
       ));
     } else if (isOwner &&
         (poll.stage == PollStage.FINISHED || poll.stage == null)) {
-      widgets.add(ElevatedButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return const CreatePollForm();
-          })).then((value) => {resetPage()});
-        },
-        // button to create the poll
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
-            side: BorderSide.none,
-            shape: const StadiumBorder()),
-        child: const Text('Create Poll', style: TextStyle(color: Colors.black)),
-      ));
+      widgets.add(
+          ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  side: BorderSide.none,
+                  shape: const StadiumBorder()),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const CreatePollForm();
+                })).then((value) => {resetPage()});
+              },
+              icon: const Icon(Icons.poll),
+              label: const Text('Create Poll', style: TextStyle(color: Colors.black))
+          ));
       if (poll.stage == PollStage.FINISHED) {
-        widgets.add(ElevatedButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const SplitBillForm();
-            })).then((value) => {resetPage()});
-          },
-          // button to calculate the payments
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.greenAccent,
-              side: BorderSide.none,
-              shape: const StadiumBorder()),
-          child:
-              const Text('Split Bill', style: TextStyle(color: Colors.black)),
-        ));
+        widgets.add(
+            ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    side: BorderSide.none,
+                    shape: const StadiumBorder()),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const SplitBillForm();
+                  })).then((value) => {resetPage()});
+                },
+                icon: const Icon(Icons.monetization_on),
+                label: const Text('Split Bill', style: TextStyle(color: Colors.black))
+            ));
       }
     }
     return widgets;

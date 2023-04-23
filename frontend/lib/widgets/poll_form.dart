@@ -88,7 +88,7 @@ class _PollFormState extends State<PollForm> {
                   shape: const StadiumBorder()),
               child: const Text('Submit Vote',
                   style: TextStyle(color: Colors.black)),
-            )),
+            ))
       ],
     );
   }
