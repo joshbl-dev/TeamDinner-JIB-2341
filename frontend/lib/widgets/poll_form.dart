@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/api/polls_repository.dart';
 
@@ -20,9 +22,24 @@ class _PollFormState extends State<PollForm> {
   late Poll poll;
   late List<bool> isSelected;
   late Vote? vote;
+  Color _optionColor() {
+    Random _random = Random();
+    List<Color> _colors = [
+      Colors.indigo,
+      Colors.brown,
+      Colors.deepOrangeAccent,
+      Colors.lightGreenAccent,
+      Colors.pinkAccent,
+      Colors.purple,
+      Colors.lightBlue,
+    ];
+    int index = _random.nextInt(7);
+    return _colors[index];
+  }
 
   @override
   void initState() {
+
     super.initState();
     poll = widget.poll;
     vote = widget.vote;
@@ -45,7 +62,7 @@ class _PollFormState extends State<PollForm> {
           borderRadius: const BorderRadius.all(Radius.circular(8)),
           selectedBorderColor: Colors.red[700],
           selectedColor: Colors.white,
-          fillColor: Colors.red[200],
+          fillColor: _optionColor(),
           color: Colors.red[400],
           onPressed: (index) {
             setState(() {
