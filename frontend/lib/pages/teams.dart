@@ -144,11 +144,6 @@ class _TeamPageState extends State<TeamPage> {
     }
     // Layout of the team page when in a team, has team icon and lists, teamName, Description, Owner, and Members
     return [
-      const Image(
-        image: AssetImage('assets/images/teamnew.png'),
-        height: 100,
-        alignment: Alignment.topRight,
-      ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(team.name,
@@ -157,20 +152,29 @@ class _TeamPageState extends State<TeamPage> {
                 fontWeight: FontWeight.bold,
                 color: Colors.black)),
       ),
+      const Image(
+        image: AssetImage('assets/images/teamnew.png'),
+        height: 100,
+        alignment: Alignment.topRight,
+      ),
+
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text("Description: ${team.description}",
-            style: const TextStyle(fontSize: 20, color: Colors.black)),
+            textAlign: TextAlign.left,
+            style: const TextStyle(fontSize: 18, color: Colors.black)),
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text("Owner: ${team.owner.toString()}",
-            style: const TextStyle(fontSize: 20, color: Colors.black)),
+            textAlign: TextAlign.left,
+            style: const TextStyle(fontSize: 18, color: Colors.black)),
       ),
       Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(8.0),
         child: Text("Members: ${team.members.length}",
-            style: const TextStyle(fontSize: 20, color: Colors.black)),
+            textAlign: TextAlign.left,
+            style: const TextStyle(fontSize: 18, color: Colors.black)),
       ),
       // Padding(
       //     padding: const EdgeInsets.all(4.0),
@@ -183,13 +187,14 @@ class _TeamPageState extends State<TeamPage> {
       //         ])),
       // Display the owners venmmo with how much the user owes
       Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(8.0),
           child: Text("Owner Venmo: ${team.owner.venmo ?? "N/A"}",
-              style: const TextStyle(fontSize: 20, color: Colors.black))),
+              textAlign: TextAlign.left,
+              style: const TextStyle(fontSize: 18, color: Colors.black))),
       Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(10.0),
         child: Text(getDebtText(),
-            style: const TextStyle(fontSize: 20, color: Colors.black)),
+            style: const TextStyle(fontSize: 18, color: Colors.black)),
       ),
       // Edit team button is visible if you are the owner
       Visibility(

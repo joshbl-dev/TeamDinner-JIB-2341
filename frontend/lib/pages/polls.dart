@@ -108,21 +108,21 @@ class _PollsPageState extends State<PollsPage> {
     widgets.add(Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(poll.description,
-          style: const TextStyle(fontSize: 20, color: Colors.black)),
+          style: const TextStyle(fontSize: 18, color: Colors.black)),
     ));
     switch (poll.stage) {
       case PollStage.NOT_STARTED:
         widgets.add(const Padding(
           padding: EdgeInsets.all(8.0),
           child: Text("Poll has not started yet",
-              style: TextStyle(fontSize: 20, color: Colors.black)),
+              style: TextStyle(fontSize: 18, color: Colors.black)),
         ));
         break;
       case PollStage.IN_PROGRESS:
         widgets.add(Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text("Poll ends at ${DateFormat.jm().format(poll.time)}",
-              style: const TextStyle(fontSize: 20, color: Colors.black)),
+              style: const TextStyle(fontSize: 18, color: Colors.black)),
         ));
         widgets.add(PollForm(poll: poll, vote: vote));
         break;
@@ -130,7 +130,7 @@ class _PollsPageState extends State<PollsPage> {
         widgets.add(Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text("Poll ended at ${DateFormat.jm().format(poll.time)}",
-              style: const TextStyle(fontSize: 20, color: Colors.black)),
+              style: const TextStyle(fontSize: 18, color: Colors.black)),
         ));
         break;
       case null:
@@ -139,10 +139,10 @@ class _PollsPageState extends State<PollsPage> {
 
     if (results != null) {
       widgets.add(const Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(6.0),
         child: Text("Results",
             style: TextStyle(
-                fontSize: 30,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.black)),
       ));
@@ -153,9 +153,9 @@ class _PollsPageState extends State<PollsPage> {
                   orElse: () => PollOption("", ""))
               .option;
           widgets.add(Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10.0),
             child: Text("$name: $value",
-                style: const TextStyle(fontSize: 20, color: Colors.black)),
+                style: const TextStyle(fontSize: 16, color: Colors.black)),
           ));
         }
       });
