@@ -73,57 +73,75 @@ class _MemberListWidgetState extends State<MemberListWidget> {
                     debt = 0.0;
                   }
                   controllers.add(controller);
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(team.members[index].toString()),
-                      Text(
-                          "Debt: ${NumberFormat.simpleCurrency().format(debt)}"),
-                      SizedBox(
-                        width: 100,
-                        child: Form(
-                          key: formKey,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 16.0),
-                            child: TextFormField(
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
-                              controller: controller,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Enter value";
-                                }
-                                return null;
-                              },
+                  return Container(
+                    margin: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: 200,
+                          child: Text(team.members[index].toString(),
+                              style: const TextStyle(fontSize: 20),
+                              textAlign: TextAlign.left,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1),
+                        ),
+                        SizedBox(
+                          width: 200,
+                          child: Text(
+                              "Debt: ${NumberFormat.simpleCurrency().format(debt)}",
+                              textAlign: TextAlign.left),
+                        ),
+                        SizedBox(
+                          width: 100,
+                          child: Form(
+                            key: formKey,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                              child: TextFormField(
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+                                controller: controller,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Enter value";
+                                  }
+                                  return null;
+                                },
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          if (!formKey.currentState!.validate()) {
-                            return;
-                          }
-                          var user = team.members[index];
-                          try {
-                            final payment = double.parse(controller.text);
-                            await TeamsRepository.pay(
-                                team.id, user.id, payment);
-                            setState(() {
-                              team.members[index].debt -= payment;
-                            });
-                            controller.clear();
-                            // Error handling for not being able to reduce the users debt
-                          } on Exception {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Failed to reduce debt.")));
-                          }
-                        },
-                        icon: const Icon(Icons.send, color: Colors.green),
-                      ),
-                    ],
+                        IconButton(
+                          onPressed: () async {
+                            if (!formKey.currentState!.validate()) {
+                              return;
+                            }
+                            var user = team.members[index];
+                            try {
+                              final payment = double.parse(controller.text);
+                              await TeamsRepository.pay(
+                                  team.id, user.id, payment);
+                              setState(() {
+                                team.members[index].debt -= payment;
+                              });
+                              controller.clear();
+                              // Error handling for not being able to reduce the users debt
+                            } on Exception {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text("Failed to reduce debt.")));
+                            }
+                          },
+                          icon: const Icon(Icons.send, color: Colors.green),
+                        ),
+                      ],
+                    ),
                   );
                 }),
               ),
