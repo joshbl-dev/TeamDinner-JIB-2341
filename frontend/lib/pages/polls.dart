@@ -137,6 +137,8 @@ class _PollsPageState extends State<PollsPage> {
         break;
     }
 
+    widgets.add(Divider(),);
+
     if (results != null) {
       widgets.add(const Padding(
         padding: EdgeInsets.all(6.0),
@@ -159,8 +161,9 @@ class _PollsPageState extends State<PollsPage> {
           ));
         }
       });
-    }
 
+    }
+    widgets.add(Divider(),);
     if (isOwner && poll.stage != null && poll.stage != PollStage.FINISHED) {
       String text =
           poll.stage == PollStage.NOT_STARTED ? "Start Poll" : "End Poll";

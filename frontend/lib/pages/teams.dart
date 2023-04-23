@@ -157,7 +157,7 @@ class _TeamPageState extends State<TeamPage> {
         height: 100,
         alignment: Alignment.topRight,
       ),
-
+      Divider(),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text("Description: ${team.description}",
@@ -191,12 +191,14 @@ class _TeamPageState extends State<TeamPage> {
           child: Text("Owner Venmo: ${team.owner.venmo ?? "N/A"}",
               textAlign: TextAlign.left,
               style: const TextStyle(fontSize: 18, color: Colors.black))),
+
       Padding(
         padding: const EdgeInsets.all(10.0),
         child: Text(getDebtText(),
             style: const TextStyle(fontSize: 18, color: Colors.black)),
       ),
       // Edit team button is visible if you are the owner
+      Divider(),
       Visibility(
           visible: isOwner,
           child: ElevatedButton.icon(
