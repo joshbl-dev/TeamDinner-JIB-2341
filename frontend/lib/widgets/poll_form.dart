@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_polls/flutter_polls.dart';
 import 'package:frontend/api/polls_repository.dart';
 
 import '../Types/Poll.dart';
+import '../Types/poll_option.dart';
 import '../Types/vote.dart';
 import '../api/users_repository.dart';
-
-
 
 class PollForm extends StatefulWidget {
   final Poll poll;
